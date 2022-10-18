@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ARBULU_Pedidos</string>
+    <string name="title_activity_main">ARBULU_Pedidos</string>
+    <string name="package_name">io.arbulu.pedidos</string>
+    <string name="custom_url_scheme">io.arbulu.pedidos</string>
+</resources>

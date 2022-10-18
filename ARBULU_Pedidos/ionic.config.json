@@ -1,0 +1,7 @@
+{
+  "name": "ARBULU_Pedidos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
