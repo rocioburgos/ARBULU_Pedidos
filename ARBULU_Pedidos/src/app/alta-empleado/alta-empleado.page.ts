@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Photo } from '@capacitor/camera';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ImagenesService } from '../servicios/imagenes.service';
+import { UtilidadesService } from '../servicios/utilidades.service';
 @Component({
   selector: 'app-alta-empleado',
   templateUrl: './alta-empleado.page.html',
@@ -30,7 +31,8 @@ export class AltaEmpleadoPage implements OnInit {
   constructor(
     private fromBuilder: FormBuilder,
     private router: Router ,
-    private imagenSrv:ImagenesService
+    private imagenSrv:ImagenesService,
+    private utilidadesSrv:UtilidadesService
   ) {
     this.email = '';
     this.clave = '';
@@ -50,6 +52,11 @@ export class AltaEmpleadoPage implements OnInit {
 
 
   aceptar() {   
+    this.utilidadesSrv.mostrartToast('Aceptado');
+    this.utilidadesSrv.vibracionError(); 
+    setTimeout(() => {
+      this.utilidadesSrv.reproducirSonidoInicio();
+    }, 5000);
   /*  let imagenesDoc = {
       'usuario': this.authSrv.getCurrentUserLS_email(),
       imagenes: this.paths, 
@@ -86,6 +93,7 @@ export class AltaEmpleadoPage implements OnInit {
 
     }
     ).catch((err) => { 
+
       console.log("Error addPhotoToGallery", err);
     })
   }
@@ -96,7 +104,8 @@ export class AltaEmpleadoPage implements OnInit {
     const filePath = this.getFilePath();
 
     const uploadTask = this.imagenSrv.saveFile(blob, filePath);
-
+    this.utilidadesSrv.vibracionError();
+    this.utilidadesSrv.mostrartToast('Error al cargar la imagen.')
    /* uploadTask.then(async res => {
       const downloadURL = await res.ref.getDownloadURL();
       if (downloadURL.length > 0) {
@@ -125,6 +134,8 @@ export class AltaEmpleadoPage implements OnInit {
       }
       return false;
     } catch (error) {
+      this.utilidadesSrv.vibracionError();
+      this.utilidadesSrv.mostrartToast('No tiene permisos.')
       console.log(error);
     }
   }
@@ -159,6 +170,8 @@ export class AltaEmpleadoPage implements OnInit {
       }
     } catch (error) {
       console.log(error);
+      this.utilidadesSrv.vibracionError();
+      this.utilidadesSrv.mostrartToast('Error al escanear el documento.')
       document.querySelector('body').classList.remove('scanner-active');
       this.stopScan();
     } 
