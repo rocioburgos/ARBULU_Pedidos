@@ -11,6 +11,14 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'alta-empleado',
+    loadChildren: () => import('./alta-empleado/alta-empleado.module').then( m => m.AltaEmpleadoPageModule)
+  },
+  {
+    path: 'alta-producto',
+    loadChildren: () => import('./alta-producto/alta-producto.module').then( m => m.AltaProductoPageModule)
+  },
 ];
 
 @NgModule({
