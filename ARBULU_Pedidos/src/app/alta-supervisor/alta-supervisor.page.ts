@@ -29,6 +29,7 @@ export class AltaSupervisorPage implements OnInit {
   nombre='';
   apellido='';
   dni='';
+  cuil='';
 
   constructor(private router:Router, 
     private firestore:FirestoreService, 
