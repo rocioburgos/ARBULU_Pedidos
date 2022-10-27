@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'splash',
     pathMatch: 'full'
   },
   {
@@ -18,10 +18,15 @@ const routes: Routes = [
   {
     path: 'alta-producto',
     loadChildren: () => import('./alta-producto/alta-producto.module').then( m => m.AltaProductoPageModule)
-  },  {
+  },
+  {
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
+  },  {
+    path: 'alta-supervisor',
+    loadChildren: () => import('./alta-supervisor/alta-supervisor.module').then( m => m.AltaSupervisorPageModule)
   },
+
 
 ];
 

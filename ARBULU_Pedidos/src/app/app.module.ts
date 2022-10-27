@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
+import { FirebaseModule } from './modules/firebase/firebase.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -15,7 +16,8 @@ import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
     IonicModule.forRoot(), 
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FirebaseModule
   ],
   providers: [Vibration,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';  
-import { Photo } from '@capacitor/camera';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { Router } from '@angular/router';
+import { FirestoreService } from '../servicios/firestore.service';
 import { ImagenesService } from '../servicios/imagenes.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { Photo } from '@capacitor/camera';
 
 @Component({
-  selector: 'app-alta-empleado',
-  templateUrl: './alta-empleado.page.html',
-  styleUrls: ['./alta-empleado.page.scss'],
+  selector: 'app-alta-supervisor',
+  templateUrl: './alta-supervisor.page.html',
+  styleUrls: ['./alta-supervisor.page.scss'],
 })
-export class AltaEmpleadoPage implements OnInit {
-
+export class AltaSupervisorPage implements OnInit {
   email: string;
   clave: string;
   show_error: boolean = false; //
   descripcion_error: string = '';
-  public altaForm: FormGroup; 
+  altaForm: FormGroup; 
   habilitar:boolean;
   path:string='';
 
@@ -29,27 +29,26 @@ export class AltaEmpleadoPage implements OnInit {
   nombre='';
   apellido='';
   dni='';
-  constructor(
-    private fromBuilder: FormBuilder,
-    private router: Router ,
-    private imagenSrv:ImagenesService,
-    private utilidadesSrv:UtilidadesService
-  ) {
-    this.email = '';
-    this.clave = '';
-  }
 
-  ngOnInit() {
+  constructor(private router:Router, 
+    private firestore:FirestoreService, 
+    private utilidadesSrv:UtilidadesService,
+    private fb:FormBuilder,
+    private imagenSrv:ImagenesService) {
+      this.altaForm = this.fb.group({
+        'email':['',[Validators.required, Validators.email]],
+        'password':['', Validators.required],
+        'nombre':['', Validators.required],
+        'apellido':['', Validators.required],
+        'dni':['',[Validators.required, Validators.min(1000000), Validators.max(99999999)]],
+        'cuil':['',[Validators.required, Validators.min(10000000000), Validators.max(99999999999)]],
+        'tipo':['', Validators.required]
+      });
+      this.email = '';
+      this.clave = '';
+     }
 
-    this.altaForm = this.fromBuilder.group({
-      nombre: ['', Validators.compose([Validators.required])],
-      apellido: ['', Validators.compose([Validators.required])],
-      dni: ['', Validators.compose([Validators.required, Validators.min(10000000), Validators.max(99999999)])],
-      cuil: ['', Validators.compose([Validators.required, Validators.min(10000000000), Validators.max(99999999999)])],
-      //foto
-      perfil: ['', Validators.compose([Validators.required])]
-    });
-  }
+  ngOnInit() {}
 
 
   aceptar() {   
@@ -195,4 +194,24 @@ export class AltaEmpleadoPage implements OnInit {
     BarcodeScanner.prepare();
   }
 
+
+  Errores(error:any)
+  {
+    if(error.code == 'auth/email-already-in-use')
+      {
+        this.utilidadesSrv.errorToast('El correo ya está en uso.');
+      }
+      else if(error.code == 'auth/missing-email' || error.code == 'auth/internal-error')
+      {
+        this.utilidadesSrv.errorToast('No pueden quedar campos vacíos');
+      }
+      else if(error.code == 'auth/weak-password')
+      {
+        this.utilidadesSrv.errorToast('La contraseña debe tener al menos 8 caracteres');
+      }
+      else
+      {
+        this.utilidadesSrv.errorToast('Mail o contraseña invalidos');
+      }
+    }
 }

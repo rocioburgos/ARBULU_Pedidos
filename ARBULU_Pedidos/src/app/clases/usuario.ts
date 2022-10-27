@@ -7,6 +7,8 @@ export class Usuario {
         foto: string;
         perfil: string;
         uid:string;
+        tipo:eUsuario;
+        tipoEmpleado:eEmpleado;
         
         constructor(){
             this.nombre= '';
@@ -17,4 +19,18 @@ export class Usuario {
             this.perfil= '';
             this.uid= '';
         }
+}
+
+export enum eUsuario{
+    dueño,
+    supervisor,
+    empleado,
+    cliente,
+}
+
+export enum eEmpleado{
+    metre,
+    mozo,
+    cocinero,
+    bartender
 }

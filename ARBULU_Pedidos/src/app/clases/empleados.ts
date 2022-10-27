@@ -1,4 +1,5 @@
 export class Empleados {
+    email: string;
     nombre: string;
     apellido: string;
     DNI: number;

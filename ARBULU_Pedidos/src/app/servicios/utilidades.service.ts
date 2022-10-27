@@ -45,6 +45,38 @@ export class UtilidadesService {
       toast.present();
     }
 
+    async successToast(message:string, durationMS?:number) {
+      const toast = await this.toastController.create({
+        message: message,
+        duration: typeof(durationMS) !== 'undefined'? durationMS : 3000,
+        position: 'bottom',
+        color: 'success',
+      });
+  
+      toast.present();
+    }
+  
+    async warningToast(message:string, durationMS?:number) {
+      const toast = await this.toastController.create({
+        message: message,
+        duration: typeof(durationMS) !== 'undefined' ? durationMS : 3000,
+        position: 'bottom',
+        color: 'warning',
+      });
+  
+      toast.present();
+    }
+
+    async errorToast(message:string, durationMS?:number) {
+      const toast = await this.toastController.create({
+        message: message,
+        duration: typeof(durationMS) !== 'undefined' ? durationMS : 3000,
+        position: 'bottom',
+        color: 'error',
+      });
+  
+      toast.present();
+    }
 
     //Spinner
 
