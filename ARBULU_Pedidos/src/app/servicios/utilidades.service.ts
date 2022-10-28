@@ -72,7 +72,7 @@ export class UtilidadesService {
         message: message,
         duration: typeof(durationMS) !== 'undefined' ? durationMS : 3000,
         position: 'bottom',
-        color: 'error',
+        color: 'danger',
       });
   
       toast.present();

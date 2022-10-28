@@ -1,0 +1,80 @@
+
+<form class="p-3 mt-3" [formGroup]="formulario" (ngSubmit)="onLogin()">
+  <div class="form">
+    <div class="username">
+      <input type="text" placeholder="CORREO ELECTRONICO" class="formControl" formControlName="Email"/>
+      <span class="spin text-danger" color="danger"
+          *ngIf="formulario.get('Email')?.hasError('required') && formulario.get('Email')?.touched">El Correo es
+          requerido.</span>
+        <span class="spin text-danger" color="danger"
+          *ngIf="formulario.get('Email')?.hasError('pattern') && formulario.get('Email')?.touched">El Correo no tiene el
+          formato correcto</span>
+    </div>
+    <div class="password">
+      <input type="password" placeholder="CONTRASEÑA" class="formControl" formControlName="Password"/>
+      <span class="spin text-danger" color="danger"
+        *ngIf="formulario.get('Password')?.hasError('required') && formulario.get('Password')?.touched">La Contraseña
+        es Requerida</span>
+      <span class="spin text-danger" color="danger"
+        *ngIf="formulario.get('Password')?.hasError('minLength') && formulario.get('Password')?.touched">La Contraseña
+        debe contener al menos 6 caracteres</span>
+    </div>
+    <div class="login">
+      <button type="submit" class="log">INGRESAR</button>
+    </div>
+    <div class="registro">
+      <button type="submit" [routerLink]="['/alta-clientes']" class="logRegistro">REGISTRAR</button>
+    </div>
+  </div>
+</form>
+<!-- <ion-fab vertical="end" horizontal="bottom" style="margin-top: 150px; margin-left: 50px;">
+  <ion-fab-button><ion-icon name="add-circle-outline"></ion-icon>
+  </ion-fab-button> -->
+  <!-- <ion-fab-list side="top">
+    <ion-fab-button>
+      <ion-icon name="logo-facebook"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button>
+      <ion-icon name="logo-twitter"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button>
+      <ion-icon name="logo-youtube"></ion-icon>
+    </ion-fab-button>
+  </ion-fab-list> 
+
+  <ion-fab-list side="end">
+    <ion-fab-button color="primary" size="large" (click)="LoginUsuarioUno()">
+      Usuario 1 
+    </ion-fab-button>
+    <ion-fab-button color="secondary" (click)="LoginUsuarioDos()">
+      Usuario 2
+    </ion-fab-button>
+    <ion-fab-button color="danger" (click)="LoginUsuarioTres()">
+      Usuario 3
+    </ion-fab-button>
+  </ion-fab-list>-->
+
+  <!-- <ion-fab-list side="bottom">
+    <ion-fab-button>
+      <ion-icon name="logo-github"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button>
+      <ion-icon name="logo-javascript"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button>
+      <ion-icon name="logo-angular"></ion-icon>
+    </ion-fab-button>
+  </ion-fab-list> -->
+
+  <!-- <ion-fab-list side="start">
+    <ion-fab-button>
+      <ion-icon name="logo-vimeo"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button>
+      <ion-icon name="logo-chrome"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button>
+      <ion-icon name="logo-react"></ion-icon>
+    </ion-fab-button>
+  </ion-fab-list> 
+</ion-fab>-->
