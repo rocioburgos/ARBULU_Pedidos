@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core'; 
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Camera, CameraResultType, Photo, CameraSource } from '@capacitor/camera';
 import { Observable } from 'rxjs'; 
 
@@ -9,14 +11,13 @@ export class ImagenesService {
   items: Observable<any[]>;
   
 
-  /*constructor(
+  constructor(
     private storage: AngularFireStorage,
-    private afStore: AngularFirestore) { }*/
-    constructor(){}
+    private afStore: AngularFirestore) { }
+
 
   saveFile(file: Blob, filePath: string) {
-
-   // return this.storage.upload(filePath, file);
+    return this.storage.upload(filePath, file);
   }
 
   public async addNewToGallery(): Promise<Photo> {

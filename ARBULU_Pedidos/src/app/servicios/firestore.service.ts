@@ -5,6 +5,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Mesa } from '../clases/mesa';
 import { Usuario } from '../clases/usuario';
 
 @Injectable({
@@ -12,13 +13,19 @@ import { Usuario } from '../clases/usuario';
 })
 export class FirestoreService {
   private usuariosRef: AngularFirestoreCollection;
+  private mesasRef: AngularFirestoreCollection;
 
   constructor(private db: AngularFirestore) {
     this.usuariosRef = this.db.collection('usuarios');
+    this.mesasRef = this.db.collection('mesas');
   }
 
   public crearUsuario(usuario: Usuario) {
     return this.usuariosRef.add({ ...usuario });
+  }
+
+  public crearMesa(mesa: Mesa) {
+    return this.mesasRef.add({ ...mesa });
   }
 
   public obtenerUsuario() {

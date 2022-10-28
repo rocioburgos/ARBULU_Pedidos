@@ -45,9 +45,6 @@
       <small
       *ngIf="altaForm.get('nombre').hasError('required') && (altaForm.get('nombre').dirty || altaForm.get('nombre').touched)"
       style="color: var(--ion-color-danger)">Por favor, ingrese el nombre.</small>
- 
-      <br>
-      <br>
       <ion-item>
         <ion-label>Apellido </ion-label>
         <ion-input type="text" [(ngModel)]='usuario.apellido' formControlName="apellido">
@@ -58,9 +55,6 @@
       style="color: var(--ion-color-danger)"
       [ngClass]="altaForm.get('apellido').hasError('required') && altaForm.get('apellido').touched ? 'visible' : 'hidden'">Por
       favor, ingrese un apellido.</small>
-   
-      <br>
-      <br>
       <ion-item>
         <ion-label>DNI</ion-label>
         <ion-input type="number" [(ngModel)]='usuario.dni' formControlName="dni" >
@@ -80,11 +74,7 @@
       *ngIf="altaForm.get('dni').hasError('min') && (altaForm.get('dni').dirty || altaForm.get('dni').touched)"
      
       style="color: var(--ion-color-danger)">El dni debe contener al menos 8 caracteres.</small>
-      <br>
-      <br>
-      <br>
 
-      <br>
       <ion-item>
         <ion-label>CUIL</ion-label>
         <ion-input type="number" [(ngModel)]='usuario.cuil' formControlName="cuil" >
@@ -102,14 +92,14 @@
       <small
       *ngIf="altaForm.get('cuil').hasError('min') && (altaForm.get('cuil').dirty || altaForm.get('cuil').touched)" 
       style="color: var(--ion-color-danger)">El cuil debe contener al menos 11 caracteres.</small>
-
-      <br> 
+ 
+      <div style="margin-top:5px">
       <ion-label>Tipo de empleado</ion-label>
       <ion-list>
         <ion-radio-group formControlName="perfil">
           <ion-item>
             <ion-label>Dueño</ion-label>
-            <ion-radio color='warning' slot="start" value="dueño"></ion-radio>
+            <ion-radio color='success' slot="start" value="dueño"></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>Supervisor</ion-label>
@@ -117,7 +107,7 @@
           </ion-item> 
         </ion-radio-group>
       </ion-list>
-
+    </div>
 
       <ion-button  expand="full" color="success" [disabled]="!altaForm.valid && path=='' " type="submit" (click)='aceptar()'>
         <ion-icon name="arrow-forward-circle-outline"></ion-icon>

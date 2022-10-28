@@ -43,7 +43,6 @@ export class AltaSupervisorPage implements OnInit {
         'apellido':['', Validators.required],
         'dni':['',[Validators.required, Validators.min(1000000), Validators.max(99999999)]],
         'cuil':['',[Validators.required, Validators.min(10000000000), Validators.max(99999999999)]],
-        'tipo':['', Validators.required],
         'perfil':['', Validators.required]
       });
       this.usuario = new Usuario();
@@ -101,20 +100,17 @@ export class AltaSupervisorPage implements OnInit {
     const filePath = this.getFilePath();
 
     const uploadTask = this.imagenSrv.saveFile(blob, filePath);
-    this.utilidadesSrv.vibracionError();
-    this.utilidadesSrv.mostrartToast('Error al cargar la imagen.')
-   /* uploadTask.then(async res => {
+    
+    uploadTask.then(async res => {
       const downloadURL = await res.ref.getDownloadURL();
       if (downloadURL.length > 0) {
-        this.path = downloadURL;
- 
-      } else {
-        console.log("IMAGEN NO CORRECTA  ");
+        console.log("URL  CORRECTO- i_IMG++");
+        this.usuario.foto = downloadURL;
       }
     })
       .catch((err) => {
         console.log("Error al subbir la imagen: ", err);
-      });*/
+      });
   }
 
   getFilePath() {
