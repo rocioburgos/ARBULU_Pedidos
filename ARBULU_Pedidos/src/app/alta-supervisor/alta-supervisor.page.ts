@@ -6,6 +6,8 @@ import { ImagenesService } from '../servicios/imagenes.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { Photo } from '@capacitor/camera';
+import { eUsuario, Usuario } from '../clases/usuario';
+import { AuthService } from '../servicios/auth.service';
 
 @Component({
   selector: 'app-alta-supervisor',
@@ -13,7 +15,8 @@ import { Photo } from '@capacitor/camera';
   styleUrls: ['./alta-supervisor.page.scss'],
 })
 export class AltaSupervisorPage implements OnInit {
-  email: string;
+  usuario:Usuario;
+  
   clave: string;
   show_error: boolean = false; //
   descripcion_error: string = '';
@@ -26,59 +29,53 @@ export class AltaSupervisorPage implements OnInit {
   scan_visibility = 'hidden';
   scanActive = false;
   dniData:any;
-  nombre='';
-  apellido='';
-  dni='';
-  cuil='';
 
   constructor(private router:Router, 
     private firestore:FirestoreService, 
     private utilidadesSrv:UtilidadesService,
     private fb:FormBuilder,
-    private imagenSrv:ImagenesService) {
+    private imagenSrv:ImagenesService,
+    private auth:AuthService) {
       this.altaForm = this.fb.group({
         'email':['',[Validators.required, Validators.email]],
-        'password':['', Validators.required],
+        'password':['', [Validators.required, Validators.minLength(8)]],
         'nombre':['', Validators.required],
         'apellido':['', Validators.required],
         'dni':['',[Validators.required, Validators.min(1000000), Validators.max(99999999)]],
         'cuil':['',[Validators.required, Validators.min(10000000000), Validators.max(99999999999)]],
-        'tipo':['', Validators.required]
+        'tipo':['', Validators.required],
+        'perfil':['', Validators.required]
       });
-      this.email = '';
+      this.usuario = new Usuario();
       this.clave = '';
      }
 
   ngOnInit() {}
 
 
-  aceptar() {   
-    this.utilidadesSrv.mostrartToast('Aceptado');
-    this.utilidadesSrv.vibracionError(); 
-    setTimeout(() => {
-      this.utilidadesSrv.reproducirSonidoInicio();
-    }, 5000);
-  /*  let imagenesDoc = {
-      'usuario': this.authSrv.getCurrentUserLS_email(),
-      imagenes: this.paths, 
-      fullDate: this.horario(),
-      tipo: tipo.tipo,
-      usuarios_like:[],
-      cantidad_likes: 0
-    };
-    this.imagenSrv.saveDoc(imagenesDoc).then((data) => {
+  aceptar() {
+    this.altaForm.get('perfil').value == 'dueño' ? this.usuario.tipo = eUsuario.dueño : this.usuario.tipo = eUsuario.supervisor;
 
-      tipo.tipo == 'linda' ? this.router.navigate(['cosaslindas']) : this.router.navigate(['cosasfeas']);
-    
-    }).catch(err => {
-      this.spinner.hide()
-      this.mostrarError = true;
-      console.log(err)
-    }).finally(()=>{
-      this.spinner.hide()
-    });*/
+    this.auth.register(this.usuario.email, this.clave).then((userCredential)=>{
+      this.firestore.crearUsuario(this.usuario).then((ok)=>{
+        this.usuario.uid = ok.id;
+        this.firestore.update(this.usuario.uid, {id: this.usuario.uid}).then((ok)=>{
+          this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
+          this.navigateTo('home');
+        })
+      }).catch((err)=>{
+        this.utilidadesSrv.errorToast(err);
+      })
+    }).catch((err)=>{
+      this.Errores(err);
+    })
   }
 
+  navigateTo(url: string) {
+    setTimeout(() => {
+      this.router.navigateByUrl(url);
+    }, 2000);
+  }
 
   tomarFoto() {
     this.addPhotoToGallery();
@@ -94,8 +91,7 @@ export class AltaSupervisorPage implements OnInit {
 
     }
     ).catch((err) => { 
-
-      console.log("Error addPhotoToGallery", err);
+      this.utilidadesSrv.errorToast("Error al subir imagen");
     })
   }
 
@@ -124,8 +120,6 @@ export class AltaSupervisorPage implements OnInit {
   getFilePath() {
     return new Date().getTime() + '-test';
   }
-
-
 
   async checkPermission() {
     try {
@@ -163,22 +157,25 @@ export class AltaSupervisorPage implements OnInit {
 
       if (result?.hasContent) { 
         this.dniData = result.content.split('@'); 
-        this.nombre= this.dniData[2];
-        this.apellido= this.dniData[1];
-        this.dni= this.dniData[4];
+        
+        let digitosCUIL = this.dniData[8];
+        let cuil = digitosCUIL[0] + digitosCUIL[1] + this.dniData[4] + digitosCUIL[2];
+
+        this.usuario.dni = this.dniData[4].trim();
+        this.usuario.nombre = this.dniData[2].trim();
+        this.usuario.apellido = this.dniData[1].trim();
+        this.usuario.cuil = cuil.trim();
+        
         document.querySelector('body').classList.remove('scanner-active');
         this.scanActive = false; 
       }
     } catch (error) {
-      console.log(error);
       this.utilidadesSrv.vibracionError();
-      this.utilidadesSrv.mostrartToast('Error al escanear el documento.')
+      this.utilidadesSrv.errorToast('Error al escanear el documento.')
       document.querySelector('body').classList.remove('scanner-active');
       this.stopScan();
     } 
   }
-
- 
 
   stopScan() {
     setTimeout(() => { 
@@ -194,7 +191,6 @@ export class AltaSupervisorPage implements OnInit {
   ngAfterViewInit(): void {
     BarcodeScanner.prepare();
   }
-
 
   Errores(error:any)
   {
@@ -214,5 +210,5 @@ export class AltaSupervisorPage implements OnInit {
       {
         this.utilidadesSrv.errorToast('Mail o contraseña invalidos');
       }
-    }
+  }
 }

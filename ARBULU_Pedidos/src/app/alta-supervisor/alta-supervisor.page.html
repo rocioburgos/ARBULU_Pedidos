@@ -20,8 +20,26 @@
     <br>
     <form [formGroup]="altaForm">
       <ion-item>
+        <ion-label>Mail</ion-label>
+        <ion-input type="text" [(ngModel)]='usuario.email' formControlName="email" >
+        </ion-input> 
+      </ion-item> 
+      <small
+      *ngIf="altaForm.get('email').hasError('required') && (altaForm.get('email').dirty || altaForm.get('email').touched)"
+      style="color: var(--ion-color-danger)">Por favor, ingrese el nombre.</small>
+      
+      <ion-item>
+        <ion-label>Contraseña</ion-label>
+        <ion-input type="password" [(ngModel)]='clave' formControlName="password" >
+        </ion-input> 
+      </ion-item> 
+      <small
+      *ngIf="altaForm.get('password').hasError('required') && (altaForm.get('password').dirty || altaForm.get('password').touched)"
+      style="color: var(--ion-color-danger)">Por favor, ingrese el nombre.</small>
+
+      <ion-item>
         <ion-label>Nombre</ion-label>
-        <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre" >
+        <ion-input type="text" [(ngModel)]='usuario.nombre' formControlName="nombre" >
         </ion-input> 
       </ion-item> 
       <small
@@ -32,7 +50,7 @@
       <br>
       <ion-item>
         <ion-label>Apellido </ion-label>
-        <ion-input type="text" [(ngModel)]='apellido' formControlName="apellido">
+        <ion-input type="text" [(ngModel)]='usuario.apellido' formControlName="apellido">
         </ion-input> 
       </ion-item>
       <small
@@ -45,7 +63,7 @@
       <br>
       <ion-item>
         <ion-label>DNI</ion-label>
-        <ion-input type="number" [(ngModel)]='dni' formControlName="dni" >
+        <ion-input type="number" [(ngModel)]='usuario.dni' formControlName="dni" >
         </ion-input> 
       </ion-item>
       <small
@@ -62,12 +80,14 @@
       *ngIf="altaForm.get('dni').hasError('min') && (altaForm.get('dni').dirty || altaForm.get('dni').touched)"
      
       style="color: var(--ion-color-danger)">El dni debe contener al menos 8 caracteres.</small>
-      <br><br><br>
+      <br>
+      <br>
+      <br>
 
       <br>
       <ion-item>
         <ion-label>CUIL</ion-label>
-        <ion-input type="number" [(ngModel)]='cuil' formControlName="cuil" >
+        <ion-input type="number" [(ngModel)]='usuario.cuil' formControlName="cuil" >
         </ion-input> 
       </ion-item>
       <small
@@ -86,25 +106,14 @@
       <br> 
       <ion-label>Tipo de empleado</ion-label>
       <ion-list>
-        <ion-radio-group   formControlName="perfil">
+        <ion-radio-group formControlName="perfil">
           <ion-item>
-            <ion-label>Metre</ion-label>
-            <ion-radio color='warning' slot="start" value="metre"></ion-radio>
+            <ion-label>Dueño</ion-label>
+            <ion-radio color='warning' slot="start" value="dueño"></ion-radio>
           </ion-item>
-
           <ion-item>
-            <ion-label>Mozo</ion-label>
-            <ion-radio color='success' slot="start" value="mozo" ></ion-radio>
-          </ion-item> 
-
-          <ion-item>
-            <ion-label>Cocinero</ion-label>
-            <ion-radio color='warning' slot="start" value="cocinero"  ></ion-radio>
-          </ion-item>
-
-          <ion-item>
-            <ion-label>Bartender</ion-label>
-            <ion-radio color='success' slot="start"value="bartender" ></ion-radio>
+            <ion-label>Supervisor</ion-label>
+            <ion-radio color='success' slot="start" value="supervisor"></ion-radio>
           </ion-item> 
         </ion-radio-group>
       </ion-list>
