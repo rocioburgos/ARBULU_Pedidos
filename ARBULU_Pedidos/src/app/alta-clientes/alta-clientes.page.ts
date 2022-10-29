@@ -1,64 +1,83 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FirestoreService } from '../servicios/firestore.service';
-import { ImagenesService } from '../servicios/imagenes.service';
-import { UtilidadesService } from '../servicios/utilidades.service';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { Photo } from '@capacitor/camera';
 import { eUsuario, Usuario } from '../clases/usuario';
 import { AuthService } from '../servicios/auth.service';
+import { FirestoreService } from '../servicios/firestore.service';
+import { ImagenesService } from '../servicios/imagenes.service';
+import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
-  selector: 'app-alta-supervisor',
-  templateUrl: './alta-supervisor.page.html',
-  styleUrls: ['./alta-supervisor.page.scss'],
+  selector: 'app-alta-clientes',
+  templateUrl: './alta-clientes.page.html',
+  styleUrls: ['./alta-clientes.page.scss'],
 })
-export class AltaSupervisorPage implements OnInit {
-  usuario:Usuario;
-  
+export class AltaClientesPage implements OnInit {
+
+  usuario: Usuario;
+  email: string;
   clave: string;
   show_error: boolean = false; //
   descripcion_error: string = '';
-  altaForm: FormGroup; 
+  public altaForm: FormGroup; 
+  public altaFormAnonimo: FormGroup; 
   habilitar:boolean;
   path:string='';
-
+  anonimo:boolean = false;
   scannnedResult: any;
   content_visibility = '';
   scan_visibility = 'hidden';
   scanActive = false;
   dniData:any;
-
-  constructor(private router:Router, 
-    private firestore:FirestoreService, 
-    private utilidadesSrv:UtilidadesService,
-    private fb:FormBuilder,
+  nombre='';
+  apellido='';
+  dni='';
+  
+  constructor(
+    private fromBuilder: FormBuilder,
+    private router: Router ,
     private imagenSrv:ImagenesService,
-    private auth:AuthService) {
-      this.altaForm = this.fb.group({
-        'email':['',[Validators.required, Validators.email]],
-        'password':['', [Validators.required, Validators.minLength(8)]],
-        'nombre':['', Validators.required],
-        'apellido':['', Validators.required],
-        'dni':['',[Validators.required, Validators.min(1000000), Validators.max(99999999)]],
-        'cuil':['',[Validators.required, Validators.min(10000000000), Validators.max(99999999999)]],
-        'perfil':['', Validators.required]
-      });
-      this.usuario = new Usuario();
-      this.clave = '';
-     }
+    private utilidadesSrv:UtilidadesService,
+    private firestoreSvc: FirestoreService,
+    private authSvc: AuthService
+  ) {
+    this.email = '';
+    this.clave = '';
+    this.usuario = new Usuario();
 
-  ngOnInit() {}
+  }
+
+  ngOnInit() {
+
+    this.altaForm = this.fromBuilder.group({
+      nombre: ['', Validators.compose([Validators.required])],
+      apellido: ['', Validators.compose([Validators.required])],
+      dni: ['', Validators.compose([Validators.required, Validators.min(10000000), Validators.max(99999999)])],
+      email: ["", [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      clave: ["", Validators.required]
+    });
+
+    this.altaFormAnonimo = this.fromBuilder.group({
+      'nombre': ['', Validators.required]
+    });
+  }
 
 
-  aceptar() {
-    this.altaForm.get('perfil').value == 'dueño' ? this.usuario.tipo = eUsuario.dueño : this.usuario.tipo = eUsuario.supervisor;
+  aceptar() {     
+    
+    this.usuario.email = this.altaForm.value.email;
+    this.usuario.nombre = this.altaForm.value.nombre;
+    this.usuario.apellido = this.altaForm.value.apellido;
+    this.usuario.dni = this.altaForm.value.dni;
+    this.usuario.tipo = eUsuario.cliente;
+    this.usuario.nombre = this.altaForm.value.nombre;
 
-    this.auth.signIn(this.usuario.email, this.clave).then((userCredential)=>{
-      this.firestore.crearUsuario(this.usuario).then((ok)=>{
+    this.authSvc.Register(this.usuario.email, this.clave).then((userCredential)=>{
+      this.firestoreSvc.crearUsuario(this.usuario).then((ok)=>{
         this.usuario.uid = ok.id;
-        this.firestore.update(this.usuario.uid, {id: this.usuario.uid}).then((ok)=>{
+        this.firestoreSvc.update(this.usuario.uid, {uid: this.usuario.uid}).then((ok)=>{
           this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
           this.navigateTo('home');
         })
@@ -68,13 +87,24 @@ export class AltaSupervisorPage implements OnInit {
     }).catch((err)=>{
       this.Errores(err);
     })
+
+
+    
+    this.utilidadesSrv.mostrartToast('Aceptado');
+    this.utilidadesSrv.vibracionError(); 
+    setTimeout(() => {
+      this.utilidadesSrv.reproducirSonidoInicio();
+    }, 5000);
+
   }
+
 
   navigateTo(url: string) {
     setTimeout(() => {
       this.router.navigateByUrl(url);
     }, 2000);
   }
+
 
   tomarFoto() {
     this.addPhotoToGallery();
@@ -90,7 +120,8 @@ export class AltaSupervisorPage implements OnInit {
 
     }
     ).catch((err) => { 
-      this.utilidadesSrv.errorToast("Error al subir imagen");
+
+      console.log("Error addPhotoToGallery", err);
     })
   }
 
@@ -105,7 +136,7 @@ export class AltaSupervisorPage implements OnInit {
       const downloadURL = await res.ref.getDownloadURL();
       if (downloadURL.length > 0) {
         console.log("URL  CORRECTO- i_IMG++");
-        this.usuario.foto = downloadURL;
+        return this.usuario.foto = downloadURL;
       }
     })
       .catch((err) => {
@@ -116,6 +147,8 @@ export class AltaSupervisorPage implements OnInit {
   getFilePath() {
     return new Date().getTime() + '-test';
   }
+
+
 
   async checkPermission() {
     try {
@@ -153,25 +186,22 @@ export class AltaSupervisorPage implements OnInit {
 
       if (result?.hasContent) { 
         this.dniData = result.content.split('@'); 
-        
-        let digitosCUIL = this.dniData[8];
-        let cuil = digitosCUIL[0] + digitosCUIL[1] + this.dniData[4] + digitosCUIL[2];
-
-        this.usuario.dni = this.dniData[4].trim();
-        this.usuario.nombre = this.dniData[2].trim();
-        this.usuario.apellido = this.dniData[1].trim();
-        this.usuario.cuil = cuil.trim();
-        
+        this.nombre= this.dniData[2];
+        this.apellido= this.dniData[1];
+        this.dni= this.dniData[4];
         document.querySelector('body').classList.remove('scanner-active');
         this.scanActive = false; 
       }
     } catch (error) {
+      console.log(error);
       this.utilidadesSrv.vibracionError();
-      this.utilidadesSrv.errorToast('Error al escanear el documento.')
+      this.utilidadesSrv.mostrartToast('Error al escanear el documento.')
       document.querySelector('body').classList.remove('scanner-active');
       this.stopScan();
     } 
   }
+
+ 
 
   stopScan() {
     setTimeout(() => { 
@@ -207,4 +237,6 @@ export class AltaSupervisorPage implements OnInit {
         this.utilidadesSrv.errorToast('Mail o contraseña invalidos');
       }
   }
+
+ 
 }
