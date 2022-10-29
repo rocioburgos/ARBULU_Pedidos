@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';  
+import { Router } from '@angular/router';
 import { Photo } from '@capacitor/camera';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ImagenesService } from '../servicios/imagenes.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 import { eEmpleado, eUsuario, Usuario } from '../clases/usuario';
 import { FirestoreService } from '../servicios/firestore.service';
+import { AuthService } from '../servicios/auth.service';
 
 @Component({
   selector: 'app-alta-empleado',
@@ -19,24 +20,26 @@ export class AltaEmpleadoPage implements OnInit {
   clave: string;
   show_error: boolean = false; //
   descripcion_error: string = '';
-  public altaForm: FormGroup; 
-  habilitar:boolean;
-  path:string='./../../assets/sacarfoto.png';
+  public altaForm: FormGroup;
+  habilitar: boolean;
+  path: string = './../../assets/sacarfoto.png';
 
   scannnedResult: any;
   content_visibility = '';
   scan_visibility = 'hidden';
   scanActive = false;
-  dniData:any;
-  nombre='';
-  apellido='';
-  dni='';
+  dniData: any;
+  nombre = '';
+  apellido = '';
+  dni = '';
   constructor(
     private fromBuilder: FormBuilder,
-    private router: Router ,
-    private imagenSrv:ImagenesService,
-    private utilidadesSrv:UtilidadesService,
-    private fireSrv:FirestoreService
+    private router: Router,
+    private imagenSrv: ImagenesService,
+    private utilidadesSrv: UtilidadesService,
+    private fireSrv: FirestoreService,
+    private utilSrv: UtilidadesService,
+    private authSvc: AuthService
   ) {
     this.email = '';
     this.clave = '';
@@ -57,33 +60,47 @@ export class AltaEmpleadoPage implements OnInit {
   }
 
 
-  aceptar() {    
-   let imagenesDoc = {
+  aceptar() {
+    let imagenesDoc = {
       'usuario': 'admin@gmail.com',// this.authSrv.getCurrentUserLS_email(),
-      imagen: this.path 
+      imagen: this.path
     };
 
-    let empleadoNuevo:Usuario= new Usuario();
-    empleadoNuevo.CUIL= this.altaForm.get('cuil').value;
-    empleadoNuevo.DNI= this.altaForm.get('dni').value;
-    empleadoNuevo.apellido= this.altaForm.get('apellido').value;
-    empleadoNuevo.email= this.altaForm.get('email').value;
+    let empleadoNuevo: Usuario = new Usuario();
+    empleadoNuevo.cuil = this.altaForm.get('cuil').value;
+    empleadoNuevo.dni = this.altaForm.get('dni').value;
+    empleadoNuevo.apellido = this.altaForm.get('apellido').value;
+    empleadoNuevo.email = this.altaForm.get('email').value;
     empleadoNuevo.foto = this.path;
-    empleadoNuevo.nombre=  this.altaForm.get('nombre').value;
-    empleadoNuevo.tipo = eUsuario.empleado ;
-    empleadoNuevo.tipoEmpleado =this.altaForm.get('perfil').value;
+    empleadoNuevo.nombre = this.altaForm.get('nombre').value;
+    empleadoNuevo.tipo = eUsuario.empleado;
+    empleadoNuevo.tipoEmpleado = this.altaForm.get('perfil').value;
     empleadoNuevo.uid = '';
-
-    this.fireSrv.crearUsuario(empleadoNuevo).then((data) => {
-
-    console.log(data);
-    }).catch(err => {  
-      console.log(err)
-    }).finally(()=>{ 
-    }); 
+    this.authSvc.Register(empleadoNuevo.email, this.clave).then((userCredential) => {
+      this.fireSrv.crearUsuario(empleadoNuevo).then((data) => {
+        empleadoNuevo.uid = data.id;
+        this.fireSrv.update(empleadoNuevo.uid, { uid: empleadoNuevo.uid }).then((ok) => {
+          this.utilidadesSrv.successToast(empleadoNuevo.tipo + " dado de alta exitosamente.");
+          this.navigateTo('home');
+          console.log(data);
+        }).catch(err => {
+          this.utilSrv.errorToast('Error. No se pudo crear el empleado, intente de nuevo.')
+          console.log(err)
+        }).finally(() => {
+          this.utilSrv.successToast('¡Empleado creado con exito!');
+          this.altaForm = null;
+          this.path = './../../assets/sacarfoto.png';
+        });
+      });
+    })
   }
 
 
+  navigateTo(url: string) {
+      setTimeout(() => {
+      this.router.navigateByUrl(url);
+    }, 2000);
+  }
   tomarFoto() {
     this.addPhotoToGallery();
   }
@@ -94,13 +111,13 @@ export class AltaEmpleadoPage implements OnInit {
 
     //subir la foto
     this.uploadPhoto(photo).then(() => {
-       
+
       setTimeout(() => {
-        this.habilitar = true; 
+        this.habilitar = true;
       }, 5000);
 
     }
-    ).catch((err) => { 
+    ).catch((err) => {
 
       console.log("Error addPhotoToGallery", err);
     })
@@ -112,22 +129,22 @@ export class AltaEmpleadoPage implements OnInit {
     const filePath = this.getFilePath();
 
     //Subir la foto
-    const uploadTask = this.imagenSrv.saveFile(blob, filePath); 
-    
-    
+    const uploadTask = this.imagenSrv.saveFile(blob, filePath);
+
+
     uploadTask.then(async res => {
       //obtener el link de la foto 
       const downloadURL = await res.ref.getDownloadURL();
       if (downloadURL.length > 0) {
         this.path = downloadURL;
- 
+
       } else {
         console.log("IMAGEN NO CORRECTA  ");
       }
     })
       .catch((err) => {
         console.log("Error al subbir la imagen: ", err);
-      }); 
+      });
   }
 
   getFilePath() {
@@ -145,7 +162,7 @@ export class AltaEmpleadoPage implements OnInit {
       return false;
     } catch (error) {
       this.utilidadesSrv.vibracionError();
-      this.utilidadesSrv.mostrartToast('No tiene permisos.')
+      this.utilidadesSrv.errorToast('No tiene permisos.')
       console.log(error);
     }
   }
@@ -170,13 +187,13 @@ export class AltaEmpleadoPage implements OnInit {
       BarcodeScanner.showBackground();
       document.querySelector('body').classList.remove('scanner-active');
 
-      if (result?.hasContent) { 
-        this.dniData = result.content.split('@'); 
-        this.nombre= this.dniData[2];
-        this.apellido= this.dniData[1];
-        this.dni= this.dniData[4];
+      if (result?.hasContent) {
+        this.dniData = result.content.split('@');
+        this.nombre = this.dniData[2];
+        this.apellido = this.dniData[1];
+        this.dni = this.dniData[4];
         document.querySelector('body').classList.remove('scanner-active');
-        this.scanActive = false; 
+        this.scanActive = false;
       }
     } catch (error) {
       console.log(error);
@@ -184,13 +201,13 @@ export class AltaEmpleadoPage implements OnInit {
       this.utilidadesSrv.mostrartToast('Error al escanear el documento.')
       document.querySelector('body').classList.remove('scanner-active');
       this.stopScan();
-    } 
+    }
   }
 
- 
+
 
   stopScan() {
-    setTimeout(() => { 
+    setTimeout(() => {
     }, 3000);
     this.content_visibility = '';
     this.scan_visibility = 'hidden';

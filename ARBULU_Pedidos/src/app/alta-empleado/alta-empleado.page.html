@@ -1,8 +1,9 @@
 <ion-header   [hidden]="scanActive">
   <ion-toolbar>
-    <ion-button color="warning" slot="start" [routerLink]="['/home']">
+    <!--ion-button  slot="start" [routerLink]="['/home']">
       <ion-icon name="arrow-back-outline"></ion-icon>
-    </ion-button>
+    </ion-button--> 
+    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
     <ion-title>Alta empleado</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -109,7 +110,7 @@
       <small
       *ngIf="altaForm.get('cuil').hasError('min') && (altaForm.get('cuil').dirty || altaForm.get('cuil').touched)" 
        >El cuil debe contener al menos 11 caracteres.</small>
- 
+      <br>
       <ion-label>Tipo de empleado</ion-label>
     
         <ion-radio-group   formControlName="perfil">
@@ -133,7 +134,7 @@
             <ion-radio color='success' slot="start"value="bartender" ></ion-radio>
           </ion-item> 
         </ion-radio-group>
-      
+      <br>
       <ion-button  expand="full" color="success" 
       [disabled]="!altaForm.valid || path=='./../../assets/sacarfoto.png'"
        type="submit" (click)='aceptar()'>
