@@ -2,10 +2,9 @@ export class Usuario {
         email: string;
         nombre: string;
         apellido: string;
-        DNI: number;
-        CUIL: number;
+        dni: number;
+        cuil: number;
         foto: string;
-        perfil: string;
         uid:string;
         tipo:eUsuario;
         tipoEmpleado:eEmpleado;
@@ -13,10 +12,9 @@ export class Usuario {
         constructor(){
             this.nombre= '';
             this.apellido= '';
-            this.DNI= 0;
-            this.CUIL= 0;
+            this.dni= 0;
+            this.cuil= 0;
             this.foto= '';
-            this.perfil= '';
             this.uid= '';
         }
 }
