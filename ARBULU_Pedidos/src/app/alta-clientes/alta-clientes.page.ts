@@ -16,6 +16,7 @@ import { UtilidadesService } from '../servicios/utilidades.service';
 })
 export class AltaClientesPage implements OnInit {
 
+  usuario: Usuario;
   email: string;
   clave: string;
   show_error: boolean = false; //
@@ -44,6 +45,8 @@ export class AltaClientesPage implements OnInit {
   ) {
     this.email = '';
     this.clave = '';
+    this.usuario = new Usuario();
+
   }
 
   ngOnInit() {
@@ -64,19 +67,18 @@ export class AltaClientesPage implements OnInit {
 
   aceptar() {     
     
-    var usuario = new Usuario();
-    usuario.email = this.altaForm.value.email;
-    usuario.nombre = this.altaForm.value.nombre;
-    usuario.apellido = this.altaForm.value.apellido;
-    usuario.DNI = this.altaForm.value.dni;
-    usuario.tipo = eUsuario.cliente;
-    usuario.nombre = this.altaForm.value.nombre;
+    this.usuario.email = this.altaForm.value.email;
+    this.usuario.nombre = this.altaForm.value.nombre;
+    this.usuario.apellido = this.altaForm.value.apellido;
+    this.usuario.DNI = this.altaForm.value.dni;
+    this.usuario.tipo = eUsuario.cliente;
+    this.usuario.nombre = this.altaForm.value.nombre;
 
-    this.authSvc.Register(usuario.email, this.clave).then((userCredential)=>{
-      this.firestoreSvc.crearUsuario(usuario).then((ok)=>{
-        usuario.uid = ok.id;
-        this.firestoreSvc.update(usuario.uid, {uid: usuario.uid}).then((ok)=>{
-          this.utilidadesSrv.successToast(usuario.tipo + " dado de alta exitosamente.");
+    this.authSvc.Register(this.usuario.email, this.clave).then((userCredential)=>{
+      this.firestoreSvc.crearUsuario(this.usuario).then((ok)=>{
+        this.usuario.uid = ok.id;
+        this.firestoreSvc.update(this.usuario.uid, {uid: this.usuario.uid}).then((ok)=>{
+          this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
           this.navigateTo('home');
         })
       }).catch((err)=>{
@@ -93,25 +95,7 @@ export class AltaClientesPage implements OnInit {
     setTimeout(() => {
       this.utilidadesSrv.reproducirSonidoInicio();
     }, 5000);
-  /*  let imagenesDoc = {
-      'usuario': this.authSrv.getCurrentUserLS_email(),
-      imagenes: this.paths, 
-      fullDate: this.horario(),
-      tipo: tipo.tipo,
-      usuarios_like:[],
-      cantidad_likes: 0
-    };
-    this.imagenSrv.saveDoc(imagenesDoc).then((data) => {
 
-      tipo.tipo == 'linda' ? this.router.navigate(['cosaslindas']) : this.router.navigate(['cosasfeas']);
-    
-    }).catch(err => {
-      this.spinner.hide()
-      this.mostrarError = true;
-      console.log(err)
-    }).finally(()=>{
-      this.spinner.hide()
-    });*/
   }
 
 
@@ -147,20 +131,17 @@ export class AltaClientesPage implements OnInit {
     const filePath = this.getFilePath();
 
     const uploadTask = this.imagenSrv.saveFile(blob, filePath);
-    this.utilidadesSrv.vibracionError();
-    this.utilidadesSrv.mostrartToast('Error al cargar la imagen.')
-   /* uploadTask.then(async res => {
-      const downloadURL = await res.ref.getDownloadURL();
-      if (downloadURL.length > 0) {
-        this.path = downloadURL;
- 
-      } else {
-        console.log("IMAGEN NO CORRECTA  ");
-      }
-    })
-      .catch((err) => {
-        console.log("Error al subbir la imagen: ", err);
-      });*/
+    
+    // uploadTask.then(async res => {
+    //   const downloadURL = await res.ref.getDownloadURL();
+    //   if (downloadURL.length > 0) {
+    //     console.log("URL  CORRECTO- i_IMG++");
+    //     return this.usuario.foto = downloadURL;
+    //   }
+    // })
+    //   .catch((err) => {
+    //     console.log("Error al subbir la imagen: ", err);
+    //   });
   }
 
   getFilePath() {
@@ -256,4 +237,6 @@ export class AltaClientesPage implements OnInit {
         this.utilidadesSrv.errorToast('Mail o contraseña invalidos');
       }
   }
+
+ 
 }

@@ -1,8 +1,12 @@
 <ion-header [hidden]="scanActive">
-  <ion-toolbar>
-    <h1 style="text-align: center;" *ngIf="!anonimo">Registro Cliente</h1>
-    <h1 style="text-align: center;" *ngIf="anonimo">Registro Anónimo</h1>
-  </ion-toolbar>
+  <ion-header>
+    <ion-toolbar color="medium">
+      <ion-back-button defaultHref="login" slot="start"></ion-back-button>
+      <ion-title style="text-align: center;" *ngIf="!anonimo">Registro Cliente</ion-title>
+      <ion-title style="text-align: center;" *ngIf="anonimo">Registro Anónimo</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
 </ion-header>
 <ion-item class="toggle" [hidden]="scanActive">
   <ion-toggle [(ngModel)]="anonimo"></ion-toggle>

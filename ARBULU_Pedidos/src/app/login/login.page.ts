@@ -36,6 +36,22 @@ export class LoginPage implements OnInit {
     this.afAuth.Login(Email, Password);
   }
 
+  LoginUsuarioAnonimo(){
+    this.afAuth.Login("leliseo89@hotmail.com", "123456");
+  }
+
+  LoginUsuarioCliente(){
+    this.afAuth.Login("leliseo89@hotmail.com", "123456");
+  }
+
+  LoginUsuarioDuenio(){
+    this.afAuth.Login("leliseo89@hotmail.com", "123456");
+  }
+
+  LoginUsuarioEmpleado(){
+    this.afAuth.Login("leliseo89@hotmail.com", "123456");
+  }
+
 
 
 }
