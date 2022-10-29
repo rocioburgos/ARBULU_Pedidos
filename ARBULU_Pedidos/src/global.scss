@@ -25,9 +25,24 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-
+@font-face {
+  font-family: 'poppins';
+  src: url('./assets/Noto_Sans_Vai/NotoSansVai-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+*{
+  font-family: poppins;
+}
+ion-content{
+  --background: #d68340;
+}
+ion-toolbar{
+  --background: #4093d6;
+}
 
 body.scanner-active {
     --background: transparent;
     --ion-background-color: transparent;
   }
+

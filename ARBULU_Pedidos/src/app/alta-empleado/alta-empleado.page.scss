@@ -21,3 +21,25 @@
     transform: translate(-50% , -50%);
     width: 300px;
    }
+ 
+
+   .input-wrapper {
+      --background: #fdf0d5;
+      color:  #333333
+    }
+  
+    ion-item{
+        margin-top: 2em
+    }
+    ion-item.radio{
+      --background: #fdf0d5;
+        color:  #333333
+    }
+  
+    form{
+      padding-left: 10px;
+      padding-right: 10px;
+      small{
+          color: red;
+      }
+    }

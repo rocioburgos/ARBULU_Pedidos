@@ -20,15 +20,15 @@ export class Usuario {
 }
 
 export enum eUsuario{
-    dueño,
-    supervisor,
-    empleado,
-    cliente,
+    dueño='dueño',
+    supervisor='supervisor',
+    empleado='empleado',
+    cliente='cliente',
 }
 
 export enum eEmpleado{
-    metre,
-    mozo,
-    cocinero,
-    bartender
+    metre='metre',
+    mozo='mozo',
+    cocinero='cocinero',
+    bartender='bartender'
 }
