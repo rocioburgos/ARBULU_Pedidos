@@ -2,11 +2,15 @@ import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { UtilidadesService } from './utilidades.service';
+import { Usuario } from '../clases/usuario';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  
+  public usuarioLogueado = new Usuario();
+  public logueado = false;
 
   constructor(public afAuth: AngularFireAuth, private utilidadesSrv: UtilidadesService, public ngZone: NgZone, public router: Router) { }
 
@@ -57,4 +61,19 @@ export class AuthService {
         this.utilidadesSrv.errorToast('Correo o contraseña invalidos');
       }
     }
+ 
+
+  public signIn(mail: string, password: string) {
+    return this.afAuth.signInWithEmailAndPassword(mail, password);
+  }
+
+  public register(mail: string, password: string) {
+    return this.afAuth.createUserWithEmailAndPassword(mail, password);
+  }
+
+  public signOut() {
+    this.usuarioLogueado = new Usuario();
+    this.logueado = false;
+    return this.afAuth.signOut();
+  }
 }

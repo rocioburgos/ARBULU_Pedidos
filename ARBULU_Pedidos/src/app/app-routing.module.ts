@@ -22,7 +22,8 @@ const routes: Routes = [
   {
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
-  },  {
+  },
+  {
     path: 'alta-supervisor',
     loadChildren: () => import('./alta-supervisor/alta-supervisor.module').then( m => m.AltaSupervisorPageModule)
   },
@@ -33,6 +34,10 @@ const routes: Routes = [
   {
     path: 'alta-clientes',
     loadChildren: () => import('./alta-clientes/alta-clientes.module').then( m => m.AltaClientesPageModule)
+  },
+  {
+    path: 'alta-mesa',
+    loadChildren: () => import('./alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
   },
 
 

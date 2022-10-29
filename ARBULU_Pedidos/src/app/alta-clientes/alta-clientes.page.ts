@@ -70,7 +70,7 @@ export class AltaClientesPage implements OnInit {
     this.usuario.email = this.altaForm.value.email;
     this.usuario.nombre = this.altaForm.value.nombre;
     this.usuario.apellido = this.altaForm.value.apellido;
-    this.usuario.DNI = this.altaForm.value.dni;
+    this.usuario.dni = this.altaForm.value.dni;
     this.usuario.tipo = eUsuario.cliente;
     this.usuario.nombre = this.altaForm.value.nombre;
 

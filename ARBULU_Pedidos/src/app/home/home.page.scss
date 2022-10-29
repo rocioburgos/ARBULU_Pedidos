@@ -25,3 +25,11 @@
 #container a {
   text-decoration: none;
 }
+
+ion-content{
+  --overflow:hidden;
+  --background: none;
+  background: url("../../assets/background/bg.png");
+  background-size: cover;
+  background-position: center center;              
+}

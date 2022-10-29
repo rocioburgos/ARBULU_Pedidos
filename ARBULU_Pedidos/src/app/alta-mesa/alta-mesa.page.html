@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="medium">
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-title>Alta de productos</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form  [formGroup]="formMesa">
+    <!-- Nombre -->
+    <ion-item lines="full" class="input-wrapper">
+      <ion-label position="fixed">Numero</ion-label><br />
+      <ion-input type="text" #nombre formControlName="numero">
+      </ion-input>
+    </ion-item>
+    <small class="invalid" *ngIf="formMesa.controls.numero.errors?.required && formMesa.controls.numero.touched ">El numero es requerido</small> 
+    <!-- descripcion -->
+    <ion-item lines="full" class="input-wrapper">
+      <ion-label position="fixed">Comensales</ion-label><br />
+      <ion-input type="text" #descripcion  formControlName="cantidadComensales"> 
+      </ion-input>
+    </ion-item>
+    <small class="invalid" *ngIf="formMesa.controls.cantidadComensales.errors?.required && formMesa.controls.cantidadComensales.touched ">La cantidad de comensales es requerida</small> 
+  <!-- tipo -->
+    <ion-item lines="full" class="input-wrapper">
+      <ion-label position="fixed">Tipo</ion-label><br />
+      <ion-select value="0"  #sector interface="popover"  formControlName="tipoMesa" placeholder="Seleccione una opcion"
+        required>
+        <ion-select-option value="VIP">VIP</ion-select-option>
+        <ion-select-option value="discapacitados">Discapacitados</ion-select-option>
+        <ion-select-option value="cumpleaños">Cumpleaños</ion-select-option>
+        <ion-select-option value="jubilados">Jubilados</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <small class="invalid" *ngIf="formMesa.controls.tipoMesa.errors?.required && formMesa.controls.tipoMesa.touched ">El tipo es requerido</small>
+    <!-- imagen -->
+    <ion-item class="image-item"> 
+      <ion-col size="7">
+        <div class="mx-auto d-block circular--portrait image-default" (click)="tomarFotoProducto()"  #imagen>
+          <img src="./../../../assets/plato.png" >
+        </div>  
+      </ion-col>  
+    </ion-item> 
+    <ion-row class="uploaded-images">
+      <ion-avatar *ngFor="let item of mesa.img_src; let index=index">
+        <img [src]="item">
+      </ion-avatar>
+    </ion-row>
+    <!-- SUBMIT -->
+    <ion-row class="cta-row">
+      <ion-button  type="submit" size="medium" color="primary" (click)="GuardarMesa()"
+      [disabled]="!formMesa.valid">Guardar </ion-button>
+    </ion-row>
+  </form>
+</ion-content>
