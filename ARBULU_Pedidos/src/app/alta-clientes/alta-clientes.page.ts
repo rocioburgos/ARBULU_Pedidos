@@ -132,16 +132,16 @@ export class AltaClientesPage implements OnInit {
 
     const uploadTask = this.imagenSrv.saveFile(blob, filePath);
     
-    // uploadTask.then(async res => {
-    //   const downloadURL = await res.ref.getDownloadURL();
-    //   if (downloadURL.length > 0) {
-    //     console.log("URL  CORRECTO- i_IMG++");
-    //     return this.usuario.foto = downloadURL;
-    //   }
-    // })
-    //   .catch((err) => {
-    //     console.log("Error al subbir la imagen: ", err);
-    //   });
+    uploadTask.then(async res => {
+      const downloadURL = await res.ref.getDownloadURL();
+      if (downloadURL.length > 0) {
+        console.log("URL  CORRECTO- i_IMG++");
+        return this.usuario.foto = downloadURL;
+      }
+    })
+      .catch((err) => {
+        console.log("Error al subbir la imagen: ", err);
+      });
   }
 
   getFilePath() {

@@ -55,7 +55,7 @@ export class AltaSupervisorPage implements OnInit {
   aceptar() {
     this.altaForm.get('perfil').value == 'dueño' ? this.usuario.tipo = eUsuario.dueño : this.usuario.tipo = eUsuario.supervisor;
 
-    this.auth.signUp(this.usuario.email, this.clave).then((userCredential)=>{
+    this.auth.signIn(this.usuario.email, this.clave).then((userCredential)=>{
       this.firestore.crearUsuario(this.usuario).then((ok)=>{
         this.usuario.uid = ok.id;
         this.firestore.update(this.usuario.uid, {id: this.usuario.uid}).then((ok)=>{
