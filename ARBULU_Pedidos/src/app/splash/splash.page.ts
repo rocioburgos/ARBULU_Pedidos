@@ -15,4 +15,6 @@ export class SplashPage implements OnInit {
       this.router.navigateByUrl('/login');
     },4000)
   }
+
+  
 }
