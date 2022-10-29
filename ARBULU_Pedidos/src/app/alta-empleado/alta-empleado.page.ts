@@ -5,6 +5,8 @@ import { Photo } from '@capacitor/camera';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { ImagenesService } from '../servicios/imagenes.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
+import { eEmpleado, eUsuario, Usuario } from '../clases/usuario';
+import { FirestoreService } from '../servicios/firestore.service';
 
 @Component({
   selector: 'app-alta-empleado',
@@ -19,7 +21,7 @@ export class AltaEmpleadoPage implements OnInit {
   descripcion_error: string = '';
   public altaForm: FormGroup; 
   habilitar:boolean;
-  path:string='';
+  path:string='./../../assets/sacarfoto.png';
 
   scannnedResult: any;
   content_visibility = '';
@@ -33,7 +35,8 @@ export class AltaEmpleadoPage implements OnInit {
     private fromBuilder: FormBuilder,
     private router: Router ,
     private imagenSrv:ImagenesService,
-    private utilidadesSrv:UtilidadesService
+    private utilidadesSrv:UtilidadesService,
+    private fireSrv:FirestoreService
   ) {
     this.email = '';
     this.clave = '';
@@ -47,36 +50,37 @@ export class AltaEmpleadoPage implements OnInit {
       dni: ['', Validators.compose([Validators.required, Validators.min(10000000), Validators.max(99999999)])],
       cuil: ['', Validators.compose([Validators.required, Validators.min(10000000000), Validators.max(99999999999)])],
       //foto
-      perfil: ['', Validators.compose([Validators.required])]
+      perfil: ['', Validators.compose([Validators.required])],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      clave: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
     });
   }
 
 
-  aceptar() {   
-    this.utilidadesSrv.mostrartToast('Aceptado');
-    this.utilidadesSrv.vibracionError(); 
-    setTimeout(() => {
-      this.utilidadesSrv.reproducirSonidoInicio();
-    }, 5000);
-  /*  let imagenesDoc = {
-      'usuario': this.authSrv.getCurrentUserLS_email(),
-      imagenes: this.paths, 
-      fullDate: this.horario(),
-      tipo: tipo.tipo,
-      usuarios_like:[],
-      cantidad_likes: 0
+  aceptar() {    
+   let imagenesDoc = {
+      'usuario': 'admin@gmail.com',// this.authSrv.getCurrentUserLS_email(),
+      imagen: this.path 
     };
-    this.imagenSrv.saveDoc(imagenesDoc).then((data) => {
 
-      tipo.tipo == 'linda' ? this.router.navigate(['cosaslindas']) : this.router.navigate(['cosasfeas']);
-    
-    }).catch(err => {
-      this.spinner.hide()
-      this.mostrarError = true;
+    let empleadoNuevo:Usuario= new Usuario();
+    empleadoNuevo.CUIL= this.altaForm.get('cuil').value;
+    empleadoNuevo.DNI= this.altaForm.get('dni').value;
+    empleadoNuevo.apellido= this.altaForm.get('apellido').value;
+    empleadoNuevo.email= this.altaForm.get('email').value;
+    empleadoNuevo.foto = this.path;
+    empleadoNuevo.nombre=  this.altaForm.get('nombre').value;
+    empleadoNuevo.tipo = eUsuario.empleado ;
+    empleadoNuevo.tipoEmpleado =this.altaForm.get('perfil').value;
+    empleadoNuevo.uid = '';
+
+    this.fireSrv.crearUsuario(empleadoNuevo).then((data) => {
+
+    console.log(data);
+    }).catch(err => {  
       console.log(err)
-    }).finally(()=>{
-      this.spinner.hide()
-    });*/
+    }).finally(()=>{ 
+    }); 
   }
 
 
@@ -85,7 +89,10 @@ export class AltaEmpleadoPage implements OnInit {
   }
 
   async addPhotoToGallery() {
+    //abrir camara y tomar la foto
     const photo = await this.imagenSrv.addNewToGallery();
+
+    //subir la foto
     this.uploadPhoto(photo).then(() => {
        
       setTimeout(() => {
@@ -104,10 +111,12 @@ export class AltaEmpleadoPage implements OnInit {
     const blob = await response.blob();
     const filePath = this.getFilePath();
 
-    const uploadTask = this.imagenSrv.saveFile(blob, filePath);
-    this.utilidadesSrv.vibracionError();
-    this.utilidadesSrv.mostrartToast('Error al cargar la imagen.')
-   /* uploadTask.then(async res => {
+    //Subir la foto
+    const uploadTask = this.imagenSrv.saveFile(blob, filePath); 
+    
+    
+    uploadTask.then(async res => {
+      //obtener el link de la foto 
       const downloadURL = await res.ref.getDownloadURL();
       if (downloadURL.length > 0) {
         this.path = downloadURL;
@@ -118,11 +127,11 @@ export class AltaEmpleadoPage implements OnInit {
     })
       .catch((err) => {
         console.log("Error al subbir la imagen: ", err);
-      });*/
+      }); 
   }
 
   getFilePath() {
-    return new Date().getTime() + '-test';
+    return new Date().getTime() + '-empleados';
   }
 
 

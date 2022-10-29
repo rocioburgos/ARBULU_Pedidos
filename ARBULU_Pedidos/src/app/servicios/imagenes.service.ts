@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core'; 
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Camera, CameraResultType, Photo, CameraSource } from '@capacitor/camera';
 import { Observable } from 'rxjs'; 
 
@@ -9,14 +11,14 @@ export class ImagenesService {
   items: Observable<any[]>;
   
 
-  /*constructor(
+   constructor(
     private storage: AngularFireStorage,
-    private afStore: AngularFirestore) { }*/
-    constructor(){}
+    private afStore: AngularFirestore) { } 
+    
 
   saveFile(file: Blob, filePath: string) {
 
-   // return this.storage.upload(filePath, file);
+   return this.storage.upload(filePath, file);
   }
 
   public async addNewToGallery(): Promise<Photo> {
@@ -29,14 +31,14 @@ export class ImagenesService {
   }
 
 
-  /*saveDoc(data: any ) {
+  saveDoc(data: any ) {
     let dbRef: AngularFirestoreCollection<any>;
       dbRef = this.afStore.collection("imagenes_usuarios");
       return dbRef.add(Object.assign({}, data));
-  }*/
+  } 
 
 
- /* getImagenes(tipo: string): Observable<any> {
+  getImagenes(tipo: string): Observable<any> {
 
     let dbRef: AngularFirestoreCollection<any>; 
     dbRef =  this.afStore.collection('imagenes_usuarios', 
@@ -56,6 +58,5 @@ export class ImagenesService {
       return dbRef.valueChanges({ idField: "doc_id" }); 
   }
 
-   */
-
+  
 }

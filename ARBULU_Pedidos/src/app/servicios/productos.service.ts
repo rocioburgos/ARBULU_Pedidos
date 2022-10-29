@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 /*import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';*/
@@ -9,13 +11,11 @@ import { Productos } from 'src/app/clases/productos';
   providedIn: 'root'
 })
 export class ProductosService {
-  GuardarNuevoProducto(nuevaProd: Productos): any{ 
-  }
- /* items: Observable<any[]>; 
+
+ items: Observable<any[]>; 
   public dbRef: AngularFirestoreCollection<any>;
   constructor(
-    public afStore: AngularFirestore,
-    public ngFireAuth: AngularFireAuth
+    public afStore: AngularFirestore 
   ) {
     this.dbRef = this.afStore.collection("productos");
   }
@@ -53,5 +53,5 @@ export class ProductosService {
     setItemWithId(item: any, id:string) {
       return this.dbRef.doc(id).set(Object.assign({}, item));    
     }
- */
+
 }

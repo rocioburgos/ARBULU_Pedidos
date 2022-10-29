@@ -32,7 +32,7 @@ export class AltaProductoPage implements OnInit {
     private route: Router, 
     public prodSrv: ProductosService,
     private loadingController: LoadingController, 
-    public navCtrl: NavController  ,
+    public navCtrl: NavController,
     private imagenSrv:ImagenesService
     ) {
 
@@ -51,11 +51,7 @@ export class AltaProductoPage implements OnInit {
       'tiempo': ['', [Validators.required]],
       'precio': ['', [Validators.required]],
       'sector': ['', [Validators.required]]
-    });
-    /*if(this.validarCantidadFotos()){
-      this.habilitarFotosBTN= true;
-    }*/
-
+    }); 
   }
 
   private validarCantidadFotos(): boolean {
@@ -103,18 +99,14 @@ export class AltaProductoPage implements OnInit {
       console.log("Error addPhotoToGallery", err);
     });
   }
-
-
-
-  
-
+ 
   private async uploadPhoto(cameraPhoto: Photo) {
     const response = await fetch(cameraPhoto.webPath!);
     const blob = await response.blob();
     const filePath = this.getFilePath();
 
     const uploadTask = this.imagenSrv.saveFile(blob, filePath);
-/*
+
     console.log("nro actual de fotos cargadas: " + this.i_NroImagen);
     uploadTask.then(async res => {
       const downloadURL = await res.ref.getDownloadURL();
@@ -132,11 +124,11 @@ export class AltaProductoPage implements OnInit {
     })
       .catch((err) => {
         console.log("Error al subbir la imagen: ", err);
-      });*/
+      });
   }
 
 
   getFilePath() {
-    return new Date().getTime() + '-test';
+    return new Date().getTime() + '-productos';
   }
 }
