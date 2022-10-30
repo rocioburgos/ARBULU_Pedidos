@@ -10,6 +10,7 @@ import { Photo } from '@capacitor/camera';
 import { Router } from '@angular/router'; 
 import { ImagenesService } from '../servicios/imagenes.service';
 import { ProductosService } from '../servicios/productos.service';
+import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
   selector: 'app-alta-producto',
@@ -33,7 +34,8 @@ export class AltaProductoPage implements OnInit {
     public prodSrv: ProductosService,
     private loadingController: LoadingController, 
     public navCtrl: NavController,
-    private imagenSrv:ImagenesService
+    private imagenSrv:ImagenesService,
+    private utilSrv:UtilidadesService
     ) {
 
   }
@@ -70,11 +72,13 @@ export class AltaProductoPage implements OnInit {
       var resp = this.prodSrv.GuardarNuevoProducto(this.producto)
       if (resp) {
         console.log("Producto guardado con exito");
+        this.utilSrv.successToast("Producto guardado con exito");
         //exito al guardar
      //   this.toastCtrl.presentToast("Se guardo con el exito el producto", 2000,"success")
-        this.route.navigate(['/producto-modificar']);
+        this.route.navigate(['/home']);
       }
       else {
+        this.utilSrv.errorToast("Error al guardar el nuevo producto")
         console.log("error al guardar el nuevo producto ");
       }
 
@@ -83,6 +87,7 @@ export class AltaProductoPage implements OnInit {
       //mostrar el error de las imagenes
       this.errorImagen = true;
       console.log("FALTAN LAS FOTOS");
+      this.utilSrv.warningToast('Faltan fotos del producto')
     }
 
   }

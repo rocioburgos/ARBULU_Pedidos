@@ -7,6 +7,7 @@ import { Mesa } from '../clases/mesa';
 import { FirestoreService } from '../servicios/firestore.service';
 import { ImagenesService } from '../servicios/imagenes.service';
 import { ProductosService } from '../servicios/productos.service';
+import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
   selector: 'app-alta-mesa',
@@ -30,7 +31,8 @@ export class AltaMesaPage implements OnInit {
     public firestore:FirestoreService,
     private loadingController: LoadingController, 
     public navCtrl: NavController,
-    private imagenSrv:ImagenesService
+    private imagenSrv:ImagenesService,
+    private utilSrv:UtilidadesService
     ) {
 
   }
@@ -60,9 +62,12 @@ export class AltaMesaPage implements OnInit {
 
     this.firestore.crearMesa(this.mesa)
     .then((ok) => {
+      this.utilSrv.successToast('Mesa guardada con exito');
+     
       console.log("GOOD");
     })
     .catch((err) => {
+      this.utilSrv.successToast('Error.No se guardo la mesa.');
       console.log(err);
     });
   }
