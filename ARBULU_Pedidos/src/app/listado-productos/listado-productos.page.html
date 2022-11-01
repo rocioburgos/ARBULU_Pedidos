@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    <ion-title>Productos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <ion-list>
+      <ion-item *ngFor="let item of productos; let index=index">
+        <ion-avatar (click)="presentAlertConfirm(item)">
+          <img [src]="item.img_src">
+        </ion-avatar>
+        <ion-label>
+          <h1>{{item.nombre}}</h1>
+          <h3 *ngIf="item.sector=='BEBIDA'">🍺{{item.descripcion}}</h3>
+          <h3 *ngIf="item.sector=='COCINA'">🍽{{item.descripcion}}</h3>
+          <ion-row>
+            <h2>💵 ${{item.precio}}</h2>
+            <h2 style="margin-left:1em">🕗{{item.tiempo_elaboracion}} min</h2>
+          </ion-row>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+  </div>
+ 
+
+   <!---------------MODAL ---------------------------------->
+   <div id="openModal" class="modalDialog" *ngIf="showModal" 
+   style=" 
+   background: rgb(87, 87, 85); 
+    ">
+     <div> 
+       <a (click)="hideModal()" title="Close" class="close"> 
+         <ion-icon name="close-circle-outline"></ion-icon>
+       </a> 
+       <swiper [pagination]="{type: 'progressbar'}" [navigation]="true" class="mySwiper">
+       <ng-template swiperSlide><img width="50px" [src]="productoSeleccionado.img_src[0]" ></ng-template>
+       <ng-template swiperSlide><img width="50px" [src]="productoSeleccionado.img_src[1]" ></ng-template>
+       <ng-template swiperSlide><img width="50px" [src]="productoSeleccionado.img_src[2]" ></ng-template>
+     </swiper>
+     </div>
+   </div>
+</ion-content>

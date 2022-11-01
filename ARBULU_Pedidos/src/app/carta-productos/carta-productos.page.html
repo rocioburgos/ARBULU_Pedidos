@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    <ion-title>Carta</ion-title>
+    <ion-button slot="end" color="warning" (click)="abrirChat()">💬</ion-button> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollY]="false">
+ <div class="ion-content-scroll-host ion-padding">
+    <ion-card *ngFor="let item of productos; let index=index"
+    style=" 
+      text-align:center; 
+      padding:8px;
+    ">
+     
+      <ion-card-header>
+        <ion-card-title><ion-avatar (click)="presentAlertConfirm(item)">
+          <img [src]="item.img_src">
+        </ion-avatar> {{item.nombre}}</ion-card-title> 
+      </ion-card-header>
+    
+      <ion-card-content>
+        
+        <ion-label *ngIf="item.sector=='BEBIDA'">🍺{{item.descripcion}}</ion-label>
+        <ion-label *ngIf="item.sector=='COCINA'">🍽{{item.descripcion}}</ion-label>
+        <br>
+          <ion-label>💵 ${{item.precio}}</ion-label><br>
+          <ion-label style="margin-left:1em">🕗{{item.tiempo_elaboracion}} min</ion-label>
+       
+
+      </ion-card-content>
+      <ion-button size="small" color="dark">+</ion-button>
+      <ion-label> 10 </ion-label>
+      <ion-button size="small" color="dark">-</ion-button>
+    </ion-card> 
+</div>
+ 
+  <!---------------MODAL ---------------------------------->
+  <div id="openModal" class="modalDialog" *ngIf="showModal" style=" 
+   background: rgb(87, 87, 85); 
+    ">
+    <div>
+      <a (click)="hideModal()" title="Close" class="close">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </a>
+      <swiper [pagination]="{type: 'progressbar'}" [navigation]="true" class="mySwiper">
+        <ng-template swiperSlide><img width="50px" [src]="productoSeleccionado.img_src[0]"></ng-template>
+        <ng-template swiperSlide><img width="50px" [src]="productoSeleccionado.img_src[1]"></ng-template>
+        <ng-template swiperSlide><img width="50px" [src]="productoSeleccionado.img_src[2]"></ng-template>
+      </swiper>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer collapse="fade">
+  <ion-row>
+    <ion-col  >
+      <strong > 💵 ${{total}}</strong>
+    </ion-col>
+  <ion-col > 
+      <strong>🕗 {{demoraEstimada}} min</strong>
+  </ion-col>
+  </ion-row>
+  <ion-button  expand="full" shape="round" color="success" (click)="hacerPedido()">
+    Realizar pedido
+  </ion-button>
+ </ion-footer>

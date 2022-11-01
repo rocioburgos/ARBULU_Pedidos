@@ -38,7 +38,19 @@ const routes: Routes = [
   {
     path: 'alta-mesa',
     loadChildren: () => import('./alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
+  },  {
+    path: 'listado-productos',
+    loadChildren: () => import('./listado-productos/listado-productos.module').then( m => m.ListadoProductosPageModule)
   },
+  {
+    path: 'carta-productos',
+    loadChildren: () => import('./carta-productos/carta-productos.module').then( m => m.CartaProductosPageModule)
+  },
+  {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
+  },
+
 
 
 ];

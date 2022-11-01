@@ -7,6 +7,14 @@
   </ion-header>
 
   <div id="container"> 
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="danger" size="large" (click)="cerrarSesion()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    
     <a [routerLink]="['/alta-clientes']"><ion-button> Alta cliente</ion-button></a>
     <br><br>
     <br>
@@ -20,6 +28,9 @@
     <br><br>
     <br>
     <a [routerLink]="['/alta-supervisor']"><ion-button> Alta supervisor</ion-button></a>
+    <br><br>
+    <br>
+    <a [routerLink]="['/listado-productos']"><ion-button> Listado productos</ion-button></a>
 
 
   </div>

@@ -1,0 +1,16 @@
+@import '~swiper/scss';
+@import '~@ionic/angular/css/ionic-swiper';
+
+ion-content{
+    --background: #d68340;
+  }
+
+  ion-list{
+    background:none;
+    ion-item{
+        --background: none;
+        ion-label{
+            margin-left: 1em;
+        } 
+    }
+} 

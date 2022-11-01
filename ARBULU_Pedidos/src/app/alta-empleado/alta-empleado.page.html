@@ -1,156 +1,156 @@
-<ion-header   [hidden]="scanActive">
+<ion-header [hidden]="scanActive">
   <ion-toolbar>
     <!--ion-button  slot="start" [routerLink]="['/home']">
       <ion-icon name="arrow-back-outline"></ion-icon>
-    </ion-button--> 
+    </ion-button-->
     <ion-back-button defaultHref="home" slot="start"></ion-back-button>
     <ion-title>Alta empleado</ion-title>
   </ion-toolbar>
 </ion-header>
- 
-<ion-content> 
+
+<ion-content>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="success" size="large" (click)="startScan()">
       <ion-icon name="qr-code-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <div  [hidden]="scanActive">
+  <div [hidden]="scanActive">
     <div style="  display: flex;
     justify-content: center;">
       <a (click)="tomarFoto()"><img [src]="path" style="width: 250px;"></a>
     </div>
- 
+
     <form [formGroup]="altaForm">
       <ion-item lines="full" class="input-wrapper">
         <ion-label position="fixed">Nombre</ion-label>
-        <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre" >
-        </ion-input> 
-      </ion-item> 
+        <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre">
+        </ion-input>
+      </ion-item>
       <small class="invalid"
-      *ngIf="altaForm.get('nombre').hasError('required') && (altaForm.get('nombre').dirty || altaForm.get('nombre').touched)"
-      >Por favor, ingrese el nombre.</small>
- 
+        *ngIf="altaForm.get('nombre').hasError('required') && (altaForm.get('nombre').dirty || altaForm.get('nombre').touched)">Por
+        favor, ingrese el nombre.</small>
+
       <ion-item lines="full" class="input-wrapper">
         <ion-label position="fixed">Apellido </ion-label>
         <ion-input type="text" [(ngModel)]='apellido' formControlName="apellido">
-        </ion-input> 
+        </ion-input>
       </ion-item>
       <small
-      *ngIf="altaForm.get('apellido').hasError('required') && (altaForm.get('apellido').dirty || altaForm.get('apellido').touched)"
-      
-      class="invalid">Por favor, ingrese un apellido.</small>
- 
+        *ngIf="altaForm.get('apellido').hasError('required') && (altaForm.get('apellido').dirty || altaForm.get('apellido').touched)"
+        class="invalid">Por favor, ingrese un apellido.</small>
+
       <ion-item lines="full" class="input-wrapper">
-        <ion-label>Email</ion-label>
+        <ion-label>Correo</ion-label>
         <ion-input type="email" [(ngModel)]='email' formControlName="email">
-        </ion-input> 
+        </ion-input>
       </ion-item>
       <small
-      *ngIf="altaForm.get('email').hasError('required') && (altaForm.get('email').dirty || altaForm.get('email').touched)"
-      
-      [ngClass]="altaForm.get('email').hasError('required') && altaForm.get('email').touched ? 'visible' : 'hidden'">Por
-      favor, ingrese un email.</small>
-      <small
-      *ngIf="altaForm.get('email').hasError('email') "
-      
-      [ngClass]="altaForm.get('email').hasError('email')&& altaForm.get('email').touched ? 'visible' : 'hidden'">Por
-      favor, ingrese un formato valido.</small>
- 
+        *ngIf="altaForm.get('email').hasError('required') && (altaForm.get('email').dirty || altaForm.get('email').touched)"
+        [ngClass]="altaForm.get('email').hasError('required') && altaForm.get('email').touched ? 'visible' : 'hidden'">Por
+        favor, ingrese un Correo electronico.</small>
+      <small *ngIf="altaForm.get('email').hasError('email') "
+        [ngClass]="altaForm.get('email').hasError('email')&& altaForm.get('email').touched ? 'visible' : 'hidden'">Por
+        favor, ingrese un formato valido.</small>
+
       <ion-item lines="full" class="input-wrapper">
-        <ion-label>Clave</ion-label> 
+        <ion-label>Clave</ion-label>
         <ion-input type="password" [(ngModel)]='clave' formControlName="clave">
-        </ion-input> 
+        </ion-input>
       </ion-item>
       <small
-      *ngIf="altaForm.get('clave').hasError('required') && (altaForm.get('clave').dirty || altaForm.get('clave').touched)"
-      
-      [ngClass]="altaForm.get('clave').hasError('required') && altaForm.get('clave').touched ? 'visible' : 'hidden'">Por
-      favor, ingrese una clave.</small>
+        *ngIf="altaForm.get('clave').hasError('required') && (altaForm.get('clave').dirty || altaForm.get('clave').touched)"
+        [ngClass]="altaForm.get('clave').hasError('required') && altaForm.get('clave').touched ? 'visible' : 'hidden'">Por
+        favor, ingrese una clave.</small>
+      <small *ngIf="altaForm.get('clave').hasError('minLength')&& altaForm.get('clave').touched "
+        [ngClass]="altaForm.get('clave').hasError('minLength') && altaForm.get('clave').touched ? 'visible' : 'hidden'">La
+        clave debe contener minimo 6 caracteres.</small>
+
+      <!--CONFIRMAR CLAVE-->
+      <ion-item lines="full" class="input-wrapper">
+        <ion-label>Confirmar clave</ion-label>
+        <ion-input type="password" [(ngModel)]='claveDos' formControlName="claveDos">
+        </ion-input>
+      </ion-item>
       <small
-      *ngIf="altaForm.get('clave').hasError('minLength')&& altaForm.get('clave').touched "
-      
-      [ngClass]="altaForm.get('clave').hasError('minLength') && altaForm.get('clave').touched ? 'visible' : 'hidden'">La clave debe contener minimo 6 caracteres.</small>
-   
+        *ngIf="altaForm.get('claveDos').hasError('required') && (altaForm.get('claveDos').dirty || altaForm.get('claveDos').touched)"
+        [ngClass]="altaForm.get('claveDos').hasError('required') && altaForm.get('claveDos').touched ? 'visible' : 'hidden'">Por
+        favor, ingrese una clave.</small> 
+      <small *ngIf="claveDos!= clave" >Las claves no coinciden.</small> 
 
       <ion-item lines="full" class="input-wrapper">
         <ion-label>DNI</ion-label>
-        <ion-input type="number" [(ngModel)]='dni' formControlName="dni" >
-        </ion-input> 
+        <ion-input type="number" [(ngModel)]='dni' formControlName="dni">
+        </ion-input>
       </ion-item>
       <small
-      *ngIf="altaForm.get('dni').hasError('required') && (altaForm.get('dni').dirty || altaForm.get('dni').touched)"
-      
-      [ngClass]="altaForm.get('dni').hasError('required') && altaForm.get('dni').touched ? 'visible' : 'hidden'">Por
-      favor, ingrese el dni.</small>
+        *ngIf="altaForm.get('dni').hasError('required') && (altaForm.get('dni').dirty || altaForm.get('dni').touched)"
+        [ngClass]="altaForm.get('dni').hasError('required') && altaForm.get('dni').touched ? 'visible' : 'hidden'">Por
+        favor, ingrese el dni.</small>
 
-    <small
-      *ngIf="altaForm.get('dni').hasError('max') && (altaForm.get('dni').dirty || altaForm.get('dni').touched)"
-      [ngClass]="altaForm.get('dni').hasError('max') && altaForm.get('dni').touched ? 'visible' : 'hidden'"
-      >El dni no debe contener mas de 8 caracteres.</small>
-      <small
-      *ngIf="altaForm.get('dni').hasError('min') "
-      
-      [ngClass]="altaForm.get('dni').hasError('min') ? 'visible' : 'hidden'">El dni debe contener al menos 8.</small>
-    
+      <small *ngIf="altaForm.get('dni').hasError('max') && (altaForm.get('dni').dirty || altaForm.get('dni').touched)"
+        [ngClass]="altaForm.get('dni').hasError('max') && altaForm.get('dni').touched ? 'visible' : 'hidden'">El dni no
+        debe contener mas de 8 caracteres.</small>
+      <small *ngIf="altaForm.get('dni').hasError('min') "
+        [ngClass]="altaForm.get('dni').hasError('min') ? 'visible' : 'hidden'">El dni debe contener al menos 8.</small>
+
       <ion-item lines="full" class="input-wrapper">
         <ion-label>CUIL</ion-label>
-        <ion-input type="number" [(ngModel)]='cuil' formControlName="cuil" >
-        </ion-input> 
+        <ion-input type="number" [(ngModel)]='cuil' formControlName="cuil">
+        </ion-input>
       </ion-item>
       <small
-      *ngIf="altaForm.get('cuil').hasError('required') && (altaForm.get('cuil').dirty || altaForm.get('cuil').touched)" 
-      [ngClass]="altaForm.get('cuil').hasError('required') && altaForm.get('cuil').touched ? 'visible' : 'hidden'">Por
-      favor, ingrese el cuil.</small>
+        *ngIf="altaForm.get('cuil').hasError('required') && (altaForm.get('cuil').dirty || altaForm.get('cuil').touched)"
+        [ngClass]="altaForm.get('cuil').hasError('required') && altaForm.get('cuil').touched ? 'visible' : 'hidden'">Por
+        favor, ingrese el cuil.</small>
 
-    <small
-      *ngIf="altaForm.get('cuil').hasError('max') && (altaForm.get('cuil').dirty || altaForm.get('cuil').touched)"
-      [ngClass]="altaForm.get('cuil').hasError('max') && altaForm.get('cuil').touched ? 'visible' : 'hidden'"
-      >El cuil no debe contener mas de 11 caracteres.</small>
       <small
-      *ngIf="altaForm.get('cuil').hasError('min') && (altaForm.get('cuil').dirty || altaForm.get('cuil').touched)" 
-       >El cuil debe contener al menos 11 caracteres.</small>
+        *ngIf="altaForm.get('cuil').hasError('max') && (altaForm.get('cuil').dirty || altaForm.get('cuil').touched)"
+        [ngClass]="altaForm.get('cuil').hasError('max') && altaForm.get('cuil').touched ? 'visible' : 'hidden'">El cuil
+        no debe contener mas de 11 caracteres.</small>
+      <small
+        *ngIf="altaForm.get('cuil').hasError('min') && (altaForm.get('cuil').dirty || altaForm.get('cuil').touched)">El
+        cuil debe contener al menos 11 caracteres.</small>
       <br>
       <ion-label>Tipo de empleado</ion-label>
-    
-        <ion-radio-group   formControlName="perfil">
-          <ion-item class="radio">
-            <ion-label>Metre</ion-label>
-            <ion-radio color='warning' slot="start" value="metre"></ion-radio>
-          </ion-item>
 
-          <ion-item class="radio">
-            <ion-label>Mozo</ion-label>
-            <ion-radio color='success' slot="start" value="mozo" ></ion-radio>
-          </ion-item> 
+      <ion-radio-group formControlName="perfil">
+        <ion-item class="radio">
+          <ion-label>Metre</ion-label>
+          <ion-radio color='warning' slot="start" value="metre"></ion-radio>
+        </ion-item>
 
-          <ion-item class="radio">
-            <ion-label>Cocinero</ion-label>
-            <ion-radio color='warning' slot="start" value="cocinero"  ></ion-radio>
-          </ion-item>
+        <ion-item class="radio">
+          <ion-label>Mozo</ion-label>
+          <ion-radio color='success' slot="start" value="mozo"></ion-radio>
+        </ion-item>
 
-          <ion-item class="radio">
-            <ion-label>Bartender</ion-label>
-            <ion-radio color='success' slot="start"value="bartender" ></ion-radio>
-          </ion-item> 
-        </ion-radio-group>
+        <ion-item class="radio">
+          <ion-label>Cocinero</ion-label>
+          <ion-radio color='warning' slot="start" value="cocinero"></ion-radio>
+        </ion-item>
+
+        <ion-item class="radio">
+          <ion-label>Bartender</ion-label>
+          <ion-radio color='success' slot="start" value="bartender"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
       <br>
-      <ion-button  expand="full" color="success" 
-      [disabled]="!altaForm.valid || path=='./../../assets/sacarfoto.png'"
-       type="submit" (click)='aceptar()'>
+      <ion-button expand="full" color="success" [disabled]="!altaForm.valid || path=='./../../assets/sacarfoto.png' || clave != claveDos"
+        type="submit" (click)='aceptar()'>
         <ion-icon name="arrow-forward-circle-outline"></ion-icon>
         Aceptar
       </ion-button>
     </form>
   </div>
- 
+
 
   <ion-row class="scanner-buttons" [hidden]="!scanActive">
-    <ion-col  >
+    <ion-col>
       <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
     </ion-col>
-   </ion-row>
+  </ion-row>
 
-   <div class="scan-box" [hidden]="!scanActive"> 
-   </div> 
+  <div class="scan-box" [hidden]="!scanActive">
+  </div>
 </ion-content>

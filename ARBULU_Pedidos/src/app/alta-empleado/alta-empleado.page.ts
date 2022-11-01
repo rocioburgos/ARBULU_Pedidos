@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Photo } from '@capacitor/camera';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
@@ -17,7 +17,8 @@ import { AuthService } from '../servicios/auth.service';
 export class AltaEmpleadoPage implements OnInit {
 
   email: string;
-  clave: string;
+  clave: string='';
+  claveDos:string='';
   show_error: boolean = false; //
   descripcion_error: string = '';
   public altaForm: FormGroup;
@@ -55,11 +56,11 @@ export class AltaEmpleadoPage implements OnInit {
       //foto
       perfil: ['', Validators.compose([Validators.required])],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      clave: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
+      clave: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+      claveDos: ['', [Validators.required  ] ]
     });
   }
-
-
+ 
   aceptar() {
     let imagenesDoc = {
       'usuario': 'admin@gmail.com',// this.authSrv.getCurrentUserLS_email(),

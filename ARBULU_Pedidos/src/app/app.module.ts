@@ -9,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 import { FirebaseModule } from './modules/firebase/firebase.module';
+import { SwiperModule } from 'swiper/angular';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -17,7 +19,8 @@ import { FirebaseModule } from './modules/firebase/firebase.module';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    FirebaseModule
+    FirebaseModule,
+    SwiperModule
   ],
   providers: [Vibration,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
