@@ -1,9 +1,37 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>chat</ion-title>
+    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    <ion-title>Mesa {{nro_mesa}} </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="container">
+  <div *ngFor="let mensaje of mensajes">
+    <div class="row msg_container base_receive"
+      *ngIf="!mensaje.comensal"> 
+      <div class="col-xs-10 col-md-10">
+        <div class="messages msg_receive">
+          <p  style="font-size: 15px;" > {{mensaje.mensaje}} </p>
+          <br>
+          <time> mozo • 31-10-2022 </time>
+        </div>
+      </div>
+    </div>
+    <div class="row msg_container base_sent"
+      *ngIf="mensaje.comensal">
+      <div class="col-md-10 col-xs-10 ">
+        <div class="messages msg_sent">
+          <p  style="font-size: 15px;"> {{mensaje.mensaje}} </p><br>
+          <time> {{mensaje.time}} </time>
+   
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>
+<ion-footer keyboard-attach class="bar-stable item-input-inset">
+  <ion-input type="text" placeholder="Escriba su mensaje..." maxlength="21" ></ion-input>
+  <ion-button expand="full" shape="round" color="success"> Enviar </ion-button>
+</ion-footer>
+
+ 
