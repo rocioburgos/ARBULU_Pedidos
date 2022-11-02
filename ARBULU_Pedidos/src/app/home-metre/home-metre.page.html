@@ -1,9 +1,31 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>home-metre</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+ <ion-header >
+    <ion-toolbar>
+      <ion-title size="large">Inicio Mozo</ion-title>
+    </ion-toolbar>
+  </ion-header>
 <ion-content>
+  <div id="container"> 
 
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="danger" size="large" (click)="cerrarSesion()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    
+    <a [routerLink]="['/alta-clientes']"><ion-button> Alta cliente</ion-button></a>
+    <br><br>
+    
+    <br>
+
+    <a [routerLink]="['/carta-productos']"><ion-button>Carta</ion-button></a>
+    <br><br>
+    <br>
+    <a [routerLink]="['/chat']"><ion-button>Chat</ion-button></a>
+    <br><br>
+ 
+    
+    <br>
+    <a [routerLink]="['/listado-pedidos']"><ion-button>Listado pedidos- mozzoo</ion-button></a>
+ 
+  </div>
 </ion-content>

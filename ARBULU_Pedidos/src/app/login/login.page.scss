@@ -60,12 +60,10 @@
 
 .login {
   background-color: #e9c85d;
-  display: table;
 }
 
 .registro {
   background-color: #e9a85d;
-  display: table;
 }
 
 .log {
@@ -82,6 +80,7 @@
 }
 
 .logRegistro {
+  position: relative;
   background-color: #e9a85d;
   display: table-cell;
   vertical-align: middle;
@@ -108,6 +107,7 @@ input {
   margin-top: 1em;
   font-family: "Bebas Neue", Arial;
 }
+
 
 ::placeholder {
   color: #fff;

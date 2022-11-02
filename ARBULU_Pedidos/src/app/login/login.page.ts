@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../servicios/auth.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class LoginPage implements OnInit {
 
   formulario!: FormGroup;
 
-  constructor(public fb: FormBuilder, public afAuth: AuthService) {
+  constructor(public fb: FormBuilder, public afAuth: AuthService, private route: Router) {
     
   }
 
@@ -50,6 +51,11 @@ export class LoginPage implements OnInit {
 
   LoginUsuarioEmpleado(){
     this.afAuth.Login("leliseo89@hotmail.com", "123456");
+  }
+
+  Registrar()
+  {
+    this.route.navigate(['/alta-clientes']);
   }
 
 

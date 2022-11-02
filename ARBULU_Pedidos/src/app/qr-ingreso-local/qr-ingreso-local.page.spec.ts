@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { HomeMetrePage } from './home-metre.page';
+import { QrIngresoLocalPage } from './qr-ingreso-local.page';
 
-describe('HomeMetrePage', () => {
-  let component: HomeMetrePage;
-  let fixture: ComponentFixture<HomeMetrePage>;
+describe('QrIngresoLocalPage', () => {
+  let component: QrIngresoLocalPage;
+  let fixture: ComponentFixture<QrIngresoLocalPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomeMetrePage ],
+      declarations: [ QrIngresoLocalPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomeMetrePage);
+    fixture = TestBed.createComponent(QrIngresoLocalPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

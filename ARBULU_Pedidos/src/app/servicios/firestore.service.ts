@@ -14,6 +14,7 @@ import { Usuario } from '../clases/usuario';
 export class FirestoreService {
   private usuariosRef: AngularFirestoreCollection;
   private mesasRef: AngularFirestoreCollection;
+  public usuarioActual: any;
 
   constructor(private db: AngularFirestore) {
     this.usuariosRef = this.db.collection('usuarios');
@@ -51,4 +52,5 @@ export class FirestoreService {
       )
     );
   }
+   
 }

@@ -40,6 +40,14 @@ const routes: Routes = [
     loadChildren: () => import('./alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
   },
   {
+    path: 'qr-ingreso-local',
+    loadChildren: () => import('./qr-ingreso-local/qr-ingreso-local.module').then( m => m.QrIngresoLocalPageModule)
+  },
+  {
+    path: 'home-cliente',
+    loadChildren: () => import('./home-cliente/home-cliente.module').then( m => m.HomeClientePageModule)
+  },
+  {
     path: 'listado-productos',
     loadChildren: () => import('./listado-productos/listado-productos.module').then( m => m.ListadoProductosPageModule)
   },
@@ -58,26 +66,23 @@ const routes: Routes = [
   {
     path: 'detalle-pedido',
     loadChildren: () => import('./detalle-pedido/detalle-pedido.module').then( m => m.DetallePedidoPageModule)
-  },  {
+  },  
+  {
     path: 'listado-pedidos',
     loadChildren: () => import('./listado-pedidos/listado-pedidos.module').then( m => m.ListadoPedidosPageModule)
-  },
+  },  
   {
     path: 'home-metre',
     loadChildren: () => import('./home-metre/home-metre.module').then( m => m.HomeMetrePageModule)
-  },
+  },  
   {
-    path: 'home-empleados',
+    path: 'home-empleado',
     loadChildren: () => import('./home-empleados/home-empleados.module').then( m => m.HomeEmpleadosPageModule)
-  },
+  },  
   {
     path: 'home-duenio',
     loadChildren: () => import('./home-duenio/home-duenio.module').then( m => m.HomeDuenioPageModule)
-  },
-
-
-
-
+  }  
 ];
 
 @NgModule({

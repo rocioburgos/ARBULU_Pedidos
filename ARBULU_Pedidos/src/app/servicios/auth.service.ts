@@ -3,6 +3,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { UtilidadesService } from './utilidades.service';
 import { Usuario } from '../clases/usuario';
+import { Observable } from 'rxjs';
+import { FirestoreService } from './firestore.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +13,47 @@ export class AuthService {
   
   public usuarioLogueado = new Usuario();
   public logueado = false;
+  public usuario$: Observable<any> = this.afAuth.user;
+  private email: string;
+  public usuarioActual: any;
+  private usuarios:any;
+  constructor(
+    public afAuth: AngularFireAuth,
+    private utilidadesSrv: UtilidadesService,
+    public ngZone: NgZone,
+    public router: Router,
+    private firestoreSvc: FirestoreService) {
 
-  constructor(public afAuth: AngularFireAuth, private utilidadesSrv: UtilidadesService, public ngZone: NgZone, public router: Router) { }
+    console.log(this.usuario$);
+    this.usuario$.subscribe(result => {
+      if(result!= null)
+      {
+         this.email = result['email'];
+          this.firestoreSvc.obtenerColeccionUsuario().subscribe(usuarios => {
+            usuarios.forEach(usuario => {
+              //console.log(usuario);
+              if(usuario.email == this.email){
+                this.usuarioActual = usuario;
+                console.log(this.usuarioActual);
+              }
+            })
+          });
+      }
+    });
+
+
+    this.firestoreSvc.obtenerColeccionUsuario().subscribe((res)=>{
+      this.usuarios= res;
+    });
+ 
+   }
 
   async Register(email: string, password: string) {
     try {
       const result = await this.afAuth
         .createUserWithEmailAndPassword(email, password);
         this.ngZone.run(() => {
+
           this.router.navigate(['home']);
           this.utilidadesSrv.successToast("Registro exitoso.",2000);
         });
@@ -32,8 +67,18 @@ export class AuthService {
       const result = await this.afAuth
         .signInWithEmailAndPassword(email, pass);
       this.ngZone.run(() => {
-        this.router.navigate(['home']);
+        this.usuarios.forEach(user => {
+
+          if(user.email== email){
+           localStorage.setItem('usuario_ARBULU', JSON.stringify(
+                                                                  {  'email': this.email, 
+                                                                     'sesion': 'activa',
+                                                                     'tipo':user.tipo,
+                                                                     'tipoEmpleado':user.tipoEmpleado  }));
+          }
+       });
         this.utilidadesSrv.successToast("Ingreso exitoso.",2000);
+        this.router.navigate(['home']);
       });
 
     } catch (error:any) {
@@ -74,6 +119,12 @@ export class AuthService {
   public signOut() {
     this.usuarioLogueado = new Usuario();
     this.logueado = false;
+    localStorage.removeItem('usuario_ARBULU');
+
     return this.afAuth.signOut();
   }
+
+  getCurrentUserFirebase(): Observable<any>{
+    return this.afAuth.authState;
+   }
 }

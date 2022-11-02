@@ -1,9 +1,24 @@
-<ion-header>
+<ion-header >
   <ion-toolbar>
-    <ion-title>home-duenio</ion-title>
+    <ion-title size="large">Inicio dueño</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-
+<div id="container">  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger" size="large" (click)="cerrarSesion()">
+      <ion-icon name="arrow-forward"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+  <a [routerLink]="['/alta-supervisor']"><ion-button> Alta dueño/supervisor</ion-button></a>
+  <br><br> 
+  <br>
+  <a [routerLink]="['/alta-empleado']"><ion-button>Alta empleados</ion-button></a>
+  <br><br>
+  <br>
+  <a [routerLink]="['/alta-mesa']"><ion-button>Alta mesa</ion-button></a>
+  <br><br>
+  <br>  
+</div>
 </ion-content>

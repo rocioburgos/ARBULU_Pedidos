@@ -1,9 +1,24 @@
-<ion-header>
+<ion-header >
   <ion-toolbar>
-    <ion-title>home-empleados</ion-title>
+    <ion-title size="large">Inicio empleado</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-
+<div id="container">  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger" size="large" (click)="cerrarSesion()">
+      <ion-icon name="arrow-forward"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+  <a [routerLink]="['/alta-producto']"><ion-button> Alta productos</ion-button></a>
+  <br><br> 
+  <br>
+  <a [routerLink]="['/listado-productos']"><ion-button> Listado productos</ion-button></a>
+  <br><br>
+  <br>
+  <a [routerLink]="['/listado-pedidos']"><ion-button>Ordenes</ion-button></a>
+  <br><br>
+  <br>  
+</div>
 </ion-content>

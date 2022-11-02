@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { Photo } from '@capacitor/camera';
@@ -56,13 +56,25 @@ export class AltaClientesPage implements OnInit {
       apellido: ['', Validators.compose([Validators.required])],
       dni: ['', Validators.compose([Validators.required, Validators.min(10000000), Validators.max(99999999)])],
       email: ["", [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      clave: ["", Validators.required]
+      clave: ["", Validators.required],
+      //clave2: ["", [Validators.required, this.comparePassValidator(this.altaForm.value.clave1, this.altaForm.value.clave2)]]
+      clave2: ["", Validators.compose([Validators.required])],
+
     });
 
     this.altaFormAnonimo = this.fromBuilder.group({
       'nombre': ['', Validators.required]
     });
   }
+
+  comparePassValidator(clave1: AbstractControl, clave2: AbstractControl) {
+    return () => {
+    if (clave1.value !== clave2.value)
+      return { match_error: 'Las claves no coincides.' };
+    return null;
+  };
+
+}
 
 
   aceptar() {     

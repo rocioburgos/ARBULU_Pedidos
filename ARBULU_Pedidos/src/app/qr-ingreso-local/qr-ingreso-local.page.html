@@ -1,0 +1,71 @@
+<!-- <ion-header>
+  <ion-toolbar color="header">
+    <ion-title>
+      <ion-img style="width: 55px; height: 55px;" src='assets/iconTransp2.png'></ion-img>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button style="margin: auto;" type="button" menu="menu" color="claro"><ion-icon name="menu"></ion-icon></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content slot="fixed">
+  <div class="container-datos">
+    <img src="assets/iconTransp.png" style="margin-top: 10%;" width="120px">
+  
+    <div style="height: 250px;">
+      <ion-icon name="qr-code-outline" style="margin-top: 20%; font-size: 150px;" color="claro" (click)="this.Escanear()"></ion-icon>
+    </div>
+    <div class="texto">
+      <h4>Escanea el QR del local para entrar en la lista de espera.</h4>
+    </div>
+  </div>
+</ion-content> -->
+<ion-header  [hidden]="scanActive">
+  <ion-toolbar>
+    <ion-title slot="start">Ingreso a Local  </ion-title>
+    <!-- <ion-button (click)="cerrarSesion()"  slot="end"> 
+      <ion-icon name="exit-outline"></ion-icon>
+    </ion-button> -->
+  </ion-toolbar>
+</ion-header> 
+<ion-content [fullscreen]="true" [style.--background]="scanActive ? '#00000000': 'fff' ">
+  <br><br>
+
+<br><br>
+  <div class="btn-group">
+
+    <ion-button [hidden]="scanActive" expand="block"  size="large"  shape="round" color="warning" (click)="startScan()">
+       Encuesta 
+    </ion-button>
+
+    <ion-button [hidden]="scanActive" expand="block"  size="large"  shape="round" color="success" (click)="startScan()">
+      <ion-icon name="qr-code-outline" color="dark"></ion-icon>
+       QR Ingreso
+    </ion-button>
+ 
+    <!-- <ion-button (click)="LimpiarCreditos()" [hidden]="scanActive" expand="block" size="large" shape="round" color="danger">
+      <ion-icon name="trash-outline" color="light"></ion-icon>
+      Limpiar crédito 
+    </ion-button > -->
+   </div>
+  
+   <ion-row class="scanner-buttons" [hidden]="!scanActive">
+    <ion-col  >
+      <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
+    </ion-col>
+   </ion-row>
+
+   <div class="scan-box" [hidden]="!scanActive"> 
+   </div> 
+
+  <!-- <ngx-spinner 
+    bdColor="rgba(0,0,0,0.86)" 
+    size="large"
+    color="#0bbad2"  
+    type="ball-8bits" 
+    [fullScreen]="true"
+    [name]="'logout'">
+		<p style="color: white">Cerrando sesión ... </p>
+	</ngx-spinner> -->
+</ion-content>
