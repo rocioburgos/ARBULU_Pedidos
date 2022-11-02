@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="sector-elaboracion" slot="start"></ion-back-button>
+    <ion-title >Detalle pedido- Mesa {{ pedido.numero_mesa }} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content> 
+  <div *ngFor="let item of pedido.productos"> 
+    <ion-card  *ngIf="item.sector == sectorUserActual"
+    style=" 
+      text-align:center; 
+      padding:8px;
+    ">
+     
+      <ion-card-header>
+        <ion-card-title>  {{item.nombre}}</ion-card-title> 
+      </ion-card-header>
+    
+      <ion-card-content>   
+        <ion-label>Cantidad pedida: {{item.cantidad}} </ion-label> <br>
+        <ion-label>Estado: {{item.estadoProductoPedido}} </ion-label>  
+        <ion-button size="small" color="warning" *ngIf="item.estadoProductoPedido =='PENDIENTE'" (click)="cambiarEstado(item, 'EN_ELABORACION')">Iniciar preparacion</ion-button>
+        <ion-button size="small" color="success" *ngIf="item.estadoProductoPedido =='EN_ELABORACION'" (click)="cambiarEstado(item,'TERMINADO' )">Finalizar preparacion</ion-button>
+      </ion-card-content> 
+
+    </ion-card> 
+  </div>
+</ion-content>

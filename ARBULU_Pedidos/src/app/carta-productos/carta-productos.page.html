@@ -30,9 +30,9 @@
        
 
       </ion-card-content>
-      <ion-button size="small" color="dark">+</ion-button>
-      <ion-label> 10 </ion-label>
-      <ion-button size="small" color="dark">-</ion-button>
+      <ion-button size="small" color="warning"  (click)="sumar(index)">+</ion-button>
+      <ion-label>   {{item.cantidad}} </ion-label>
+      <ion-button size="small" color="danger" (click)="restar( index)">-</ion-button>
     </ion-card> 
 </div>
  
@@ -55,14 +55,14 @@
 
 <ion-footer collapse="fade">
   <ion-row>
-    <ion-col  >
-      <strong > 💵 ${{total}}</strong>
-    </ion-col>
   <ion-col > 
       <strong>🕗 {{demoraEstimada}} min</strong>
   </ion-col>
+  <ion-col  >
+    <strong > 💵 ${{total}}</strong>
+  </ion-col>
   </ion-row>
-  <ion-button  expand="full" shape="round" color="success" (click)="hacerPedido()">
+  <ion-button [disabled]="!tieneProductos"  expand="full" shape="round" color="success" (click)="hacerPedido()">
     Realizar pedido
   </ion-button>
  </ion-footer>

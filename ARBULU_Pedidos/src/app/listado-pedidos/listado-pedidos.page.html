@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    <ion-title>Lista  pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-content-scroll-host ion-padding">
+    <div *ngFor="let pedido of pedidos">
+      <ion-card  style="   text-align:center;   padding:8px;  " >
+        <ion-card-header>
+          <ion-card-title>Mesa {{pedido.numero_mesa}} </ion-card-title> 
+        </ion-card-header> 
+        <ion-card-content> 
+          <ion-label>Estado orden: {{pedido.estado}}</ion-label><br>
+          <ion-button size="small" color="success" *ngIf="pedido.estado=='PENDIENTE'"  (click)="cambiarEstado(pedido, 'CONFIRMADO')">Confirmar pedido</ion-button>
+          <ion-button size="small" color="success"  *ngIf="pedido.estado=='TERMINADO'" (click)="cambiarEstado(pedido, 'ENTREGADO')">Entregar pedido</ion-button>
+          <ion-button size="small" color="primary"  (click)="verDetalle(pedido.doc_id)">Ver detalle</ion-button>
+        </ion-card-content> 
+      </ion-card>  
+  </div>
+  </div>
+</ion-content>

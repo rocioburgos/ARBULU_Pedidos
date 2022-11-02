@@ -38,7 +38,8 @@ const routes: Routes = [
   {
     path: 'alta-mesa',
     loadChildren: () => import('./alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
-  },  {
+  },
+  {
     path: 'listado-productos',
     loadChildren: () => import('./listado-productos/listado-productos.module').then( m => m.ListadoProductosPageModule)
   },
@@ -54,6 +55,14 @@ const routes: Routes = [
     path: 'sector-elaboracion',
     loadChildren: () => import('./sector-elaboracion/sector-elaboracion.module').then( m => m.SectorElaboracionPageModule)
   },
+  {
+    path: 'detalle-pedido',
+    loadChildren: () => import('./detalle-pedido/detalle-pedido.module').then( m => m.DetallePedidoPageModule)
+  },  {
+    path: 'listado-pedidos',
+    loadChildren: () => import('./listado-pedidos/listado-pedidos.module').then( m => m.ListadoPedidosPageModule)
+  },
+
 
 
 

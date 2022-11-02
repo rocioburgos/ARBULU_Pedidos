@@ -1,9 +1,26 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>sector-elaboracion</ion-title>
+    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    <ion-title>Ordenes {{tipoSector}} </ion-title>
+    <ion-button slot="end" color="warning" (click)="abrirChat()">💬</ion-button> 
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content [scrollY]="false">
+ <div class="ion-content-scroll-host ion-padding">
+  <div *ngFor="let pedido of pedidos">
+    <ion-card  style="   text-align:center;   padding:8px;  "
+     *ngIf="  
+    ( pedido.estado == 'CONFIRMADO' || pedido.estado == 'EN_ELABORACION')">
+      <ion-card-header>
+        <ion-card-title>Mesa {{pedido.numero_mesa}} </ion-card-title> 
+      </ion-card-header> 
+      <ion-card-content> 
+        <ion-label>Estado orden: {{pedido.estado}}</ion-label><br>
+        <ion-button size="small" color="primary"  (click)="verDetalle(pedido.doc_id)">Ver detalle</ion-button>
+      </ion-card-content> 
+    </ion-card>  
+</div>
+</div>
 </ion-content>
+ 
