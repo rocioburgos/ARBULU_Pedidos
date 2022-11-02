@@ -19,11 +19,15 @@
         *ngIf="formulario.get('Password')?.hasError('minLength') && formulario.get('Password')?.touched">La Contraseña
         debe contener al menos 6 caracteres</span>
     </div>
-    <div class="login">
-      <button type="submit" class="log">INGRESAR</button>
+    <div class="login" (click)="onLogin()">
+      <input type="button" value="INGRESAR" class="formControl" readonly/>
+      <!-- <label class="log">INGRESAR</label> -->
+      <!-- <ion-tittle class="log">INGRESAR</ion-tittle> -->
+      <!-- <button type="submit" class="log">INGRESAR</button> -->
     </div>
-    <div class="registro">
-      <button type="submit" [routerLink]="['/alta-clientes']" class="logRegistro">REGISTRAR</button>
+    <div class="registro" (click)="Registrar()">
+      <input type="button" value="REGISTRAR" class="formControl" readonly/>
+      <!-- <button type="submit" [routerLink]="['/alta-clientes']" class="logRegistro">REGISTRAR</button> -->
     </div>
   </div>
 </form>
@@ -44,16 +48,16 @@
 
   <ion-fab-list side="end">
     <ion-fab-button color="primary" size="large" (click)="LoginUsuarioAnonimo()">
-      Anonimo 
+      <strong>A</strong>
     </ion-fab-button>
     <ion-fab-button color="secondary" (click)="LoginUsuarioDuenio()">
-      Dueño
+      <strong>D</strong>
     </ion-fab-button>
     <ion-fab-button color="danger" (click)="LoginUsuarioEmpleado()">
-      Empleado
+      <strong>E</strong>
     </ion-fab-button>
     <ion-fab-button color="danger" (click)="LoginUsuarioCliente()">
-      Cliente
+      <strong>C</strong>
     </ion-fab-button>
   </ion-fab-list>
 

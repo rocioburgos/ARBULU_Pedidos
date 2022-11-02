@@ -38,7 +38,15 @@ const routes: Routes = [
   {
     path: 'alta-mesa',
     loadChildren: () => import('./alta-mesa/alta-mesa.module').then( m => m.AltaMesaPageModule)
+  },  {
+    path: 'qr-ingreso-local',
+    loadChildren: () => import('./qr-ingreso-local/qr-ingreso-local.module').then( m => m.QrIngresoLocalPageModule)
   },
+  {
+    path: 'home-cliente',
+    loadChildren: () => import('./home-cliente/home-cliente.module').then( m => m.HomeClientePageModule)
+  },
+
 
 
 ];

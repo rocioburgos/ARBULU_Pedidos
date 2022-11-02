@@ -3,6 +3,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { UtilidadesService } from './utilidades.service';
 import { Usuario } from '../clases/usuario';
+import { Observable } from 'rxjs';
+import { FirestoreService } from './firestore.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +13,29 @@ export class AuthService {
   
   public usuarioLogueado = new Usuario();
   public logueado = false;
+  public usuario$: Observable<any> = this.afAuth.user;
+  private email: string;
+  public usuarioActual: any;
 
-  constructor(public afAuth: AngularFireAuth, private utilidadesSrv: UtilidadesService, public ngZone: NgZone, public router: Router) { }
+  constructor(public afAuth: AngularFireAuth, private utilidadesSrv: UtilidadesService, public ngZone: NgZone, public router: Router, private firestoreSvc: FirestoreService) {
+    console.log(this.usuario$);
+    this.usuario$.subscribe(result => {
+      if(result!= null)
+      {
+         this.email = result['email'];
+          this.firestoreSvc.obtenerColeccionUsuario().subscribe(usuarios => {
+            usuarios.forEach(usuario => {
+              //console.log(usuario);
+              if(usuario.email == this.email){
+                this.usuarioActual = usuario;
+                console.log(this.usuarioActual);
+              }
+            })
+          });
+      }
+    });
+    
+   }
 
   async Register(email: string, password: string) {
     try {
@@ -76,4 +99,8 @@ export class AuthService {
     this.logueado = false;
     return this.afAuth.signOut();
   }
+
+  getCurrentUserFirebase(): Observable<any>{
+    return this.afAuth.authState;
+   }
 }

@@ -5,9 +5,11 @@ export class Usuario {
         dni: number;
         cuil: number;
         foto: string;
-        uid:string;
-        tipo:eUsuario;
-        tipoEmpleado:eEmpleado;
+        uid: string;
+        tipo: eUsuario;
+        tipoEmpleado: eEmpleado;
+        enListaDeEspera: boolean;
+        mesa: string;
         
         constructor(){
             this.nombre= '';
@@ -16,6 +18,8 @@ export class Usuario {
             this.cuil= 0;
             this.foto= '';
             this.uid= '';
+            this.enListaDeEspera = false;
+            this.mesa = '';
         }
 }
 

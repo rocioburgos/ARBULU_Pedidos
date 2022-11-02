@@ -45,10 +45,22 @@
       </ion-item>
       <small
         *ngIf="altaForm.get('clave').hasError('required') && (altaForm.get('clave').dirty || altaForm.get('clave').touched)"
-        style="color: var(--ion-color-danger)">Por favor, ingrese el correo electronico.</small>
+        style="color: var(--ion-color-danger)">Por favor, ingrese la clave.</small>
 
       <br>
       <br>
+       <ion-item>
+        <ion-label>Confirmar Clave</ion-label>
+        <ion-input type="password" [(ngModel)]='clave2' formControlName="clave2">
+        </ion-input>
+      </ion-item>
+      <!-- <small
+        *ngIf="altaForm.get('clave2').hasError('required') && (altaForm.get('clave2').dirty || altaForm.get('clave2').touched || altaForm.get('clave2').comparePassValidator)" 
+        style="color: var(--ion-color-danger)">Por favor, ingrese la clave.</small> -->
+
+      <br>
+      <br> 
+
       <ion-item>
         <ion-label>Nombre</ion-label>
         <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre">
