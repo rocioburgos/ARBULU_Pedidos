@@ -30,12 +30,12 @@ Somos estudiantes de Tecnicatura Universitaria en programación  en UTN-FRA
 |   | Inicio de sesion  |👨‍💻Eliseo|🟢Finalizado|
 |   |Alta de clientes |👨‍💻Eliseo   |🟢Finalizado|
 |  #| Segundo sprint Fecha: 29/10/2022 a 5/11/2022  |  |  |
-|   | Gestion- Ingresar al local|👨‍💻Eliseo |🔴Sin iniciar|
-|   |Gestion -Agregar un nuevo cliente registrado  |👨‍💻Ezequiel|🔴Sin iniciar|
-|   |Gestion -Realizar pedidos (platos y bebidas)|👩‍💻Rocio   |🔴Sin iniciar|
-|   |Gestion- Confirmar pedidos|👩‍💻Rocio |🔴Sin iniciar|
-|   |Gestion-Entrega de pedido y cobro| Sin asignar |🔴Sin iniciar|
+|   | Gestion- Ingresar al local|👨‍💻Eliseo |🟡Iniciado|
+|   |Gestion -Agregar un nuevo cliente registrado  |👨‍💻Ezequiel|🟡Iniciado|
+|   |Gestion -Realizar pedidos (platos y bebidas)|👩‍💻Rocio   |🟡Iniciado|
+|   |Gestion- Confirmar pedidos|👩‍💻Rocio |🟡Iniciado|
 | # | Tercer sprint Fecha: 5/11/2022 a 12/11/2022  |  |  |
+|   |Gestion-Entrega de pedido y cobro| Sin asignar |🔴Sin iniciar|
 |   |Encuesta cliente | 👨‍💻Ezequiel |🔴Sin iniciar|
 |   |Encuesta supervisor | 👨‍💻Eliseo        |🔴Sin iniciar|   
 |   | Encuesta Empleados|👩‍💻Rocio  |🔴Sin iniciar|
