@@ -62,6 +62,18 @@ const routes: Routes = [
     path: 'listado-pedidos',
     loadChildren: () => import('./listado-pedidos/listado-pedidos.module').then( m => m.ListadoPedidosPageModule)
   },
+  {
+    path: 'home-metre',
+    loadChildren: () => import('./home-metre/home-metre.module').then( m => m.HomeMetrePageModule)
+  },
+  {
+    path: 'home-empleados',
+    loadChildren: () => import('./home-empleados/home-empleados.module').then( m => m.HomeEmpleadosPageModule)
+  },
+  {
+    path: 'home-duenio',
+    loadChildren: () => import('./home-duenio/home-duenio.module').then( m => m.HomeDuenioPageModule)
+  },
 
 
 
