@@ -102,17 +102,10 @@ export class AltaClientesPage implements OnInit {
     else{
       this.usuario.nombre = this.altaFormAnonimo.value.nombre;
       this.usuario.tipo = eUsuario.cliente;
-
+      this.usuario.clienteValidado = true;
       this.firestoreSvc.crearUsuario(this.usuario);
-      localStorage.setItem('usuario_ARBULU', JSON.stringify(
-        {  'email': this.email, 
-           'sesion': 'activa',
-           'tipo':this.usuario.tipo,
-           'tipoEmpleado':this.usuario.tipoEmpleado,
-           'anonimo': true }));
-
       this.utilidadesSrv.successToast("Ingreso exitoso.");
-      this.navigateTo('home-cliente');
+      this.navigateTo('qr-ingreso-local');
     }
 
     //this.utilidadesSrv.mostrartToast('Aceptado');

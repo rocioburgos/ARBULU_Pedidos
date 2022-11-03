@@ -26,7 +26,10 @@ export class QrIngresoLocalPage implements OnInit {
     private authSvc: AuthService) 
   { 
     this.usuarioActual = this.authSvc.usuarioActual;
-    console.log(this.usuarioActual);
+    if(!this.usuarioActual){
+      this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));  
+      this.usuarioActual = this.firestoreSvc.obtenerUsuarioPorId(this.usuarioActual.uid);
+    }
   }
 
  
@@ -67,7 +70,7 @@ export class QrIngresoLocalPage implements OnInit {
       alert(result.content + result?.hasContent);
       if (result?.hasContent) {
         if(result.content === 'qrIngresoAListaDeEspera'){
-          this.firestoreSvc.update(this.usuarioActual.id, {enListaDeEspera: true});
+          this.firestoreSvc.update(this.usuarioActual.uid, {enListaDeEspera: true});
           this.router.navigate(['/home-cliente']);
           this.utilidadesSvc.successToast("En lista de espera...", 2000);
         }

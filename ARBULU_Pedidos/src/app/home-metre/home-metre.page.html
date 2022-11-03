@@ -1,18 +1,34 @@
 <ion-header>
-  <ion-toolbar>
+  <!-- <ion-toolbar color="warning"> 
     <ion-back-button defaultHref="home" slot="start"></ion-back-button>
     <ion-title style="text-align: center;">Inicio Metre</ion-title>
 
+  </ion-toolbar> -->
+
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inicio Metre</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" size="large" (click)="cerrarSesion()">
+        <ion-icon slot="end" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+
 </ion-header>
+
+
+
 
 <ion-content>
   <div id="container">
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button color="danger" size="large" (click)="cerrarSesion()">
-        <ion-icon name="arrow-forward"></ion-icon>
+        <ion-icon name="arrow-forward-circle"></ion-icon>
       </ion-fab-button>
-    </ion-fab>
+    </ion-fab> -->
 
     <a [routerLink]="['/alta-clientes']">
       <ion-button> Alta cliente</ion-button>
@@ -31,9 +47,11 @@
       <ion-button>Listado pedidos- mozzoo</ion-button>
     </a>
 
-  
+
     <h3 class="titulo">Clientes en Espera</h3>
-    <div class="card-body" *ngFor="let itemCliente of listadoClientesEnEspera">
+    <ion-scroll scrollX="true">
+
+      <div class="card-body" *ngFor="let itemCliente of listadoClientesEnEspera">
         <!-- <div class="foto">
         <ion-slides mode="md" pager="md" scrollbar="md">
           <ion-slide>
@@ -44,20 +62,21 @@
         </ion-slides>
       </div> -->
         <!-- <p style="font-size: 20px; height: 46px;text-align: center;text-transform: uppercase;">{{itemCliente.nombre}}</p> -->
-        <ion-item  class="datos">{{itemCliente.nombre}}
+        <ion-item class="datos">{{itemCliente.nombre}}
           <ion-list>
             <ion-item>
               <ion-label>Asignar Mesa</ion-label>
-            <ion-select okText="Seleccionar" cancelText="Cancelar" placeholder="Asignar Mesa" 
-              (ionChange)="asignarMesa(itemCliente, $event.target.value)">
-              <ion-select-option [value]="item" *ngFor=" let item of mesas">{{item.numero}}</ion-select-option>
-            </ion-select>
-          </ion-item>
+              <ion-select okText="Seleccionar" cancelText="Cancelar"
+                (ionChange)="asignarMesa(itemCliente, $event.target.value)">
+                <ion-select-option [value]="item" *ngFor=" let item of mesas">{{item.numero}}</ion-select-option>
+              </ion-select>
+            </ion-item>
           </ion-list>
         </ion-item>
-          <!-- <ion-icon name="checkmark-circle" style="color: #ffc577; height: 45px; margin-left: 17px;" (click)="AsignarMesa(item)"></ion-icon> -->
-          <br>
-          
-    </div>
+        <!-- <ion-icon name="checkmark-circle" style="color: #ffc577; height: 45px; margin-left: 17px;" (click)="AsignarMesa(item)"></ion-icon> -->
+        <br>
+
+      </div>
+    </ion-scroll>
   </div>
 </ion-content>

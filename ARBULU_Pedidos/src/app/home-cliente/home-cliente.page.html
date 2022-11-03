@@ -1,12 +1,25 @@
 <ion-header>
-  <ion-toolbar color="warning">
+  <!-- <ion-toolbar color="warning"> 
     <ion-back-button defaultHref="home" slot="start"></ion-back-button>
-    <ion-title>Inicio Cliente</ion-title>
+    <ion-title style="text-align: center;">Inicio Metre</ion-title>
 
+  </ion-toolbar> -->
+
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inicio Cliente</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" size="large" (click)="cerrarSesion()">
+        <ion-icon slot="end" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+
 </ion-header>
 
-<ion-content slot="fixed" *ngIf="this.usuario">
+<ion-content slot="fixed" *ngIf="this.usuario" [hidden]="scanActive" >
   <div class="container-datos" *ngIf="!escaneoMesa">
     <!-- ICONO DE COCINA CUANDO ESTA EL CLIENTE ASIGNADO -->
     <!-- <img *ngIf="this.usuario.mesa != ''" src="assets/iconTransp.png" style="margin-top: 10%;" width="120px"> -->
@@ -30,7 +43,7 @@
   </div>
 
   <div class="container-datos" *ngIf="escaneoMesa">
-    <img src="assets/iconTransp.png" style="margin-top: 10%;" width="120px">
+    <img src="../../assets/plato.png" style="margin-top: 10%;margin-left: 25%;" width="120px">
     <div *ngIf="this.pedido == ''">
       <ion-button type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 20%;" (click)="RealizarPedido()">
         <ion-icon class="iconBoton" name="cart-outline"></ion-icon>
@@ -40,10 +53,18 @@
         <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
         <h3>Consultar al mozo</h3>
       </ion-button>
+      <ion-button routerLink="../chat" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
+        <ion-icon name="help-outline"></ion-icon>
+        <h3>Encuesta</h3>
+      </ion-button>
+      <ion-button routerLink="../chat" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
+        <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
+        <h3>Juegos</h3>
+      </ion-button>
     </div>
   
   </div> 
-
+</ion-content>
   <ion-row class="scanner-buttons" [hidden]="!scanActive">
     <ion-col  >
       <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
@@ -52,4 +73,3 @@
 
    <div class="scan-box" [hidden]="!scanActive"> 
    </div> 
-</ion-content>
