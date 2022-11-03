@@ -1,0 +1,40 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-title size="large">Habilitar clientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<div id="container">  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger" size="large" (click)="cerrarSesion()">
+      <ion-icon name="arrow-forward"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div *ngIf="flagListaVacia == true" class="ion-content-scroll-host">
+    No hay clientes por validar
+  </div>
+
+    <div *ngIf="flagListaVacia == false" class="ion-content-scroll-host">
+
+       <ion-card *ngFor="let item of listaUsuarios; let index=index"
+       style="text-align:center;padding:2px;">
+        
+         <ion-card-header>
+           <ion-card-title>
+             <img [src]="item.foto"><br>
+              {{item.nombre}} {{item.apellido}}</ion-card-title> 
+         </ion-card-header>
+       
+         <ion-card-content>
+           
+           <ion-label>Mail: {{item.email}}</ion-label>
+           <br>
+             <ion-label>Dni: {{item.dni}}</ion-label><br>
+   
+         </ion-card-content>
+         <ion-button size="small" color="success" (click)="validar(index)">Validar</ion-button>
+       </ion-card> 
+   </div>
+
+</div>
