@@ -6,17 +6,24 @@
 ) format('truetype');
 }
 
+ion-content{
+  --overflow:hidden;
+  --background: none;
+  background: url("../../assets/background/bg.png");
+  background-size: cover;
+  background-position: center center;              
+}
+
 .form {
   height: 18.75em;
   width: 25em;
-  background: #fff;
+  background: rgb(255, 255, 255);
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
   text-transform: uppercase;
   font-family: "Bebas Neue", Arial;
-  color: #fff;
 }
 
 .form > div {
@@ -108,6 +115,18 @@ input {
   font-family: "Bebas Neue", Arial;
 }
 
+span{
+  color: red;
+  margin-left: 25%;
+}
+
+img{
+  height: 40px;
+  width: 40px;
+  display:block;
+  margin:auto;
+  border-radius: 10px;
+}
 
 ::placeholder {
   color: #fff;

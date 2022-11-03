@@ -1,16 +1,25 @@
 <ion-header>
-  <ion-toolbar color="header">
-    <ion-title>
-      <ion-img style="width: 55px; height: 55px;" *ngIf="!spinner" src='../../assets/icon-color.png'></ion-img>
-      <!-- <ion-img class="rotate-center" style="width: 55px; height: 55px;" *ngIf="spinner" src='assets/iconTransp2.png'></ion-img> -->
-    </ion-title>
+  <!-- <ion-toolbar color="warning"> 
+    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    <ion-title style="text-align: center;">Inicio Metre</ion-title>
+
+  </ion-toolbar> -->
+
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inicio Cliente</ion-title>
     <ion-buttons slot="end">
-      <ion-menu-button style="margin: auto;" type="button" menu="menu" color="claro"><ion-icon name="menu"></ion-icon></ion-menu-button>
+      <ion-button color="danger" size="large" (click)="cerrarSesion()">
+        <ion-icon slot="end" name="log-out-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
 </ion-header>
 
-<ion-content slot="fixed" *ngIf="this.usuario">
+<ion-content slot="fixed" *ngIf="this.usuario" [hidden]="scanActive" >
   <div class="container-datos" *ngIf="!escaneoMesa">
     <!-- ICONO DE COCINA CUANDO ESTA EL CLIENTE ASIGNADO -->
     <!-- <img *ngIf="this.usuario.mesa != ''" src="assets/iconTransp.png" style="margin-top: 10%;" width="120px"> -->
@@ -27,14 +36,14 @@
     <div class="texto">
       <h4 *ngIf="this.usuario.mesa == ''">Espera a que se te asigne una mesa.</h4> <!-- No asignado y si ingreso -->
       <div *ngIf="this.usuario.mesa != ''"> <!-- Si asignado y si ingreso -->
-        <h1>Mesa <b>{{this.usuario.mesa}}</b></h1>
-        <h4>Escanee el QR de la mesa.</h4>
+        <h1>Se le asigno la Mesa <b>{{this.usuario.mesa}}</b></h1>
+        <h2>Escanee el QR de la mesa.</h2>
       </div>
     </div>
   </div>
 
   <div class="container-datos" *ngIf="escaneoMesa">
-    <img src="assets/iconTransp.png" style="margin-top: 10%;" width="120px">
+    <img src="../../assets/plato.png" style="margin-top: 10%;margin-left: 25%;" width="120px">
     <div *ngIf="this.pedido == ''">
       <ion-button type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 20%;" (click)="RealizarPedido()">
         <ion-icon class="iconBoton" name="cart-outline"></ion-icon>
@@ -44,10 +53,18 @@
         <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
         <h3>Consultar al mozo</h3>
       </ion-button>
+      <ion-button routerLink="../chat" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
+        <ion-icon name="help-outline"></ion-icon>
+        <h3>Encuesta</h3>
+      </ion-button>
+      <ion-button routerLink="../chat" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
+        <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
+        <h3>Juegos</h3>
+      </ion-button>
     </div>
   
   </div> 
-
+</ion-content>
   <ion-row class="scanner-buttons" [hidden]="!scanActive">
     <ion-col  >
       <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
@@ -56,4 +73,3 @@
 
    <div class="scan-box" [hidden]="!scanActive"> 
    </div> 
-</ion-content>
