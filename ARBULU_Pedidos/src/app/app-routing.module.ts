@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { ClienteAprobadoGuard } from './guards/cliente-aprobado.guard';
 
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate: [ClienteAprobadoGuard]
   },
   {
     path: '',
@@ -82,7 +84,12 @@ const routes: Routes = [
   {
     path: 'home-duenio',
     loadChildren: () => import('./home-duenio/home-duenio.module').then( m => m.HomeDuenioPageModule)
-  }  
+  },
+  {
+    path: 'listado-clientes-pendientes',
+    loadChildren: () => import('./listado-clientes-pendientes/listado-clientes-pendientes.module').then( m => m.ListadoClientesPendientesPageModule)
+  }
+ 
 ];
 
 @NgModule({

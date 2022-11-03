@@ -6,7 +6,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Mesa } from '../clases/mesa';
-import { Usuario } from '../clases/usuario';
+import { Usuario, eUsuario } from '../clases/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +51,14 @@ export class FirestoreService {
         })
       )
     );
+  }
+
+  public obtenerUsuariosPorTipo(tipo:eUsuario){
+    return this.usuariosRef.ref.where('tipoCliente', '==', tipo).get();
+  }
+
+  public async obtenerClientesInvalidados(){
+    return this.usuariosRef.ref.where('tipo', '==', 'cliente').where('clienteValidado','==',false).get();
   }
    
 }
