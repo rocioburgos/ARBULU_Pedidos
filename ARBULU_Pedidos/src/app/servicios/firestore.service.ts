@@ -22,11 +22,15 @@ export class FirestoreService {
   }
 
   public crearUsuario(usuario: Usuario) {
-    return this.usuariosRef.add({ ...usuario });
+    return this.usuariosRef.add({ ...usuario }).then((data)=>{
+      this.update(data.id, { uid: data.id });
+    });
   }
 
   public crearMesa(mesa: Mesa) {
-    return this.mesasRef.add({ ...mesa });
+    return this.mesasRef.add({ ...mesa }).then((data)=>{
+      this.updateMesa(data.id, { uid: data.id });
+    });
   }
 
   public obtenerUsuario() {
@@ -51,6 +55,26 @@ export class FirestoreService {
         })
       )
     );
+  }
+
+  public obtenerColeccionMesas() {
+    return this.mesasRef.snapshotChanges().pipe(
+      map((actions) =>
+        actions.map((a: any) => {
+          const data = a.payload.doc.data() as any;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        })
+      )
+    );
+  }
+
+  public obtenerMesas() {
+    return this.mesasRef.valueChanges() as Observable<Object[]>;
+  }
+
+  public updateMesa(id: string, data: any) {
+    return this.mesasRef.doc(id).update(data);
   }
    
 }

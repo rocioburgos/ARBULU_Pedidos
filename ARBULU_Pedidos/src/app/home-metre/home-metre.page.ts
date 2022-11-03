@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../servicios/auth.service';
+import { FirestoreService } from '../servicios/firestore.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
@@ -10,9 +11,16 @@ import { UtilidadesService } from '../servicios/utilidades.service';
 })
 export class HomeMetrePage implements OnInit {
  
+  listadoClientesEnEspera: Array<any> = [];
+  mesas: Array<any> = [];
+
   constructor(private authSrv:AuthService,
     private utilidadesSvc:UtilidadesService,
-    private router:Router) {}
+    private router:Router,
+    private firesoteSvc: FirestoreService) {
+      this.getClientes();
+      this.getMesas();
+    }
   
   ngOnInit() {
   }
@@ -25,4 +33,50 @@ export class HomeMetrePage implements OnInit {
       }, 2500);
     });
   }
+
+  getMesas() {
+    
+    let subMesas = this.firesoteSvc.obtenerMesas().subscribe((data: any) => {
+      this.mesas = [];
+      for (let item of data) {
+        if (!item.ocupada) {
+          this.mesas.push(item);
+        }
+      }
+      console.log(this.mesas);
+      //subMesas.unsubscribe();
+    });
+  }
+
+  getClientes() {
+    
+    let clientesSub = this.firesoteSvc.obtenerUsuario().subscribe((data: any) => {
+      this.listadoClientesEnEspera = [];
+      for (let item of data) {
+        if (item.enListaDeEspera) {
+          this.listadoClientesEnEspera.push(item);
+        }
+      }
+      console.log(this.listadoClientesEnEspera);
+      
+      //clientesSub.unsubscribe();
+    });
+  }
+
+  asignarMesa(cliente: any, mesa: any){
+    console.log(cliente.uid + " cliente ");
+    console.log(mesa.uid + " mesa");
+    cliente.enListaDeEspera = false;
+    cliente.mesa = mesa.numero.toString();//podria no setearlo
+    mesa.ocupada = true;
+    // this.userS.EditarColeccion(cliente.id, cliente, "clientes");
+    // this.userS.EditarColeccion(mesa.id, mesa, "mesas");
+
+    this.firesoteSvc.update(cliente.uid, cliente);
+    this.firesoteSvc.updateMesa(mesa.uid, mesa);
+
+    this.getClientes();
+    this.getMesas();
+  }
+
 }

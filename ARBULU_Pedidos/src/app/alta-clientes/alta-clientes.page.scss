@@ -22,4 +22,11 @@
     width: 300px;
    }
 
+   ion-content{
+      --background: none;
+      background: url("../../assets/background/bg.png");
+      background-size: cover;
+      background-position: center center;                                                                                          
+    }
+  
  

@@ -78,35 +78,48 @@ export class AltaClientesPage implements OnInit {
 
 
   aceptar() {     
-    
-    this.usuario.email = this.altaForm.value.email;
-    this.usuario.nombre = this.altaForm.value.nombre;
-    this.usuario.apellido = this.altaForm.value.apellido;
-    this.usuario.dni = this.altaForm.value.dni;
-    this.usuario.tipo = eUsuario.cliente;
-    this.usuario.nombre = this.altaForm.value.nombre;
+    if(!this.anonimo){
+      this.usuario.email = this.altaForm.value.email;
+      this.usuario.nombre = this.altaForm.value.nombre;
+      this.usuario.apellido = this.altaForm.value.apellido;
+      this.usuario.dni = this.altaForm.value.dni;
+      this.usuario.tipo = eUsuario.cliente;
+      this.usuario.nombre = this.altaForm.value.nombre;
 
-    this.authSvc.Register(this.usuario.email, this.clave).then((userCredential)=>{
-      this.firestoreSvc.crearUsuario(this.usuario).then((ok)=>{
-        this.usuario.uid = ok.id;
-        this.firestoreSvc.update(this.usuario.uid, {uid: this.usuario.uid}).then((ok)=>{
-          this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
-          this.navigateTo('home');
+      this.authSvc.Register(this.usuario.email, this.clave).then((userCredential)=>{
+        this.firestoreSvc.crearUsuario(this.usuario).then((ok)=>{
+         
+            this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
+            this.utilidadesSrv.successToast("Espere la Aprobacón de la cuenta.", 3000);
+            this.navigateTo('login');
+        }).catch((err)=>{
+          this.utilidadesSrv.errorToast(err);
         })
       }).catch((err)=>{
-        this.utilidadesSrv.errorToast(err);
-      })
-    }).catch((err)=>{
-      this.Errores(err);
-    })
+        this.Errores(err);
+      });
+    }
+    else{
+      this.usuario.nombre = this.altaFormAnonimo.value.nombre;
+      this.usuario.tipo = eUsuario.cliente;
 
+      this.firestoreSvc.crearUsuario(this.usuario);
+      localStorage.setItem('usuario_ARBULU', JSON.stringify(
+        {  'email': this.email, 
+           'sesion': 'activa',
+           'tipo':this.usuario.tipo,
+           'tipoEmpleado':this.usuario.tipoEmpleado,
+           'anonimo': true }));
 
-    
-    this.utilidadesSrv.mostrartToast('Aceptado');
+      this.utilidadesSrv.successToast("Ingreso exitoso.");
+      this.navigateTo('home-cliente');
+    }
+
+    //this.utilidadesSrv.mostrartToast('Aceptado');
     this.utilidadesSrv.vibracionError(); 
     setTimeout(() => {
       this.utilidadesSrv.reproducirSonidoInicio();
-    }, 5000);
+    }, 2000);
 
   }
 

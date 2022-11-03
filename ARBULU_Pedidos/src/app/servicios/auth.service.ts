@@ -53,8 +53,6 @@ export class AuthService {
       const result = await this.afAuth
         .createUserWithEmailAndPassword(email, password);
         this.ngZone.run(() => {
-
-          this.router.navigate(['home']);
           this.utilidadesSrv.successToast("Registro exitoso.",2000);
         });
     } catch (error:any) {
@@ -120,7 +118,7 @@ export class AuthService {
     this.usuarioLogueado = new Usuario();
     this.logueado = false;
     localStorage.removeItem('usuario_ARBULU');
-
+    this.router.navigate(['/login']);
     return this.afAuth.signOut();
   }
 

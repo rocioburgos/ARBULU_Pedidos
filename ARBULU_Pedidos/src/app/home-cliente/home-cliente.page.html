@@ -1,12 +1,8 @@
 <ion-header>
-  <ion-toolbar color="header">
-    <ion-title>
-      <ion-img style="width: 55px; height: 55px;" *ngIf="!spinner" src='../../assets/icon-color.png'></ion-img>
-      <!-- <ion-img class="rotate-center" style="width: 55px; height: 55px;" *ngIf="spinner" src='assets/iconTransp2.png'></ion-img> -->
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-menu-button style="margin: auto;" type="button" menu="menu" color="claro"><ion-icon name="menu"></ion-icon></ion-menu-button>
-    </ion-buttons>
+  <ion-toolbar color="warning">
+    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    <ion-title>Inicio Cliente</ion-title>
+
   </ion-toolbar>
 </ion-header>
 
@@ -27,8 +23,8 @@
     <div class="texto">
       <h4 *ngIf="this.usuario.mesa == ''">Espera a que se te asigne una mesa.</h4> <!-- No asignado y si ingreso -->
       <div *ngIf="this.usuario.mesa != ''"> <!-- Si asignado y si ingreso -->
-        <h1>Mesa <b>{{this.usuario.mesa}}</b></h1>
-        <h4>Escanee el QR de la mesa.</h4>
+        <h1>Se le asigno la Mesa <b>{{this.usuario.mesa}}</b></h1>
+        <h2>Escanee el QR de la mesa.</h2>
       </div>
     </div>
   </div>

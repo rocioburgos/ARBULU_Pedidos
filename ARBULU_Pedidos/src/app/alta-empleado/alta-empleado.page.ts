@@ -79,11 +79,8 @@ export class AltaEmpleadoPage implements OnInit {
     empleadoNuevo.uid = '';
     this.authSvc.Register(empleadoNuevo.email, this.clave).then((userCredential) => {
       this.fireSrv.crearUsuario(empleadoNuevo).then((data) => {
-        empleadoNuevo.uid = data.id;
-        this.fireSrv.update(empleadoNuevo.uid, { uid: empleadoNuevo.uid }).then((ok) => {
           this.utilidadesSrv.successToast(empleadoNuevo.tipo + " dado de alta exitosamente.");
-          this.navigateTo('home');
-          console.log(data);
+          this.router.navigate(['home']);
         }).catch(err => {
           this.utilSrv.errorToast('Error. No se pudo crear el empleado, intente de nuevo.')
           console.log(err)
@@ -93,7 +90,6 @@ export class AltaEmpleadoPage implements OnInit {
           this.path = './../../assets/sacarfoto.png';
         });
       });
-    })
   }
 
 
