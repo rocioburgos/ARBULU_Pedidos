@@ -7,6 +7,7 @@ import { eUsuario, Usuario } from '../clases/usuario';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { ImagenesService } from '../servicios/imagenes.service';
+import { MailService } from '../servicios/mail.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
@@ -41,7 +42,8 @@ export class AltaClientesPage implements OnInit {
     private imagenSrv:ImagenesService,
     private utilidadesSrv:UtilidadesService,
     private firestoreSvc: FirestoreService,
-    private authSvc: AuthService
+    private authSvc: AuthService,
+    private mail:MailService
   ) {
     this.email = '';
     this.clave = '';
@@ -91,7 +93,8 @@ export class AltaClientesPage implements OnInit {
         this.usuario.uid = ok.id;
         this.firestoreSvc.update(this.usuario.uid, {uid: this.usuario.uid}).then((ok)=>{
           this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
-          this.navigateTo('home');
+          this.mail.enviarEmail(this.usuario.nombre, this.usuario.email, "Su cuenta se encuentra pendiente de validacion. Espere a que un supervisor o dueño lo acepte en la aplicacion.")
+          this.navigateTo('/login');
         })
       }).catch((err)=>{
         this.utilidadesSrv.errorToast(err);
@@ -147,7 +150,7 @@ export class AltaClientesPage implements OnInit {
     uploadTask.then(async res => {
       const downloadURL = await res.ref.getDownloadURL();
       if (downloadURL.length > 0) {
-        console.log("URL  CORRECTO- i_IMG++");
+        console.log("IMAGEN CARGADA CORRECTAMENTE");
         return this.usuario.foto = downloadURL;
       }
     })
