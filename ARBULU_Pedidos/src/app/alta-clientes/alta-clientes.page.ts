@@ -8,6 +8,7 @@ import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { ImagenesService } from '../servicios/imagenes.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-alta-clientes',
@@ -36,6 +37,7 @@ export class AltaClientesPage implements OnInit {
   dni='';
   
   constructor(
+    private spinner: NgxSpinnerService,
     private fromBuilder: FormBuilder,
     private router: Router ,
     private imagenSrv:ImagenesService,
@@ -78,7 +80,7 @@ export class AltaClientesPage implements OnInit {
 
 
   aceptar() {     
-    
+    this.spinner.show();
     this.usuario.email = this.altaForm.value.email;
     this.usuario.nombre = this.altaForm.value.nombre;
     this.usuario.apellido = this.altaForm.value.apellido;
@@ -91,7 +93,12 @@ export class AltaClientesPage implements OnInit {
         this.usuario.uid = ok.id;
         this.firestoreSvc.update(this.usuario.uid, {uid: this.usuario.uid}).then((ok)=>{
           this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
-          this.navigateTo('home');
+        
+          setTimeout(() => {
+            this.spinner.hide();
+            this.navigateTo('home');
+          }, 3000);
+      
         })
       }).catch((err)=>{
         this.utilidadesSrv.errorToast(err);
@@ -99,14 +106,7 @@ export class AltaClientesPage implements OnInit {
     }).catch((err)=>{
       this.Errores(err);
     })
-
-
-    
-    this.utilidadesSrv.mostrartToast('Aceptado');
-    this.utilidadesSrv.vibracionError(); 
-    setTimeout(() => {
-      this.utilidadesSrv.reproducirSonidoInicio();
-    }, 5000);
+ 
 
   }
 

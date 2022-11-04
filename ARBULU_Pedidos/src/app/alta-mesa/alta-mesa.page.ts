@@ -8,6 +8,7 @@ import { FirestoreService } from '../servicios/firestore.service';
 import { ImagenesService } from '../servicios/imagenes.service';
 import { ProductosService } from '../servicios/productos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-alta-mesa',
@@ -26,7 +27,9 @@ export class AltaMesaPage implements OnInit {
   public uploadProgress: number;
   public habilitarFotosBTN = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private spinner: NgxSpinnerService,
+    private fb: FormBuilder,
     private route: Router, 
     public firestore:FirestoreService,
     private loadingController: LoadingController, 

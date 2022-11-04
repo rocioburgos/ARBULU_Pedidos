@@ -8,6 +8,7 @@ import { UtilidadesService } from '../servicios/utilidades.service';
 import { eEmpleado, eUsuario, Usuario } from '../clases/usuario';
 import { FirestoreService } from '../servicios/firestore.service';
 import { AuthService } from '../servicios/auth.service';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-alta-empleado',
@@ -34,6 +35,7 @@ export class AltaEmpleadoPage implements OnInit {
   apellido = '';
   dni = '';
   constructor(
+    private spinner: NgxSpinnerService,
     private fromBuilder: FormBuilder,
     private router: Router,
     private imagenSrv: ImagenesService,
@@ -62,6 +64,7 @@ export class AltaEmpleadoPage implements OnInit {
   }
  
   aceptar() {
+    this.spinner.show();
     let imagenesDoc = {
       'usuario': 'admin@gmail.com',// this.authSrv.getCurrentUserLS_email(),
       imagen: this.path
@@ -81,17 +84,25 @@ export class AltaEmpleadoPage implements OnInit {
       this.fireSrv.crearUsuario(empleadoNuevo).then((data) => {
         empleadoNuevo.uid = data.id;
         this.fireSrv.update(empleadoNuevo.uid, { uid: empleadoNuevo.uid }).then((ok) => {
-          this.utilidadesSrv.successToast(empleadoNuevo.tipo + " dado de alta exitosamente.");
-          this.navigateTo('home');
-          console.log(data);
+        
+          setTimeout(() => {
+            this.spinner.hide();
+            this.utilSrv.successToast('¡Empleado creado con exito!');
+            this.altaForm = null;
+            this.path = './../../assets/sacarfoto.png';
+            this.navigateTo('home');
+          }, 3000);
+
         }).catch(err => {
-          this.utilSrv.errorToast('Error. No se pudo crear el empleado, intente de nuevo.')
-          console.log(err)
-        }).finally(() => {
-          this.utilSrv.successToast('¡Empleado creado con exito!');
-          this.altaForm = null;
-          this.path = './../../assets/sacarfoto.png';
-        });
+          setTimeout(() => {
+            this.spinner.hide();
+            this.utilSrv.errorToast('Error. No se pudo crear el empleado, intente de nuevo.')
+            console.log(err);
+            this.path = './../../assets/sacarfoto.png';
+           
+          }, 3000);
+          
+        }) 
       });
     })
   }

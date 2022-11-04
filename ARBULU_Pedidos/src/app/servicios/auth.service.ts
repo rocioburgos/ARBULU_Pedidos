@@ -77,8 +77,7 @@ export class AuthService {
                                                                      'tipoEmpleado':user.tipoEmpleado  }));
           }
        });
-        this.utilidadesSrv.successToast("Ingreso exitoso.",2000);
-        this.router.navigate(['home']);
+
       });
 
     } catch (error:any) {
