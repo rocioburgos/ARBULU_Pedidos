@@ -12,7 +12,7 @@
         <ion-card-header>
           <ion-card-title>Mesa {{pedido.numero_mesa}} </ion-card-title> 
         </ion-card-header> 
-        <ion-card-content> 
+        <ion-card-content class="card-body"> 
           <ion-label>Estado orden: {{pedido.estado}}</ion-label><br>
           <ion-button size="small" color="success" *ngIf="pedido.estado=='PENDIENTE'"  (click)="cambiarEstado(pedido, 'CONFIRMADO')">Confirmar pedido</ion-button>
           <ion-button size="small" color="success"  *ngIf="pedido.estado=='TERMINADO'" (click)="cambiarEstado(pedido, 'ENTREGADO')">Entregar pedido</ion-button>

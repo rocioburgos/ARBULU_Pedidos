@@ -62,7 +62,7 @@ export class LoginPage implements OnInit {
       setTimeout(() => {
         this.spinner.hide();
         this.utilidadesSrv.successToast("Ingreso exitoso.",2000);
-        this.router.navigate(['home']);
+        this.router.navigate(['home-cliente']);
       }, 3000); 
     });
   }
@@ -73,7 +73,7 @@ export class LoginPage implements OnInit {
       setTimeout(() => {
         this.spinner.hide();
         this.utilidadesSrv.successToast("Ingreso exitoso.",2000);
-        this.router.navigate(['home']);
+        this.router.navigate(['home-duenio']);
       }, 3000); 
     });
   }
@@ -84,7 +84,7 @@ export class LoginPage implements OnInit {
       setTimeout(() => {
         this.spinner.hide();
         this.utilidadesSrv.successToast("Ingreso exitoso.",2000);
-        this.router.navigate(['home']);
+        this.router.navigate(['home-empleado']);
       }, 3000); 
     });
   }

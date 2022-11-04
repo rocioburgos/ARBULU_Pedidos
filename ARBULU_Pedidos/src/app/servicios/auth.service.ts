@@ -78,9 +78,7 @@ export class AuthService {
                 'tipoEmpleado': user.tipoEmpleado
               }));
           }
-        });
-        this.utilidadesSrv.successToast("Ingreso exitoso.", 2000);//SACAR EL TOAST DE ACA Y PONERLO EN LA PAGINA
-        this.router.navigate(['home']);
+        }); 
       });
 
     } catch (error: any) {
