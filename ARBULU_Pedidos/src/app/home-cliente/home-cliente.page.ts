@@ -34,6 +34,10 @@ export class HomeClientePage implements OnInit {
     private authSvc: AuthService) 
   { 
     this.usuario = this.authSvc.usuarioActual;
+    if(!this.usuario)
+    {
+      this.usuario = localStorage.getItem('usuario_ARBULU');
+    }
     console.log(this.usuario);
   }
 
@@ -90,7 +94,7 @@ export class HomeClientePage implements OnInit {
         }
         else{
           this.stopScan();
-          this.utilidadesSvc.errorToast("Escaneo de QR Incorrecto", 2000);
+          this.utilidadesSvc.errorToast("Mesa Incorrecta", 2000);
         }
 
         this.scanActive = false;

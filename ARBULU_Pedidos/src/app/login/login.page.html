@@ -7,6 +7,7 @@ template="<img src='./../../assets/icon-color.png' height='125'/>"
   <div class="form">
     <div class="username">
       <input type="text" placeholder="CORREO ELECTRONICO" class="formControl" formControlName="Email"/>
+      <br>
       <span class="spin text-danger" color="danger"
           *ngIf="formulario.get('Email')?.hasError('required') && formulario.get('Email')?.touched">El Correo es
           requerido.</span>
@@ -16,6 +17,7 @@ template="<img src='./../../assets/icon-color.png' height='125'/>"
     </div>
     <div class="password">
       <input type="password" placeholder="CONTRASEÑA" class="formControl" formControlName="Password"/>
+      <br>
       <span class="spin text-danger" color="danger"
         *ngIf="formulario.get('Password')?.hasError('required') && formulario.get('Password')?.touched">La Contraseña
         es Requerida</span>
@@ -52,16 +54,16 @@ template="<img src='./../../assets/icon-color.png' height='125'/>"
 
   <ion-fab-list side="end">
     <ion-fab-button color="primary" size="large" (click)="LoginUsuarioAnonimo()">
-      <strong>A</strong>
+      <img src="../../assets/anonimo.png">
     </ion-fab-button>
     <ion-fab-button color="secondary" (click)="LoginUsuarioDuenio()">
-      <strong>D</strong>
+      <img src="../../assets/dueño.png">
     </ion-fab-button>
     <ion-fab-button color="danger" (click)="LoginUsuarioEmpleado()">
-      <strong>E</strong>
+      <img src="../../assets/empleado.png">
     </ion-fab-button>
     <ion-fab-button color="danger" (click)="LoginUsuarioCliente()">
-      <strong>C</strong>
+      <img src="../../assets/cliente.png">
     </ion-fab-button>
   </ion-fab-list>
 
@@ -140,5 +142,4 @@ template="<img src='./../../assets/icon-color.png' height='125'/>"
     </ion-fab-button>
   </ion-fab-list> 
 </ion-fab>-->
-
 </ion-content>

@@ -10,6 +10,7 @@ export class Usuario {
         tipoEmpleado: eEmpleado;
         enListaDeEspera: boolean;
         mesa: string;
+        clienteValidado: boolean;
         
         constructor(){
             this.nombre= '';
@@ -20,6 +21,7 @@ export class Usuario {
             this.uid= '';
             this.enListaDeEspera = false;
             this.mesa = '';
+            this.clienteValidado = false;
         }
 }
 

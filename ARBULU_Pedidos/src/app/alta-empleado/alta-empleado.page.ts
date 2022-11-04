@@ -81,7 +81,7 @@ export class AltaEmpleadoPage implements OnInit {
     empleadoNuevo.tipoEmpleado = this.altaForm.get('perfil').value;
     empleadoNuevo.uid = '';
     this.authSvc.Register(empleadoNuevo.email, this.clave).then((userCredential) => {
-      this.fireSrv.crearUsuario(empleadoNuevo).then((data) => {
+      this.fireSrv.crearUsuario(empleadoNuevo).then((data:any) => {
         empleadoNuevo.uid = data.id;
         this.fireSrv.update(empleadoNuevo.uid, { uid: empleadoNuevo.uid }).then((ok) => {
         
@@ -104,8 +104,8 @@ export class AltaEmpleadoPage implements OnInit {
           
         }) 
       });
-    })
-  }
+  })
+}
 
 
   navigateTo(url: string) {

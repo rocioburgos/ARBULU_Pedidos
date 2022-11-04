@@ -1,6 +1,6 @@
 <ion-header [hidden]="scanActive">
   <ion-header>
-    <ion-toolbar >
+    <ion-toolbar color="warning">
       <ion-back-button defaultHref="home" slot="start"></ion-back-button>
       <ion-title style="text-align: center;" *ngIf="!anonimo">Registro Cliente</ion-title>
       <ion-title style="text-align: center;" *ngIf="anonimo">Registro Anónimo</ion-title>
@@ -49,17 +49,17 @@
 
       <br>
       <br>
-       <ion-item>
+      <ion-item>
         <ion-label>Confirmar Clave</ion-label>
         <ion-input type="password" [(ngModel)]='clave2' formControlName="clave2">
         </ion-input>
       </ion-item>
-      <!-- <small
-        *ngIf="altaForm.get('clave2').hasError('required') && (altaForm.get('clave2').dirty || altaForm.get('clave2').touched || altaForm.get('clave2').comparePassValidator)" 
-        style="color: var(--ion-color-danger)">Por favor, ingrese la clave.</small> -->
-
+      <small
+        *ngIf="altaForm.get('clave2').hasError('required') && (altaForm.get('clave2').dirty || altaForm.get('clave2').touched)"
+        style="color: var(--ion-color-danger)">Por favor, ingrese la clave.</small>
+      <small *ngIf="clave2 != clave"  style="color: var(--ion-color-danger)">Las claves no coinciden.</small>
       <br>
-      <br> 
+      <br>
 
       <ion-item>
         <ion-label>Nombre</ion-label>
@@ -111,7 +111,7 @@
     </form>
   </div>
 
-  <form [formGroup]="altaFormAnonimo" (ngSubmit)="Registro()" [hidden]="scanActive" *ngIf="anonimo">
+  <form [formGroup]="altaFormAnonimo" [hidden]="scanActive" *ngIf="anonimo">
     <ion-item>
       <ion-label>Nombre</ion-label>
       <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre">
@@ -137,10 +137,10 @@
     </ion-item>
 
     <ion-button expand="full" color="success" [disabled]="!altaFormAnonimo.valid && path=='' " type="submit"
-        (click)='aceptar()'>
-        <ion-icon name="arrow-forward-circle-outline"></ion-icon>
-        Aceptar
-      </ion-button>
+      (click)='aceptar()'>
+      <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+      Aceptar
+    </ion-button>
   </form>
 
 
@@ -150,7 +150,7 @@
         <ion-button expand="full" (click)="stopScan()">Cancelar</ion-button>
       </ion-col>
     </ion-row>
-  
+
     <div class="scan-box" [hidden]="!scanActive">
     </div>
   </div>
@@ -159,3 +159,4 @@
 type=null
 template="<img src='./../../assets/icon-color.png' height='125'/>"
 ><p style="color: white" >Cargando... </p></ngx-spinner>
+ 

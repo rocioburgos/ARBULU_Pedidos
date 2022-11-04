@@ -80,33 +80,41 @@ export class AltaClientesPage implements OnInit {
 
 
   aceptar() {     
-    this.spinner.show();
-    this.usuario.email = this.altaForm.value.email;
-    this.usuario.nombre = this.altaForm.value.nombre;
-    this.usuario.apellido = this.altaForm.value.apellido;
-    this.usuario.dni = this.altaForm.value.dni;
-    this.usuario.tipo = eUsuario.cliente;
-    this.usuario.nombre = this.altaForm.value.nombre;
+    if(!this.anonimo){
+      this.usuario.email = this.altaForm.value.email;
+      this.usuario.nombre = this.altaForm.value.nombre;
+      this.usuario.apellido = this.altaForm.value.apellido;
+      this.usuario.dni = this.altaForm.value.dni;
+      this.usuario.tipo = eUsuario.cliente;
+      this.usuario.nombre = this.altaForm.value.nombre;
 
-    this.authSvc.Register(this.usuario.email, this.clave).then((userCredential)=>{
-      this.firestoreSvc.crearUsuario(this.usuario).then((ok)=>{
-        this.usuario.uid = ok.id;
-        this.firestoreSvc.update(this.usuario.uid, {uid: this.usuario.uid}).then((ok)=>{
-          this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
-        
-          setTimeout(() => {
-            this.spinner.hide();
-            this.navigateTo('home');
-          }, 3000);
-      
+      this.authSvc.Register(this.usuario.email, this.clave).then((userCredential)=>{
+        this.firestoreSvc.crearUsuario(this.usuario).then((ok)=>{
+         
+            this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
+            this.utilidadesSrv.successToast("Espere la Aprobacón de la cuenta.", 3000);
+            this.navigateTo('login');
+        }).catch((err)=>{
+          this.utilidadesSrv.errorToast(err);
         })
       }).catch((err)=>{
-        this.utilidadesSrv.errorToast(err);
-      })
-    }).catch((err)=>{
-      this.Errores(err);
-    })
- 
+        this.Errores(err);
+      });
+    }
+    else{
+      this.usuario.nombre = this.altaFormAnonimo.value.nombre;
+      this.usuario.tipo = eUsuario.cliente;
+      this.usuario.clienteValidado = true;
+      this.firestoreSvc.crearUsuario(this.usuario);
+      this.utilidadesSrv.successToast("Ingreso exitoso.");
+      this.navigateTo('qr-ingreso-local');
+    }
+
+    //this.utilidadesSrv.mostrartToast('Aceptado');
+    this.utilidadesSrv.vibracionError(); 
+    setTimeout(() => {
+      this.utilidadesSrv.reproducirSonidoInicio();
+    }, 2000);
 
   }
 
