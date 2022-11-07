@@ -61,6 +61,12 @@ export class AuthService {
     }
   }
 
+  SignIn(email, password) {
+    return this.afAuth.signInWithEmailAndPassword(email, password);
+  }
+
+ 
+
   async Login(email: string, pass: string) {
     try {
       const result = await this.afAuth
@@ -71,7 +77,7 @@ export class AuthService {
           if (user.email == email) {
             localStorage.setItem('usuario_ARBULU', JSON.stringify(
               {
-                'uid': this.utilidadesSrv,
+                'uid': user.uid,
                 'email': this.email,
                 'sesion': 'activa',
                 'tipo': user.tipo,
@@ -122,4 +128,25 @@ export class AuthService {
   getCurrentUserFirebase(): Observable<any> {
     return this.afAuth.authState;
   }
+
+  getCurrentUserLS(): any{
+    const userJson = localStorage.getItem('usuario_ARBULU');  
+    if(userJson != null  ){
+    return JSON.parse(userJson); 
+    }else{
+      return null;
+    }
+    }
+
+
+
+    async registro(email: string, password: string) {
+      try {
+       return await this.afAuth
+          .createUserWithEmailAndPassword(email, password);
+        
+      } catch (error: any) {
+        this.Errores(error.message);
+      }
+    }
 }

@@ -6,9 +6,7 @@
   </ion-toolbar> -->
 
   <ion-toolbar color="warning">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="home" slot="start"></ion-back-button>
-    </ion-buttons>
+ 
     <ion-title>Inicio Metre</ion-title>
     <ion-buttons slot="end">
       <ion-button color="danger" size="large" (click)="cerrarSesion()">
@@ -40,7 +38,7 @@
     </a>
     <br>
     <a [routerLink]="['/chat']">
-      <ion-button>Chat</ion-button>
+      <ion-button>Mensajes</ion-button>
     </a>
     <br>
     <a [routerLink]="['/listado-pedidos']">

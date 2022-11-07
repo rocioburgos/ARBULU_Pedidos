@@ -8,6 +8,7 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { Photo } from '@capacitor/camera';
 import { eUsuario, Usuario } from '../clases/usuario';
 import { AuthService } from '../servicios/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-alta-supervisor',
@@ -35,7 +36,9 @@ export class AltaSupervisorPage implements OnInit {
     private utilidadesSrv:UtilidadesService,
     private fb:FormBuilder,
     private imagenSrv:ImagenesService,
-    private auth:AuthService) {
+    private auth:AuthService,
+    private spinner:NgxSpinnerService,
+    private utilSrv:UtilidadesService) {
       this.altaForm = this.fb.group({
         'email':['',[Validators.required, Validators.email]],
         'password':['', [Validators.required, Validators.minLength(8)]],
@@ -53,9 +56,10 @@ export class AltaSupervisorPage implements OnInit {
 
 
   aceptar() {
+    this.spinner.show();
     this.altaForm.get('perfil').value == 'dueño' ? this.usuario.tipo = eUsuario.dueño : this.usuario.tipo = eUsuario.supervisor;
 
-    this.auth.signIn(this.usuario.email, this.clave).then((userCredential)=>{
+  /*  this.auth.signIn(this.usuario.email, this.clave).then((userCredential)=>{
       this.firestore.crearUsuario(this.usuario).then((ok)=>{  
           this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
           this.navigateTo('home');
@@ -63,8 +67,33 @@ export class AltaSupervisorPage implements OnInit {
         this.utilidadesSrv.errorToast(err);
       })
     }).catch((err)=>{
+      
       this.Errores(err);
-    })
+    });*/
+
+ 
+     
+    this.auth.register(this.usuario.email, this.clave).then((credential)=>{
+      console.log(credential.user.uid);
+      this.usuario.uid = credential.user.uid;
+      this.firestore.setItemWithId(this.usuario, credential.user.uid).then((usuario)=>{
+        console.log(usuario);
+
+        setTimeout(() => {
+          this.spinner.hide();
+          this.utilSrv.successToast('Registro exitoso');
+          this.router.navigateByUrl('login')
+        }, 3000); 
+      }).catch((err)=>{
+        this.Errores(err);
+        this.utilSrv.vibracionError();
+        console.log(err);
+      });
+    }).catch((err)=>{
+      this.Errores(err);
+      this.utilSrv.vibracionError();
+      console.log(err);
+    }); 
   }
 
   navigateTo(url: string) {

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AltaSupervisorPageRoutingModule } from './alta-supervisor-routing.module';
 
 import { AltaSupervisorPage } from './alta-supervisor.page';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { AltaSupervisorPage } from './alta-supervisor.page';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
-    AltaSupervisorPageRoutingModule
+    AltaSupervisorPageRoutingModule,
+    NgxSpinnerModule
   ],
   declarations: [AltaSupervisorPage]
 })

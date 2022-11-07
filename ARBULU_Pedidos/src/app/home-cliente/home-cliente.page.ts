@@ -105,7 +105,6 @@ export class HomeClientePage implements OnInit {
       this.utilidadesSvc.errorToast("Error al escanear", 3000);
     } 
   }
-
  
 
   stopScan() {
@@ -119,5 +118,7 @@ export class HomeClientePage implements OnInit {
     BarcodeScanner.stopScan();
     document.querySelector('body').classList.remove('scanner-active');
   }
+
+
 
 }

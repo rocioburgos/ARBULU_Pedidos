@@ -22,13 +22,13 @@
   <div [hidden]="scanActive" *ngIf="!anonimo">
     <div style="  display: flex;
     justify-content: center;">
-      <a (click)="tomarFoto()"><img src="./../../assets/sacarfoto.png"></a>
+      <a (click)="tomarFoto()"><img src="{{fotoUrl}}"></a>
     </div>
 
     <br>
     <form [formGroup]="altaForm">
       <ion-item>
-        <ion-label>Correo Electronico</ion-label>
+        <ion-label  position="fixed">Correo </ion-label>
         <ion-input type="text" [(ngModel)]='email' formControlName="email">
         </ion-input>
       </ion-item>
@@ -39,7 +39,7 @@
       <br>
       <br>
       <ion-item>
-        <ion-label>Clave</ion-label>
+        <ion-label  position="fixed">Clave</ion-label>
         <ion-input type="password" [(ngModel)]='clave' formControlName="clave">
         </ion-input>
       </ion-item>
@@ -50,7 +50,7 @@
       <br>
       <br>
       <ion-item>
-        <ion-label>Confirmar Clave</ion-label>
+        <ion-label position="fixed">Confirmar Clave</ion-label>
         <ion-input type="password" [(ngModel)]='clave2' formControlName="clave2">
         </ion-input>
       </ion-item>
@@ -62,7 +62,7 @@
       <br>
 
       <ion-item>
-        <ion-label>Nombre</ion-label>
+        <ion-label position="fixed">Nombre</ion-label>
         <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre">
         </ion-input>
       </ion-item>
@@ -73,7 +73,7 @@
       <br>
       <br>
       <ion-item>
-        <ion-label>Apellido </ion-label>
+        <ion-label position="fixed">Apellido </ion-label>
         <ion-input type="text" [(ngModel)]='apellido' formControlName="apellido">
         </ion-input>
       </ion-item>
@@ -86,7 +86,7 @@
       <br>
       <br>
       <ion-item>
-        <ion-label>DNI</ion-label>
+        <ion-label position="fixed">DNI</ion-label>
         <ion-input type="number" [(ngModel)]='dni' formControlName="dni">
         </ion-input>
       </ion-item>
@@ -113,7 +113,7 @@
 
   <form [formGroup]="altaFormAnonimo" [hidden]="scanActive" *ngIf="anonimo">
     <ion-item>
-      <ion-label>Nombre</ion-label>
+      <ion-label position="fixed">Nombre</ion-label>
       <ion-input type="text" [(ngModel)]='nombre' formControlName="nombre">
       </ion-input>
     </ion-item>

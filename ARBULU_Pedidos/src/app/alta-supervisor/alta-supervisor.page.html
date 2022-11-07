@@ -21,13 +21,13 @@
     <br>
     <form [formGroup]="altaForm">
       <ion-item>
-        <ion-label>Mail</ion-label>
+        <ion-label>Correo</ion-label>
         <ion-input type="text" [(ngModel)]='usuario.email' formControlName="email" >
         </ion-input> 
       </ion-item> 
       <small
       *ngIf="altaForm.get('email').hasError('required') && (altaForm.get('email').dirty || altaForm.get('email').touched)"
-      style="color: var(--ion-color-danger)">Por favor, ingrese el nombre.</small>
+      style="color: var(--ion-color-danger)">Por favor, ingrese el correo.</small>
       
       <ion-item>
         <ion-label>Contraseña</ion-label>
@@ -36,7 +36,7 @@
       </ion-item> 
       <small
       *ngIf="altaForm.get('password').hasError('required') && (altaForm.get('password').dirty || altaForm.get('password').touched)"
-      style="color: var(--ion-color-danger)">Por favor, ingrese el nombre.</small>
+      style="color: var(--ion-color-danger)">Por favor, ingrese una clave.</small>
 
       <ion-item>
         <ion-label>Nombre</ion-label>
@@ -127,3 +127,7 @@
    <div class="scan-box" [hidden]="!scanActive"> 
    </div> 
 </ion-content>
+<ngx-spinner
+type=null
+template="<img src='./../../assets/icon-color.png' height='125'/>"
+><p style="color: white" >Cargando... </p></ngx-spinner>
