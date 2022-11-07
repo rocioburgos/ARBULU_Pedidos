@@ -88,7 +88,11 @@ const routes: Routes = [
   {
     path: 'listado-clientes-pendientes',
     loadChildren: () => import('./listado-clientes-pendientes/listado-clientes-pendientes.module').then( m => m.ListadoClientesPendientesPageModule)
+  },  {
+    path: 'encuesta-supervisor',
+    loadChildren: () => import('./encuesta-supervisor/encuesta-supervisor.module').then( m => m.EncuestaSupervisorPageModule)
   }
+
  
 ];
 

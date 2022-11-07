@@ -15,10 +15,12 @@ export class FirestoreService {
   private usuariosRef: AngularFirestoreCollection;
   private mesasRef: AngularFirestoreCollection;
   public usuarioActual: any;
+  private encuestasSupervisorRef: AngularFirestoreCollection;
 
   constructor(private db: AngularFirestore) {
     this.usuariosRef = this.db.collection('usuarios');
     this.mesasRef = this.db.collection('mesas');
+    this.encuestasSupervisorRef = this.db.collection('encuestas-supervisor');
   }
 
   public crearUsuario(usuario: Usuario) {
@@ -102,5 +104,16 @@ export class FirestoreService {
     //return this.db.collection<any>('usuarios', ref => ref.where('uid', '==', id)).valueChanges();
     return this.usuariosRef.ref.where('uid', '==', id).get();
   }
+
+  public crearEncuestaSupervisor(encuesta: any) {
+    return this.encuestasSupervisorRef.add({ ...encuesta }).then((data) => {
+      this.updateMesa(data.id, { uid: data.id });
+    });
+  }
+
+  public obtenerEncuestasSupervisor() {
+    return this.usuariosRef.valueChanges() as Observable<Object[]>;
+  }
+
 
 }
