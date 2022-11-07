@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Route, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {  eEstadoProductoPedido, eEstadPedido, Pedido } from '../clases/pedidos';
@@ -26,17 +27,20 @@ export class CartaProductosPage implements OnInit {
   usuarioActual:any;
   mesaActual:any;
   numMesa=0;
+  id_doc:string;
   constructor(private productSrv:ProductosService,
      private pedidoSrv:PedidosService,
      private utilSrv:UtilidadesService,
      private router:Router,
      private authSrv:AuthService,
      private userSrv:FirestoreService,
-     private spinner: NgxSpinnerService) { 
+     private spinner: NgxSpinnerService,
+     private afStore: AngularFirestore ) { 
     this.showModal = false;
   }
 
   async ngOnInit() {
+    this.spinner.show()
     this.productSrv.TraerProductos().subscribe( data => {
       console.log(data)
       this.productos = data;
@@ -46,6 +50,9 @@ export class CartaProductosPage implements OnInit {
         x.selected = false;  
       })
     });
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 3000);
 
     //Datos del usuario y que numero de mesa tiene
     this.userLs= this.authSrv.getCurrentUserLS(); 
@@ -53,7 +60,7 @@ export class CartaProductosPage implements OnInit {
  
     this.userSrv.obtenerMesaPorNumero(user.mesa).subscribe((res)=>{  
         this.mesaActual= res[0];
-        this.numMesa= this.mesaActual.numero; 
+        this.numMesa= res[0].numero; 
       });
   }
  
@@ -125,10 +132,14 @@ export class CartaProductosPage implements OnInit {
       nuevoPedido.total= this.total;
       nuevoPedido.uid_mesa=  this.mesaActual.doc_id;
 
-
-      this.pedidoSrv.GuardarNuevoPedido(nuevoPedido).then((res)=>{
+      this.id_doc=this.afStore.createId();
+      this.pedidoSrv.GuardarNuevoPedidoWithId(nuevoPedido, this.id_doc).then((res)=>{
         console.log('RESPUESTA: '+res)
-
+        localStorage.setItem('pedido', JSON.stringify(
+          {
+           ...nuevoPedido,
+           pedidoID: this.id_doc
+          }));
         setTimeout(() => {
           this.utilSrv.successToast('Pedido realizado con exito',4500);
           this.spinner.hide(); 

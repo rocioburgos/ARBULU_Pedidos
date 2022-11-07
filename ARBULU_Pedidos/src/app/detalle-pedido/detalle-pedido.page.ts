@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { eEstadoProductoPedido, eEstadPedido, productoPedido } from '../clases/pedidos';
+import { AuthService } from '../servicios/auth.service';
+import { FirestoreService } from '../servicios/firestore.service';
 import { PedidosService } from '../servicios/pedidos.service';
 
 @Component({
@@ -14,22 +16,60 @@ export class DetallePedidoPage implements OnInit {
   pedido: any={
     numero_mesa:0
   };
-//sectorUserActual='COCINA'; 
-    sectorUserActual='BEBIDA';//
+ 
+    sectorUserActual='';//
+    usuario:any;
+    esCliente=false;
+    esMetre=false;
+    esEmpleado=false;
+    pedidoLS:any;
   constructor(
     private route: ActivatedRoute,
-    private pedidoSrv: PedidosService) {
+    private pedidoSrv: PedidosService,
+    private authSrv:AuthService,
+    private userSrv:FirestoreService) {
     // this.route.snapshot.paramMap.get('doc_id')
     this.pedido_id = this.route.snapshot.paramMap.get('pedido_id');
 
-    
+      
   }
 
   ngOnInit() {
-    this.pedidoSrv.TraerPedido(this.pedido_id).subscribe((res) => {
-      this.pedido = res;
-      console.log('PEDIDO SELECCIONADO: ' + this.pedido.numero_mesa)
-    })
+    this.usuario=this.authSrv.getCurrentUserLS();
+    if(this.usuario.tipo =='cliente'){
+      this.esCliente=true;
+    }else if(this.usuario.tipo =='empleado'){
+      
+      if(this.usuario.tipoEmpleado=='bartender'){
+        this.esEmpleado= true;
+        this.sectorUserActual='BEBIDA';
+      }else if(this.usuario.tipoEmpleado=='cocinero'){
+        this.esEmpleado= true;
+        this.sectorUserActual='COCINA';
+      }else{
+        this.esMetre= true;
+      }
+    }
+
+    if(this.esCliente){ 
+     this.pedidoLS= localStorage.getItem('pedido')
+      if(this.pedidoLS != null  ){
+        this.pedidoLS= JSON.parse(this.pedidoLS); 
+        this.pedido =this.pedidoLS;
+        this.pedidoSrv.TraerPedido(this.pedido.pedidoID).subscribe((res) => {
+          this.pedido = res;
+          console.log('PEDIDO SELECCIONADO: ' + this.pedido.numero_mesa)
+        });
+        } 
+    }else{
+      this.pedidoSrv.TraerPedido(this.pedido_id).subscribe((res) => {
+        this.pedido = res;
+        console.log('PEDIDO SELECCIONADO: ' + this.pedido.numero_mesa)
+      });
+
+    }
+  
+
   }
 
   cambiarEstado(item:any,proxEstado:string) {
@@ -50,17 +90,21 @@ export class DetallePedidoPage implements OnInit {
     this.pedido.productos.forEach((producto:productoPedido) => {
        if(producto.estadoProductoPedido == eEstadoProductoPedido.TERMINADO){
         productosTerminados++;
-        alert('uno mas')
-       } 
-       alert('EEAAA mas '+producto.estadoProductoPedido)
+       
+       }  
     });
 
     if(productosTerminados == cantProdPedido){
       this.pedido.estado= eEstadPedido.TERMINADO;
       console.log('PRODUCTO TERMINADO');
-    }
-    alert('termi '+ productosTerminados)
+    } 
     console.log( 'ESTADO  GENERAL DESPUES DE CADA SECTOR:'+ this.pedido.estado)
     this.pedidoSrv.actualizarProductoPedido(this.pedido, this.pedido.doc_id)
   } 
+
+  confirmarRecepcion(pedidoID:string){
+    console.log('Pedido recibido: '+pedidoID)
+    this.pedido.estado= eEstadPedido.RECIBIDO; 
+    this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
+  }
 }

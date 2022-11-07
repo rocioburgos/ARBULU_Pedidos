@@ -16,6 +16,7 @@ export class PedidosService {
 
   items: Observable<any[]>; 
   public dbRef: AngularFirestoreCollection<any>;
+  
   constructor(
     public afStore: AngularFirestore 
   ) {
@@ -25,6 +26,13 @@ export class PedidosService {
   GuardarNuevoPedido(nuevoPedido: any): any{
     return this.dbRef.add(Object.assign({},nuevoPedido));
   }
+
+  GuardarNuevoPedidoWithId(item: any, id:string) {
+    
+    this.dbRef = this.afStore.collection('pedidos');
+    return this.dbRef.doc(id).set(Object.assign({}, item));    
+  }
+
 
   TraerPedidos(): Observable<any>{
     return this.dbRef.valueChanges({idField: "doc_id"});
@@ -44,5 +52,7 @@ export class PedidosService {
     }); */
     this.afStore.doc(`pedidos/${id_doc}`).update(pedido)
   } 
+
+   
   
 }
