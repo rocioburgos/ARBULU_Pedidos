@@ -94,6 +94,13 @@ export class FirestoreService {
     return this.mesasRef.valueChanges({ idField: "doc_id" });
   }
 
+  public obtenerMesasOcupadas( ) {
+
+    this.mesasRef = this.db.collection('mesas', ref =>
+      ref.where('ocupada', '==', true)
+    );
+    return this.mesasRef.valueChanges({ idField: "doc_id" });
+  }
 
 
 

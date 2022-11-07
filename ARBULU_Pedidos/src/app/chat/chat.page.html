@@ -1,35 +1,48 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button defaultHref="home" slot="start"></ion-back-button>
-    <ion-title>Mesa {{nro_mesa}} </ion-title>
+    <ion-title>Mesa {{nroMesa}} </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="container">
-  <div *ngIf="perfil=='MOZO'"> 
+  <div *ngIf="usuario_actual.tipoEmpleado=='mozo' "> 
     <ion-list>
       <ion-item>
-        <ion-select placeholder="Elija mesa">
-          <ion-select-option value="apples">Apples</ion-select-option> 
+        <ion-select 
+        cancelText="Cancelar"
+        (ionChange)="mesaElegida($event)"
+         interface="action-sheet" 
+         placeholder="Elija una mesa"
+        >
+          <ion-select-option *ngFor="let mesa of mesasOcupadas"  value="{{mesa.numero}}">{{mesa.numero}}</ion-select-option> 
         </ion-select>
       </ion-item>
     </ion-list>
+    <div class="alert alert-warning" role="alert" *ngIf="!flagMesaElegida">
+      Elija una mesa para ver los mensajes.
+    </div>
+  </div>
+  <div class="alert alert-primary" role="alert"   *ngIf="mensajes.length==0 && flagMesaElegida">
+    Esta mesa no tiene mensajes.
   </div>
 
   <div *ngFor="let mensaje of mensajes">
+              <!--MENSAJE RECIBIDO-->
     <div class="row msg_container base_receive"
-      *ngIf="mensaje.remitente != usuario_actual.email">
-
+      *ngIf="mensaje.remitente != user.email">  
       <div class="col-xs-10 col-md-10">
         <div class="messages msg_receive">
           <p style="font-size: 15px;">{{mensaje.mensaje}} </p>
           <br>
-          <time> {{mensaje.remitente}} • {{mensaje.diaHora }} </time>
+          <time>  {{mensaje.diaHora }} </time>
         </div>
       </div>
     </div>
+
+    <!--MENSAJE ENVIADO POR USUARIO ACTUAL-->
     <div class="row msg_container base_sent"
-      *ngIf="mensaje.remitente == usuario_actual.email">
+      *ngIf="mensaje.remitente == user.email">
       <div class="col-md-10 col-xs-10 ">
         <div class="messages msg_sent">
           <p  style="font-size: 15px;">{{mensaje.mensaje}} </p><br>
@@ -39,10 +52,19 @@
     </div>
   </div>
 </ion-content>
-<ion-footer keyboard-attach class="bar-stable item-input-inset">
-  <ion-input type="text" placeholder="Escriba su mensaje..." maxlength="21"  [(ngModel)]="mensajeEnviar"></ion-input>
-  <ion-button expand="full" shape="round" color="success" (click)="mandarMensaje()"> Enviar </ion-button>
-</ion-footer>
+<div *ngIf="usuario_actual.tipoEmpleado=='mozo' && flagMesaElegida"> 
+  <ion-footer keyboard-attach class="bar-stable item-input-inset">
+    <ion-input type="text" placeholder="Escriba su mensaje..." maxlength="21"  [(ngModel)]="mensajeEnviar"></ion-input>
+    <ion-button expand="full" shape="round" color="success" (click)="mandarMensaje()"> Enviar </ion-button>
+  </ion-footer>
+</div>
+<div *ngIf="usuario_actual.tipo=='cliente'">
+  <ion-footer  keyboard-attach class="bar-stable item-input-inset">
+    <ion-input type="text" placeholder="Escriba su mensaje..." maxlength="21"  [(ngModel)]="mensajeEnviar"></ion-input>
+    <ion-button expand="full" shape="round" color="success" (click)="mandarMensaje()"> Enviar </ion-button>
+  </ion-footer>
+</div>
+
 
  
 <ngx-spinner

@@ -24,4 +24,13 @@ export class MensajeService {
                                     );  
       return this.mensajesCollection.valueChanges(); 
   }
+  
+  traerMensajesPorMesa(nroMesa:string){ 
+    this.mensajesCollection =  this.afs.collection('mensajes', 
+                                      ref => ref.where('mesa', '==', nroMesa)
+                                      .orderBy('fulldate',  "asc")       
+                                    );  
+      return this.mensajesCollection.valueChanges(); 
+ 
+  }
 }

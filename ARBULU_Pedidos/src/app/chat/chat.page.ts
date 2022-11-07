@@ -11,7 +11,7 @@ import { MensajeService } from '../servicios/mensaje.service';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
-  perfil = 'MOZO'
+ 
   remitente: string = '';
   destinatario: string = '';//el usuario Actual, depende de si estoy mandando o recibiendo mensajes
   fecha: string = '';
@@ -22,15 +22,17 @@ export class ChatPage implements OnInit {
   usuario_actual: any;
 
   mensajes: Array<any> = [];
-  nroMesa = '0';
+  nroMesa = '';
   user: any;
+  mesasOcupadas:any;
+  flagMesaElegida= false;
   constructor(private msjSrv: MensajeService,
     private authSrv: AuthService
     , private spiner: NgxSpinnerService,
     private userSrv: FirestoreService) { }
 
   async ngOnInit() {
-    this.mostrarRecientes();
+    this.spiner.show()
     this.usuario_actual = this.authSrv.getCurrentUserLS();
  
     this.user = (await this.userSrv.getUserByUid('' + this.usuario_actual?.uid).toPromise()).data();
@@ -38,10 +40,37 @@ export class ChatPage implements OnInit {
        //obtener su mesa
       this.userSrv.obtenerMesaPorNumero(this.user.mesa).subscribe((res) => {
         this.nroMesa = res[0].numero;
+        
+        this.msjSrv.traerMensajesPorMesa(this.nroMesa).subscribe((data)=>{
+          this.mensajes = data;
+        });
       });
+    }else if(this.usuario_actual.tipo == 'empleado' && this.usuario_actual.tipoEmpleado == 'mozo'){
+      //cargar todos los numeros de mesa ocpados
+      this.userSrv.obtenerMesasOcupadas().subscribe((res)=>{
+        this.mesasOcupadas= res;
+      })
     }
+
+    setTimeout(() => {
+      this.spiner.hide();
+    }, 3000);
   }
 
+  mesaElegida(data:any){
+    this.spiner.show();
+    console.log(data.detail.value)  
+    let numero = data.detail.value;
+    this.nroMesa= numero;
+    this.flagMesaElegida= true;
+    this.msjSrv.traerMensajesPorMesa(numero).subscribe((data)=>{
+      this.mensajes = data;
+    });
+
+    setTimeout(() => {
+      this.spiner.hide();
+    }, 3000);
+  }
 
   mostrarRecientes() {
 
