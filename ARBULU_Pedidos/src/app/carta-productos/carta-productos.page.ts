@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import {  eEstadoProductoPedido, eEstadPedido, Pedido } from '../clases/pedidos';
 import { Productos } from '../clases/productos';
+import { AuthService } from '../servicios/auth.service';
+import { FirestoreService } from '../servicios/firestore.service';
 import { PedidosService } from '../servicios/pedidos.service';
 import { ProductosService } from '../servicios/productos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
@@ -19,27 +22,41 @@ export class CartaProductosPage implements OnInit {
   total:number=0;
   demoraEstimada:number=0;
   tieneProductos:boolean= false;
-
+  userLs:any;
+  usuarioActual:any;
+  mesaActual:any;
+  numMesa=0;
   constructor(private productSrv:ProductosService,
      private pedidoSrv:PedidosService,
      private utilSrv:UtilidadesService,
-     private router:Router) { 
+     private router:Router,
+     private authSrv:AuthService,
+     private userSrv:FirestoreService,
+     private spinner: NgxSpinnerService) { 
     this.showModal = false;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.productSrv.TraerProductos().subscribe( data => {
       console.log(data)
       this.productos = data;
       this.productos.forEach( x => { 
         x.cantidad = 0;  
         x.estadoProductoPedido= eEstadoProductoPedido.PENDIENTE;
-        x.selected = false; 
-        console.log(x);
+        x.selected = false;  
       })
     });
-  }
 
+    //Datos del usuario y que numero de mesa tiene
+    this.userLs= this.authSrv.getCurrentUserLS(); 
+    const user = (await this.userSrv.getUserByUid('' + this.userLs?.uid).toPromise()).data(); 
+ 
+    this.userSrv.obtenerMesaPorNumero(user.mesa).subscribe((res)=>{  
+        this.mesaActual= res[0];
+        this.numMesa= this.mesaActual.numero; 
+      });
+  }
+ 
   async presentAlertConfirm(item:Productos) {
     this.productoSeleccionado= item;
     this.showModal = true;
@@ -97,21 +114,25 @@ export class CartaProductosPage implements OnInit {
   }
 
   hacerPedido(){ 
+    this.spinner.show();
     let productosParaPedir= this.productos.filter( x=> { return x.selected == true});
     let nuevoPedido:Pedido= new Pedido();
     if(this.tieneProductos== true ){
       nuevoPedido.estado= eEstadPedido.PENDIENTE;
-      nuevoPedido.numero_mesa= 255;
+      nuevoPedido.numero_mesa=  this.mesaActual.numero;
       nuevoPedido.productos= productosParaPedir;
       nuevoPedido.tiempo_elaboracion= this.demoraEstimada;
       nuevoPedido.total= this.total;
-      nuevoPedido.uid_mesa='nose'
+      nuevoPedido.uid_mesa=  this.mesaActual.doc_id;
+
 
       this.pedidoSrv.GuardarNuevoPedido(nuevoPedido).then((res)=>{
         console.log('RESPUESTA: '+res)
-        this.utilSrv.successToast('Pedido realizado con exito',4500);
+
         setTimeout(() => {
-          this.router.navigateByUrl('/home')
+          this.utilSrv.successToast('Pedido realizado con exito',4500);
+          this.spinner.hide(); 
+          this.router.navigateByUrl('/home-cliente')
         }, 5000);
       });
       

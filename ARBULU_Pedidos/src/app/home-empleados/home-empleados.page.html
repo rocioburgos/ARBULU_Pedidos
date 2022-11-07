@@ -1,16 +1,17 @@
 <ion-header >
   <ion-toolbar>
     <ion-title size="large">Inicio empleado</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" size="large" (click)="cerrarSesion()">
+        <ion-icon slot="end" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+
 </ion-header>
 <ion-content>
 <div id="container">  
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="danger" size="large" (click)="cerrarSesion()">
-      <ion-icon name="arrow-forward"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-  
+ 
   <a [routerLink]="['/alta-producto']"><ion-button> Alta productos</ion-button></a>
   <br><br> 
   <br>

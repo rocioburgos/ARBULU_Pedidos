@@ -59,19 +59,30 @@ export class AltaMesaPage implements OnInit {
   }
  
   GuardarMesa() {
+    this.spinner.show()
     this.mesa.numero = this.formMesa.get('numero').value;
     this.mesa.cantidadComensales = this.formMesa.get('cantidadComensales').value;
     this.mesa.tipo = this.formMesa.get('tipoMesa').value;      
 
     this.firestore.crearMesa(this.mesa)
     .then((ok) => {
-      this.utilSrv.successToast('Mesa guardada con exito');
+      setTimeout(() => {
+        this.spinner.hide();
+        this.utilSrv.successToast('Mesa guardada con exito');
+        this.route.navigateByUrl('home-duenio')
+      }, 3000);
+
      
       console.log("GOOD");
     })
     .catch((err) => {
-      this.utilSrv.successToast('Error.No se guardo la mesa.');
-      console.log(err);
+      setTimeout(() => {
+        this.spinner.hide();
+        this.utilSrv.successToast('Error.No se guardo la mesa.');
+        console.log(err);
+        this.route.navigateByUrl('home-duenio')
+      }, 3000);
+
     });
   }
 

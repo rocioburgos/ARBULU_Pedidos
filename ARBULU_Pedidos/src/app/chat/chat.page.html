@@ -6,32 +6,46 @@
 </ion-header>
 
 <ion-content class="container">
+  <div *ngIf="perfil=='MOZO'"> 
+    <ion-list>
+      <ion-item>
+        <ion-select placeholder="Elija mesa">
+          <ion-select-option value="apples">Apples</ion-select-option> 
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </div>
+
   <div *ngFor="let mensaje of mensajes">
     <div class="row msg_container base_receive"
-      *ngIf="!mensaje.comensal"> 
+      *ngIf="mensaje.remitente != usuario_actual.email">
+
       <div class="col-xs-10 col-md-10">
         <div class="messages msg_receive">
-          <p  style="font-size: 15px;" > {{mensaje.mensaje}} </p>
+          <p style="font-size: 15px;">{{mensaje.mensaje}} </p>
           <br>
-          <time> mozo • 31-10-2022 </time>
+          <time> {{mensaje.remitente}} • {{mensaje.diaHora }} </time>
         </div>
       </div>
     </div>
     <div class="row msg_container base_sent"
-      *ngIf="mensaje.comensal">
+      *ngIf="mensaje.remitente == usuario_actual.email">
       <div class="col-md-10 col-xs-10 ">
         <div class="messages msg_sent">
-          <p  style="font-size: 15px;"> {{mensaje.mensaje}} </p><br>
-          <time> {{mensaje.time}} </time>
-   
+          <p  style="font-size: 15px;">{{mensaje.mensaje}} </p><br>
+          <time>{{mensaje.diaHora}} </time>
         </div>
       </div>
     </div>
   </div>
 </ion-content>
 <ion-footer keyboard-attach class="bar-stable item-input-inset">
-  <ion-input type="text" placeholder="Escriba su mensaje..." maxlength="21" ></ion-input>
-  <ion-button expand="full" shape="round" color="success"> Enviar </ion-button>
+  <ion-input type="text" placeholder="Escriba su mensaje..." maxlength="21"  [(ngModel)]="mensajeEnviar"></ion-input>
+  <ion-button expand="full" shape="round" color="success" (click)="mandarMensaje()"> Enviar </ion-button>
 </ion-footer>
 
  
+<ngx-spinner
+type=null
+template="<img src='./../../assets/icon-color.png' height='125'/>"
+><p style="color: white" >Cargando... </p></ngx-spinner>

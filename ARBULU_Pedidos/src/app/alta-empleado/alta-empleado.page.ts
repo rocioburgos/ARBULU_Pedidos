@@ -18,8 +18,8 @@ import { NgxSpinnerService } from "ngx-spinner";
 export class AltaEmpleadoPage implements OnInit {
 
   email: string;
-  clave: string='';
-  claveDos:string='';
+  clave: string = '';
+  claveDos: string = '';
   show_error: boolean = false; //
   descripcion_error: string = '';
   public altaForm: FormGroup;
@@ -59,10 +59,10 @@ export class AltaEmpleadoPage implements OnInit {
       perfil: ['', Validators.compose([Validators.required])],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       clave: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-      claveDos: ['', [Validators.required  ] ]
+      claveDos: ['', [Validators.required]]
     });
   }
- 
+
   aceptar() {
     this.spinner.show();
     let imagenesDoc = {
@@ -80,39 +80,38 @@ export class AltaEmpleadoPage implements OnInit {
     empleadoNuevo.tipo = eUsuario.empleado;
     empleadoNuevo.tipoEmpleado = this.altaForm.get('perfil').value;
     empleadoNuevo.uid = '';
-    this.authSvc.Register(empleadoNuevo.email, this.clave).then((userCredential) => {
-      this.fireSrv.crearUsuario(empleadoNuevo).then((data:any) => {
-        empleadoNuevo.uid = data.id;
-        this.fireSrv.update(empleadoNuevo.uid, { uid: empleadoNuevo.uid }).then((ok) => {
-        
-          setTimeout(() => {
-            this.spinner.hide();
-            this.utilSrv.successToast('¡Empleado creado con exito!');
-            this.altaForm = null;
-            this.path = './../../assets/sacarfoto.png';
-            this.navigateTo('home');
-          }, 3000);
+ 
+    this.authSvc.register(empleadoNuevo.email, this.clave).then((credential)=>{
+      console.log(credential.user.uid);
+      empleadoNuevo.uid = credential.user.uid;
+      this.fireSrv.setItemWithId(empleadoNuevo, credential.user.uid).then((usuario)=>{
+        console.log(usuario);
 
-        }).catch(err => {
-          setTimeout(() => {
-            this.spinner.hide();
-            this.utilSrv.errorToast('Error. No se pudo crear el empleado, intente de nuevo.')
-            console.log(err);
-            this.path = './../../assets/sacarfoto.png';
-           
-          }, 3000);
-          
-        }) 
+        setTimeout(() => {
+          this.spinner.hide();
+          this.utilSrv.successToast('Registro exitoso');
+          this.router.navigateByUrl('login')
+        }, 3000); 
+      }).catch((err)=>{
+        this.Errores(err);
+        this.utilSrv.vibracionError();
+        console.log(err);
       });
-  })
-}
+    }).catch((err)=>{
+      this.Errores(err);
+      this.utilSrv.vibracionError();
+      console.log(err);
+    }); 
+  }
 
 
   navigateTo(url: string) {
-      setTimeout(() => {
+    setTimeout(() => {
       this.router.navigateByUrl(url);
     }, 2000);
   }
+
+
   tomarFoto() {
     this.addPhotoToGallery();
   }
@@ -122,10 +121,12 @@ export class AltaEmpleadoPage implements OnInit {
     const photo = await this.imagenSrv.addNewToGallery();
 
     //subir la foto
+    this.spinner.show();
     this.uploadPhoto(photo).then(() => {
 
       setTimeout(() => {
         this.habilitar = true;
+        this.spinner.hide()
       }, 5000);
 
     }
@@ -136,6 +137,7 @@ export class AltaEmpleadoPage implements OnInit {
   }
 
   private async uploadPhoto(cameraPhoto: Photo) {
+   
     const response = await fetch(cameraPhoto.webPath!);
     const blob = await response.blob();
     const filePath = this.getFilePath();
@@ -148,8 +150,7 @@ export class AltaEmpleadoPage implements OnInit {
       //obtener el link de la foto 
       const downloadURL = await res.ref.getDownloadURL();
       if (downloadURL.length > 0) {
-        this.path = downloadURL;
-
+        this.path = downloadURL; 
       } else {
         console.log("IMAGEN NO CORRECTA  ");
       }
@@ -233,4 +234,24 @@ export class AltaEmpleadoPage implements OnInit {
     BarcodeScanner.prepare();
   }
 
+
+  Errores(error:any)
+  {
+    if(error.code == 'auth/email-already-in-use')
+      {
+        this.utilidadesSrv.errorToast('El correo ya está en uso.');
+      }
+      else if(error.code == 'auth/missing-email' || error.code == 'auth/internal-error')
+      {
+        this.utilidadesSrv.errorToast('No pueden quedar campos vacíos');
+      }
+      else if(error.code == 'auth/weak-password')
+      {
+        this.utilidadesSrv.errorToast('La contraseña debe tener al menos 8 caracteres');
+      }
+      else
+      {
+        this.utilidadesSrv.errorToast('Mail o contraseña invalidos');
+      }
+  }
 }
