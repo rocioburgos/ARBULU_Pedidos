@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AltaClientesPageRoutingModule } from './alta-clientes-routing.module';
 
 import { AltaClientesPage } from './alta-clientes.page';
+import { NgxSpinnerModule } from "ngx-spinner";  
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { AltaClientesPage } from './alta-clientes.page';
     FormsModule,
     IonicModule,
     AltaClientesPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule
   ],
   declarations: [AltaClientesPage]
 })

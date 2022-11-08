@@ -7,14 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { AltaEmpleadoPageRoutingModule } from './alta-empleado-routing.module';
 
 import { AltaEmpleadoPage } from './alta-empleado.page';
-
+import { NgxSpinnerModule } from "ngx-spinner";  
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     AltaEmpleadoPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule
   ],
   declarations: [AltaEmpleadoPage]
 })

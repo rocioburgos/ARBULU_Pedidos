@@ -5,10 +5,7 @@
 
   </ion-toolbar> -->
 
-  <ion-toolbar color="warning">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="home" slot="start"></ion-back-button>
-    </ion-buttons>
+  <ion-toolbar color="warning"> 
     <ion-title>Inicio Cliente</ion-title>
     <ion-buttons slot="end">
       <ion-button color="danger" size="large" (click)="cerrarSesion()">
@@ -52,6 +49,10 @@
       <ion-button routerLink="../chat" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
         <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
         <h3>Consultar al mozo</h3>
+      </ion-button>
+      <ion-button routerLink="../detalle-pedido/" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
+        <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
+        <h3>Detalle pedido</h3>
       </ion-button>
       <ion-button routerLink="../chat" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
         <ion-icon name="help-outline"></ion-icon>

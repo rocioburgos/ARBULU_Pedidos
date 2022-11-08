@@ -1,141 +1,69 @@
+<ngx-spinner type=null template="<img src='./../../assets/icon-color.png' height='125'/>">
+  <p style="color: white">Cargando... </p>
+</ngx-spinner>
 <ion-content>
-<form class="p-3 mt-3" [formGroup]="formulario" (ngSubmit)="onLogin()">
-  <div class="form">
-    <div class="username">
-      <input type="text" placeholder="CORREO ELECTRONICO" class="formControl" formControlName="Email"/>
-      <br>
-      <span class="spin text-danger" color="danger"
+  <form class="p-3 mt-3" [formGroup]="formulario" (ngSubmit)="onLogin()">
+    <div class="form">
+      <div class="username">
+        <input type="text" placeholder="CORREO ELECTRONICO" class="formControl" formControlName="Email" />
+        <br>
+        <span class="spin text-danger" color="danger"
           *ngIf="formulario.get('Email')?.hasError('required') && formulario.get('Email')?.touched">El Correo es
           requerido.</span>
         <span class="spin text-danger" color="danger"
           *ngIf="formulario.get('Email')?.hasError('pattern') && formulario.get('Email')?.touched">El Correo no tiene el
           formato correcto</span>
+      </div>
+      <div class="password">
+        <input type="password" placeholder="CONTRASEÑA" class="formControl" formControlName="Password" />
+        <br>
+        <span class="spin text-danger" color="danger"
+          *ngIf="formulario.get('Password')?.hasError('required') && formulario.get('Password')?.touched">La Contraseña
+          es Requerida</span>
+        <span class="spin text-danger" color="danger"
+          *ngIf="formulario.get('Password')?.hasError('minLength') && formulario.get('Password')?.touched">La Contraseña
+          debe contener al menos 6 caracteres</span>
+      </div>
+      <div class="login" (click)="onLogin()">
+        <input type="button" value="INGRESAR" class="formControl" readonly />
+        <!-- <label class="log">INGRESAR</label> -->
+        <!-- <ion-tittle class="log">INGRESAR</ion-tittle> -->
+        <!-- <button type="submit" class="log">INGRESAR</button> -->
+      </div>
+      <div class="registro" (click)="Registrar()">
+        <input type="button" value="REGISTRAR" class="formControl" readonly />
+        <!-- <button type="submit" [routerLink]="['/alta-clientes']" class="logRegistro">REGISTRAR</button> -->
+      </div>
     </div>
-    <div class="password">
-      <input type="password" placeholder="CONTRASEÑA" class="formControl" formControlName="Password"/>
-      <br>
-      <span class="spin text-danger" color="danger"
-        *ngIf="formulario.get('Password')?.hasError('required') && formulario.get('Password')?.touched">La Contraseña
-        es Requerida</span>
-      <span class="spin text-danger" color="danger"
-        *ngIf="formulario.get('Password')?.hasError('minLength') && formulario.get('Password')?.touched">La Contraseña
-        debe contener al menos 6 caracteres</span>
-    </div>
-    <div class="login" (click)="onLogin()">
-      <input type="button" value="INGRESAR" class="formControl" readonly/>
-      <!-- <label class="log">INGRESAR</label> -->
-      <!-- <ion-tittle class="log">INGRESAR</ion-tittle> -->
-      <!-- <button type="submit" class="log">INGRESAR</button> -->
-    </div>
-    <div class="registro" (click)="Registrar()">
-      <input type="button" value="REGISTRAR" class="formControl" readonly/>
-      <!-- <button type="submit" [routerLink]="['/alta-clientes']" class="logRegistro">REGISTRAR</button> -->
-    </div>
-  </div>
-</form>
-<ion-fab vertical="end" horizontal="bottom" style="margin-top: 100px; margin-left: 25px">
-  <ion-fab-button><ion-icon name="add-circle-outline"></ion-icon>
-  </ion-fab-button>
-  <!-- <ion-fab-list side="top">
+  </form>
+  <ion-fab vertical="start" horizontal="end" style="margin-top: 100px; margin-left: 25px">
     <ion-fab-button>
-      <ion-icon name="logo-facebook"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-twitter"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-youtube"></ion-icon>
-    </ion-fab-button>
-  </ion-fab-list> -->
-
-  <ion-fab-list side="end">
-    <ion-fab-button color="primary" size="large" (click)="LoginUsuarioAnonimo()">
-      <img src="../../assets/anonimo.png">
-    </ion-fab-button>
-    <ion-fab-button color="secondary" (click)="LoginUsuarioDuenio()">
-      <img src="../../assets/dueño.png">
-    </ion-fab-button>
-    <ion-fab-button color="danger" (click)="LoginUsuarioEmpleado()">
-      <img src="../../assets/empleado.png">
-    </ion-fab-button>
-    <ion-fab-button color="danger" (click)="LoginUsuarioCliente()">
-      <img src="../../assets/cliente.png">
-    </ion-fab-button>
-  </ion-fab-list>
-
-  <!-- <ion-fab-list side="bottom">
-    <ion-fab-button>
-      <ion-icon name="logo-github"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-javascript"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-angular"></ion-icon>
-    </ion-fab-button>
-  </ion-fab-list> -->
-
-  <!-- <ion-fab-list side="start">
-    <ion-fab-button>
-      <ion-icon name="logo-vimeo"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-chrome"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-react"></ion-icon>
-    </ion-fab-button>
-  </ion-fab-list> -->
-</ion-fab>
-<!-- <ion-fab vertical="end" horizontal="bottom" style="margin-top: 150px; margin-left: 50px;">
-  <ion-fab-button><ion-icon name="add-circle-outline"></ion-icon>
-  </ion-fab-button> -->
-  <!-- <ion-fab-list side="top">
-    <ion-fab-button>
-      <ion-icon name="logo-facebook"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-twitter"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-youtube"></ion-icon>
-    </ion-fab-button>
-  </ion-fab-list> 
-
-  <ion-fab-list side="end">
-    <ion-fab-button color="primary" size="large" (click)="LoginUsuarioUno()">
-      Usuario 1 
-    </ion-fab-button>
-    <ion-fab-button color="secondary" (click)="LoginUsuarioDos()">
-      Usuario 2
-    </ion-fab-button>
-    <ion-fab-button color="danger" (click)="LoginUsuarioTres()">
-      Usuario 3
-    </ion-fab-button>
-  </ion-fab-list>-->
-
-  <!-- <ion-fab-list side="bottom">
-    <ion-fab-button>
-      <ion-icon name="logo-github"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-javascript"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-angular"></ion-icon>
-    </ion-fab-button>
-  </ion-fab-list> -->
-
-  <!-- <ion-fab-list side="start">
-    <ion-fab-button>
-      <ion-icon name="logo-vimeo"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-chrome"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button>
-      <ion-icon name="logo-react"></ion-icon>
-    </ion-fab-button>
-  </ion-fab-list> 
-</ion-fab>-->
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-fab-button> 
+      <ion-fab-list>
+        <ion-fab-button color="primary" (click)="LoginUsuarioAnonimo()">
+          <img src="../../assets/anonimo.png">
+        </ion-fab-button>
+        <ion-fab-button color="secondary" (click)="LoginUsuarioDuenio()">
+          <img src="../../assets/accesosrapidos/gerente.png">
+        </ion-fab-button>
+        <ion-fab-button color="danger" (click)="LoginUsuarioMozo()">
+          <img src="../../assets/accesosrapidos/camarero.png">
+        </ion-fab-button>
+        <ion-fab-button color="danger" (click)="LoginUsuarioCocinero()">
+          <img src="../../assets/accesosrapidos/cocina.png">
+        </ion-fab-button>
+        <ion-fab-button color="danger" (click)="LoginUsuarioBartender()">
+          <img src="../../assets/accesosrapidos/barman.png">
+        </ion-fab-button>
+        <ion-fab-button color="success" (click)="LoginUsuarioCliente()">
+          <img src="../../assets/accesosrapidos/cliente.png">
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
+ 
 </ion-content>
+
+<ngx-spinner type=null template="<img src='./../../assets/icon-color.png' height='125'/>">
+  <p style="color: white">Cargando... </p>
+</ngx-spinner>

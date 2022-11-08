@@ -36,7 +36,7 @@
     <ion-item class="image-item"> 
       <ion-col size="7">
         <div class="mx-auto d-block circular--portrait image-default" (click)="tomarFotoProducto()"  #imagen>
-          <img src="./../../../assets/plato.png" >
+          <img src="./../../../assets/sacarfoto.png" >
         </div>  
       </ion-col>  
     </ion-item> 
@@ -52,3 +52,8 @@
     
   </form>
 </ion-content>
+
+<ngx-spinner
+type=null
+template="<img src='./../../assets/icon-color.png' height='125'/>"
+><p style="color: white" >Cargando... </p></ngx-spinner>

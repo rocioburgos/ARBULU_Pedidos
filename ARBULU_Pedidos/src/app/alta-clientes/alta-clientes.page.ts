@@ -9,6 +9,7 @@ import { FirestoreService } from '../servicios/firestore.service';
 import { ImagenesService } from '../servicios/imagenes.service';
 import { MailService } from '../servicios/mail.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-alta-clientes',
@@ -35,8 +36,9 @@ export class AltaClientesPage implements OnInit {
   nombre='';
   apellido='';
   dni='';
-  
+  fotoUrl='./../../assets/sacarfoto.png';
   constructor(
+    private spinner: NgxSpinnerService,
     private fromBuilder: FormBuilder,
     private router: Router ,
     private imagenSrv:ImagenesService,
@@ -88,7 +90,7 @@ export class AltaClientesPage implements OnInit {
       this.usuario.tipo = eUsuario.cliente;
       this.usuario.nombre = this.altaForm.value.nombre;
 
-      this.authSvc.Register(this.usuario.email, this.clave).then((userCredential)=>{
+      /*this.authSvc.Register(this.usuario.email, this.clave).then((userCredential)=>{
         this.firestoreSvc.crearUsuario(this.usuario).then((ok)=>{
             this.mail.enviarEmail(this.usuario.nombre, this.usuario.email, "Su cuenta se encuentra pendiente aprobacion por parte del dueño o un supervisor.")
             this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
@@ -99,7 +101,29 @@ export class AltaClientesPage implements OnInit {
         })
       }).catch((err)=>{
         this.Errores(err);
-      });
+      });*/
+
+      this.authSvc.register(this.usuario.email, this.clave).then((credential)=>{
+        console.log(credential.user.uid);
+        this.usuario.uid = credential.user.uid;
+        this.firestoreSvc.setItemWithId(this.usuario, credential.user.uid).then((usuario)=>{
+          console.log(usuario);
+  
+          setTimeout(() => {
+            this.spinner.hide();
+            this.utilidadesSrv.successToast('Registro exitoso');
+            this.router.navigateByUrl('login')
+          }, 3000); 
+        }).catch((err)=>{
+          this.Errores(err);
+          this.utilidadesSrv.vibracionError();
+          console.log(err);
+        });
+      }).catch((err)=>{
+        this.Errores(err);
+        this.utilidadesSrv.vibracionError();
+        console.log(err);
+      }); 
     }
     else{
       this.usuario.nombre = this.altaFormAnonimo.value.nombre;
@@ -109,13 +133,7 @@ export class AltaClientesPage implements OnInit {
       this.utilidadesSrv.successToast("Ingreso exitoso.");
       this.navigateTo('qr-ingreso-local');
     }
-
-    //this.utilidadesSrv.mostrartToast('Aceptado');
-    this.utilidadesSrv.vibracionError(); 
-    setTimeout(() => {
-      this.utilidadesSrv.reproducirSonidoInicio();
-    }, 2000);
-
+ 
   }
 
 
@@ -132,10 +150,12 @@ export class AltaClientesPage implements OnInit {
 
   async addPhotoToGallery() {
     const photo = await this.imagenSrv.addNewToGallery();
+    this.spinner.show();
     this.uploadPhoto(photo).then(() => {
        
       setTimeout(() => {
         this.habilitar = true; 
+        this.spinner.hide();
       }, 5000);
 
     }
@@ -155,8 +175,11 @@ export class AltaClientesPage implements OnInit {
     uploadTask.then(async res => {
       const downloadURL = await res.ref.getDownloadURL();
       if (downloadURL.length > 0) {
+        console.log("URL  CORRECTO- i_IMG++");
+        this.fotoUrl= downloadURL;
         console.log("IMAGEN CARGADA CORRECTAMENTE");
         return this.usuario.foto = downloadURL;
+        
       }
     })
       .catch((err) => {

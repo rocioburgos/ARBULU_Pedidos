@@ -8,13 +8,15 @@ import { CartaProductosPageRoutingModule } from './carta-productos-routing.modul
 
 import { CartaProductosPage } from './carta-productos.page';
 import { SwiperModule } from 'swiper/angular';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     CartaProductosPageRoutingModule,
-    SwiperModule
+    SwiperModule,
+    NgxSpinnerModule
   ],
   declarations: [CartaProductosPage]
 })

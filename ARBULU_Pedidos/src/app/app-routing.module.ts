@@ -88,7 +88,7 @@ const routes: Routes = [
   {
     path: 'listado-clientes-pendientes',
     loadChildren: () => import('./listado-clientes-pendientes/listado-clientes-pendientes.module').then( m => m.ListadoClientesPendientesPageModule)
-  }
+  } 
  
 ];
 

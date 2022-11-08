@@ -8,6 +8,7 @@ import { FirestoreService } from '../servicios/firestore.service';
 import { ImagenesService } from '../servicios/imagenes.service';
 import { ProductosService } from '../servicios/productos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-alta-mesa',
@@ -26,7 +27,9 @@ export class AltaMesaPage implements OnInit {
   public uploadProgress: number;
   public habilitarFotosBTN = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private spinner: NgxSpinnerService,
+    private fb: FormBuilder,
     private route: Router, 
     public firestore:FirestoreService,
     private loadingController: LoadingController, 
@@ -56,19 +59,30 @@ export class AltaMesaPage implements OnInit {
   }
  
   GuardarMesa() {
+    this.spinner.show()
     this.mesa.numero = this.formMesa.get('numero').value;
     this.mesa.cantidadComensales = this.formMesa.get('cantidadComensales').value;
     this.mesa.tipo = this.formMesa.get('tipoMesa').value;      
 
     this.firestore.crearMesa(this.mesa)
     .then((ok) => {
-      this.utilSrv.successToast('Mesa guardada con exito');
+      setTimeout(() => {
+        this.spinner.hide();
+        this.utilSrv.successToast('Mesa guardada con exito');
+        this.route.navigateByUrl('home-duenio')
+      }, 3000);
+
      
       console.log("GOOD");
     })
     .catch((err) => {
-      this.utilSrv.successToast('Error.No se guardo la mesa.');
-      console.log(err);
+      setTimeout(() => {
+        this.spinner.hide();
+        this.utilSrv.successToast('Error.No se guardo la mesa.');
+        console.log(err);
+        this.route.navigateByUrl('home-duenio')
+      }, 3000);
+
     });
   }
 
