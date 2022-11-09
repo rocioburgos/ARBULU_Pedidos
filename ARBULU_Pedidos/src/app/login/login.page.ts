@@ -6,6 +6,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { UtilidadesService } from '../servicios/utilidades.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { eEmpleado, eUsuario } from '../clases/usuario';
+import { MailService } from '../servicios/mail.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -22,7 +23,8 @@ export class LoginPage implements OnInit {
     private spinner: NgxSpinnerService,
     private utilidadesSrv: UtilidadesService,
     private router: Router,
-    private userSrv: FirestoreService
+    private userSrv: FirestoreService,
+    private mail:MailService
   ) {  }
 
   BuildForm() {
@@ -48,6 +50,7 @@ export class LoginPage implements OnInit {
  
         if (user.tipo == 'cliente' &&  !user.clienteValidado) {
           this.afAuth.signOut();
+          this.mail.enviarEmail(user.nombre, user.email, "Su cuenta aun no ha sido validada. Aguarde a nuestro personal para que le permita acceder al sitio.")
           this.utilidadesSrv.errorToast("Todavía no fue confirmada su cuenta")
         } else if((user.tipo == 'cliente' &&   user.clienteValidado )||user.tipo != 'cliente' ){
           user.uid = res.user.uid;
