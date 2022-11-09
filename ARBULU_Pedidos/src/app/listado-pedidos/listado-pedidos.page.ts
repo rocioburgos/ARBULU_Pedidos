@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { eEstadPedido } from '../clases/pedidos';
 import { AuthService } from '../servicios/auth.service';
+import { FirestoreService } from '../servicios/firestore.service';
+import { MensajeService } from '../servicios/mensaje.service';
 import { PedidosService } from '../servicios/pedidos.service';
 
 @Component({
@@ -20,7 +22,9 @@ export class ListadoPedidosPage implements OnInit {
   usuario:any;
   constructor(private router:Router,
     private pedidosSrv:PedidosService ,
-    private authSrv:AuthService) { }
+    private authSrv:AuthService,
+    private msjSrv:MensajeService,
+    private fireSrv:FirestoreService) { }
 
   ngOnInit() {
     this.pedidosSrv.TraerPedidos().subscribe((res)=>{
@@ -54,6 +58,15 @@ export class ListadoPedidosPage implements OnInit {
      }
     }); 
   } 
-
-
+  //solo el mozo
+  finalizarPedido(pedido_sel:any,proxEstado:string){
+     
+       pedido_sel.estado= eEstadPedido.FINALIZADO; 
+      this.pedidosSrv.actualizarProductoPedido(pedido_sel, pedido_sel.doc_id);
+      //Eliminar mensajes
+      this.msjSrv.borrarMensajesByMesa(pedido_sel.numero_mesa);
+      //Liberar mesa y cliente
+       setTimeout(() => { 
+       }, 3000);
+    }
 }

@@ -1,11 +1,9 @@
 <ion-header >
   <ion-toolbar>
     <ion-title size="large">Inicio empleado</ion-title>
-    <ion-buttons slot="end">
-      <ion-button color="danger" size="large" (click)="cerrarSesion()">
-        <ion-icon slot="end" name="log-out-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-button color="danger" (click)="cerrarSesion()"  slot="end"> 
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 
 </ion-header>
@@ -23,3 +21,5 @@
   <br>  
 </div>
 </ion-content>
+<ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>"> 
+</ngx-spinner>

@@ -16,6 +16,8 @@
           <ion-label>Estado orden: {{pedido.estado}}</ion-label><br>
           <ion-button size="small" color="success" *ngIf="pedido.estado=='PENDIENTE'"  (click)="cambiarEstado(pedido, 'CONFIRMADO')">Confirmar pedido</ion-button>
           <ion-button size="small" color="success"  *ngIf="pedido.estado=='TERMINADO'" (click)="cambiarEstado(pedido, 'ENTREGADO')">Entregar pedido</ion-button>
+          <ion-button size="small" color="success"  *ngIf="pedido.estado=='PAGADO'" (click)="finalizarPedido(pedido, 'PAGADO')">Confirmar pago</ion-button>
+
           <ion-button size="small" color="primary"  (click)="verDetalle(pedido.doc_id)">Ver detalle</ion-button>
         </ion-card-content> 
       </ion-card>  
@@ -36,3 +38,6 @@
   </div>
   </div>
 </ion-content>
+<ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>"> 
+  <p>Cargando...</p>
+</ngx-spinner>

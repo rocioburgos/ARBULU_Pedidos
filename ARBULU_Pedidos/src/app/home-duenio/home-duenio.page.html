@@ -1,15 +1,15 @@
 <ion-header >
   <ion-toolbar>
     <ion-title size="large">Inicio dueño</ion-title>
+     
+      <ion-button color="danger" (click)="cerrarSesion()"  slot="end"> 
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button> 
   </ion-toolbar>
 </ion-header>
 <ion-content>
 <div id="container">  
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="danger" size="large" (click)="cerrarSesion()">
-      <ion-icon name="arrow-forward"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  
   
   <a [routerLink]="['/listado-clientes-pendientes']"><ion-button>Habilitar clientes</ion-button></a>
   <br><br> 
@@ -25,3 +25,5 @@
   <br>  
 </div>
 </ion-content>
+<ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>"> 
+</ngx-spinner>

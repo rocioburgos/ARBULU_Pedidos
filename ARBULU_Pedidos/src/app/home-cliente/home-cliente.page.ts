@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { AlertController } from '@ionic/angular';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
@@ -23,15 +25,16 @@ export class HomeClientePage implements OnInit {
   propina = 0;
   propinaEscaneada = false;
   usuario:any;
-  cuenta:boolean = false;
-  spinner:boolean = false;
+  cuenta:boolean = false; 
 
   constructor(
     private firestoreSvc: FirestoreService,
     //public pushNotificationService: PushNotificationService, 
     private router:Router,
     private utilidadesSvc: UtilidadesService,
-    private authSvc: AuthService) 
+    private authSvc: AuthService,
+    private alertController: AlertController,
+    private spinner:NgxSpinnerService) 
   { 
     this.usuario = this.authSvc.usuarioActual;
     if(!this.usuario)
@@ -44,13 +47,40 @@ export class HomeClientePage implements OnInit {
   ngOnInit() {
   }
 
-  cerrarSesion(){
-    this.authSvc.signOut().then(()=>{
-      this.utilidadesSvc.warningToast("Cerrando sesion.",2000);
-      setTimeout(() => {
-        this.router.navigate(['login']); 
-      }, 2500);
-    });
+ async cerrarSesion(){
+
+    const alert = await this.alertController.create({
+      header: '¿Seguro que quiere cerrar sesión?',
+      cssClass: 'alertSesion',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+
+        },
+        {
+          text: 'Si',
+          role: 'confirm',
+          handler: () => {
+          
+            this.spinner.show(); 
+            this.utilidadesSvc.warningToast("Cerrando sesion.",2000);
+              this.authSvc.signOut().then(()=>{ 
+                setTimeout(() => {
+                 
+                  this.spinner.hide();
+                  this.router.navigate(['login']); 
+                }, 3000);
+              });
+           
+
+          },
+        },
+      ],
+    });  
+    await alert.present(); 
+
+
   }
   
   async checkPermission() {

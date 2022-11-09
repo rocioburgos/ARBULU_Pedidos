@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { HomeDuenioPageRoutingModule } from './home-duenio-routing.module';
 
 import { HomeDuenioPage } from './home-duenio.page';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomeDuenioPageRoutingModule
+    HomeDuenioPageRoutingModule,
+    NgxSpinnerModule
   ],
   declarations: [HomeDuenioPage]
 })

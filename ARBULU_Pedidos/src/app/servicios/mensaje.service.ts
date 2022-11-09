@@ -30,7 +30,18 @@ export class MensajeService {
                                       ref => ref.where('mesa', '==', nroMesa)
                                       .orderBy('fulldate',  "asc")       
                                     );  
-      return this.mensajesCollection.valueChanges(); 
+      return this.mensajesCollection.valueChanges({ idField: "doc_id" }); 
  
+  }
+
+
+  borrarMensajesByMesa(numero:string){
+    let msj = this.traerMensajesPorMesa(numero).subscribe((res)=>{
+      res.forEach(msj => {
+        this.mensajesCollection.doc(msj.doc_id).delete();
+      });
+         
+    })
+   
   }
 }

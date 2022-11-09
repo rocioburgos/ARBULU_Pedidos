@@ -37,34 +37,42 @@ export class DetallePedidoPage implements OnInit {
   ngOnInit() {
     this.usuario=this.authSrv.getCurrentUserLS();
     if(this.usuario.tipo =='cliente'){
-      this.esCliente=true;
+      this.esCliente=true;    
+      this.esMetre=false;
+      this.esEmpleado=false;
     }else if(this.usuario.tipo =='empleado'){
       
       if(this.usuario.tipoEmpleado=='bartender'){
         this.esEmpleado= true;
+        this.esCliente=false;    
+        this.esMetre=false;
         this.sectorUserActual='BEBIDA';
       }else if(this.usuario.tipoEmpleado=='cocinero'){
         this.esEmpleado= true;
+        this.esCliente=false;    
+        this.esMetre=false;
         this.sectorUserActual='COCINA';
       }else{
         this.esMetre= true;
+        this.esCliente=false;     
+        this.esEmpleado= false;
       }
     }
 
     if(this.esCliente){ 
-     this.pedidoLS= localStorage.getItem('pedido')
+     this.pedidoLS= localStorage.getItem('pedido');
       if(this.pedidoLS != null  ){
         this.pedidoLS= JSON.parse(this.pedidoLS); 
         this.pedido =this.pedidoLS;
         this.pedidoSrv.TraerPedido(this.pedido.pedidoID).subscribe((res) => {
           this.pedido = res;
-          console.log('PEDIDO SELECCIONADO: ' + this.pedido.numero_mesa)
+          console.log('PEDIDO SELECCIONADO: ' + this.pedido)
         });
         } 
     }else{
       this.pedidoSrv.TraerPedido(this.pedido_id).subscribe((res) => {
         this.pedido = res;
-        console.log('PEDIDO SELECCIONADO: ' + this.pedido.numero_mesa)
+        console.log('PEDIDO SELECCIONADO: ' + this.pedido)
       });
 
     }
@@ -107,4 +115,15 @@ export class DetallePedidoPage implements OnInit {
     this.pedido.estado= eEstadPedido.RECIBIDO; 
     this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
   }
+
+  pedirCuenta(pedidoID:string){
+    this.pedido.estado= eEstadPedido.CUENTA; 
+    this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
+  }
+  pagarPedido(pedidoID:string){
+    this.pedido.estado= eEstadPedido.PAGADO; 
+    this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
+  }
+
+
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
@@ -17,7 +19,10 @@ export class HomeMetrePage implements OnInit {
   constructor(private authSrv:AuthService,
     private utilidadesSvc:UtilidadesService,
     private router:Router,
-    private firesoteSvc: FirestoreService) {
+    private firesoteSvc: FirestoreService,
+    private spinner:NgxSpinnerService,
+    private alertController:AlertController
+    ) {
       this.getClientes();
       this.getMesas();
     }
@@ -25,13 +30,40 @@ export class HomeMetrePage implements OnInit {
   ngOnInit() {
   }
   
-  cerrarSesion(){
-    this.authSrv.signOut().then(()=>{
-      this.utilidadesSvc.warningToast("Cerrando sesion.",2000);
-      setTimeout(() => {
-        this.router.navigate(['login']); 
-      }, 2500);
-    });
+  async cerrarSesion(){
+
+    const alert = await this.alertController.create({
+      header: '¿Seguro que quiere cerrar sesión?',
+      cssClass: 'alertSesion',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+
+        },
+        {
+          text: 'Si',
+          role: 'confirm',
+          handler: () => {
+          
+            this.spinner.show(); 
+            this.utilidadesSvc.warningToast("Cerrando sesion.",2000);
+              this.authSrv.signOut().then(()=>{ 
+                setTimeout(() => {
+                 
+                  this.spinner.hide();
+                  this.router.navigate(['login']); 
+                }, 3000);
+              });
+           
+
+          },
+        },
+      ],
+    });  
+    await alert.present(); 
+
+
   }
 
   getMesas() {

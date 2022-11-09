@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { HomeEmpleadosPageRoutingModule } from './home-empleados-routing.module';
 
 import { HomeEmpleadosPage } from './home-empleados.page';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomeEmpleadosPageRoutingModule
+    HomeEmpleadosPageRoutingModule,
+    NgxSpinnerModule
   ],
   declarations: [HomeEmpleadosPage]
 })
