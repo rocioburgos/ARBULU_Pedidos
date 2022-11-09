@@ -7,6 +7,7 @@ import { eUsuario, Usuario } from '../clases/usuario';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { ImagenesService } from '../servicios/imagenes.service';
+import { MailService } from '../servicios/mail.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -43,7 +44,8 @@ export class AltaClientesPage implements OnInit {
     private imagenSrv:ImagenesService,
     private utilidadesSrv:UtilidadesService,
     private firestoreSvc: FirestoreService,
-    private authSvc: AuthService
+    private authSvc: AuthService,
+    private mail:MailService
   ) {
     this.email = '';
     this.clave = '';
@@ -90,7 +92,7 @@ export class AltaClientesPage implements OnInit {
 
       /*this.authSvc.Register(this.usuario.email, this.clave).then((userCredential)=>{
         this.firestoreSvc.crearUsuario(this.usuario).then((ok)=>{
-         
+            this.mail.enviarEmail(this.usuario.nombre, this.usuario.email, "Su cuenta se encuentra pendiente aprobacion por parte del dueño o un supervisor.")
             this.utilidadesSrv.successToast(this.usuario.tipo + " dado de alta exitosamente.");
             this.utilidadesSrv.successToast("Espere la Aprobacón de la cuenta.", 3000);
             this.navigateTo('login');
@@ -175,6 +177,7 @@ export class AltaClientesPage implements OnInit {
       if (downloadURL.length > 0) {
         console.log("URL  CORRECTO- i_IMG++");
         this.fotoUrl= downloadURL;
+        console.log("IMAGEN CARGADA CORRECTAMENTE");
         return this.usuario.foto = downloadURL;
         
       }

@@ -12,6 +12,7 @@ import { FirebaseModule } from './modules/firebase/firebase.module';
 import { SwiperModule } from 'swiper/angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -23,7 +24,8 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     FirebaseModule,
     SwiperModule,
     BrowserAnimationsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    HttpClientModule
   ],
   providers: [Vibration,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

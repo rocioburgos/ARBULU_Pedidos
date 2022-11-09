@@ -16,9 +16,13 @@ export class ImagenesService {
     private afStore: AngularFirestore) { } 
     
 
-  saveFile(file: Blob, filePath: string) {
-
+  saveFile(file: any, filePath: string) {
    return this.storage.upload(filePath, file);
+  }
+
+  getRef(path:string)
+  {
+    return this.storage.ref(path).getDownloadURL()
   }
 
   public async addNewToGallery(): Promise<Photo> {

@@ -33,11 +33,12 @@ export class ListadoClientesPendientesPage implements OnInit {
     this.firestore.obtenerClientesInvalidados().then((data)=>{
       data.forEach((doc)=>{
         let usuario = doc.data() as Usuario;
-        if(usuario.email != '')
+        if(usuario.email != '' && usuario.email != undefined)
         {
           this.listaUsuarios.push({...usuario});
         }
       })
+      console.log(this.listaUsuarios);
       this.listaUsuarios.length == 0 ? this.flagListaVacia = true : this.flagListaVacia = false;
     })
   }
