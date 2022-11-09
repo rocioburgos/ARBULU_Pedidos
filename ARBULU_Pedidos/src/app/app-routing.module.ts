@@ -92,7 +92,12 @@ const routes: Routes = [
   {
     path: 'encuesta-cliente',
     loadChildren: () => import('./encuesta-cliente/encuesta-cliente.module').then( m => m.EncuestaClientePageModule)
+  },
+  {
+    path: 'poke-preguntados',
+    loadChildren: () => import('./poke-preguntados/poke-preguntados.module').then( m => m.PokePreguntadosPageModule)
   }
+
 
 
  

@@ -1,0 +1,60 @@
+<ngx-spinner type=null template="<img src='./../../assets/icon-color.png' height='125'/>">
+  <p style="color: white">Cargando... </p>
+</ngx-spinner>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Poke preguntados</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <body>
+    <div *ngIf="!finalizado; else finalizadoTemplate" class="container">
+        <h2 class="col text-center title">Adivina el nombre de 10 Pokemon para obtener <strong>20%</strong> de descuento!!!</h2>
+            <div class="col text-center top" style="text-align:center">
+                <img *ngIf="this.pokemonImagen != ''" [src]="this.pokemonImagen" height="60%" width="60%" >
+            </div>
+            <div class="col text-center">
+                <strong>Puntaje: <mark>{{ puntaje }}</mark></strong>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col text-center">
+                    <ion-button *ngFor="let nombre of nombresPokemonFalsos" color="tertiary" class="btn btn-success mg" (click)="check(nombre)" value="nombre">{{nombre}}</ion-button><br>
+                </div>
+            </div>
+            <div class="row">
+                <div *ngIf="!jugando" class="col text-center">
+                    <ion-button (click)="nuevoPokemon()" color="tertiary" class="btn btn-primary">Iniciar</ion-button>
+                </div>
+            </div>
+    </div>  
+    <ng-template #finalizadoTemplate>
+      <div *ngIf="puntajeFinal == 10; else derrotaTemplate" class="container">
+         <div class="col text-center top">
+          <h2 class="col text-center title">Felicidades!!! Has obtenido 10% de descuento</h2>
+                <strong>Puntaje final: <mark>{{ puntajeFinal }}</mark></strong>
+          </div>
+          <div class="row">
+            <div *ngIf="!jugando" class="col text-center  mg-top">
+                <ion-button (click)="navigateTo('/home-cliente')" class="btn btn-primary">Finalizar</ion-button>
+            </div>
+        </div>
+      </div>
+      <ng-template #derrotaTemplate>
+        <div class="container">
+          <div class="col text-center top">
+            <h2 class="col text-center title">Que pena! No has obtenido el 10% de descuento. Mejor suerte la proxima!</h2>
+                  <strong>Puntaje final: <mark>{{ puntajeFinal }}</mark></strong>
+            </div>
+            <div class="row">
+              <div *ngIf="!jugando" class="col text-center  mg-top">
+                  <ion-button (click)="navigateTo('/home-cliente')" class="btn btn-primary">Finalizar</ion-button>
+              </div>
+          </div>
+        </div>
+      </ng-template>
+    </ng-template>
+</body>
+</ion-content>
