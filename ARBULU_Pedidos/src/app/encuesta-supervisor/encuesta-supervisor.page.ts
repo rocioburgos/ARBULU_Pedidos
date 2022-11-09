@@ -6,6 +6,7 @@ import { eUsuario } from '../clases/usuario';
 import { FirestoreService } from '../servicios/firestore.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 import { Chart, registerables } from 'chart.js';
+import { AuthService } from '../servicios/auth.service';
 
 @Component({
   selector: 'app-encuesta-supervisor',
@@ -24,8 +25,8 @@ export class EncuestaSupervisorPage implements OnInit {
   encuestasEmpleados:Array<any> = [];
   verEncuestasEmpleados:boolean = false;
 
-  clientesValidos :Array <any> = [];
-  empleadosActuales :Array <any> = [];
+  clientesValidos: any = [];
+  empleadosActuales: any = [];
   // coleccionEmpleados : any;
   // empleados : any;
   // empleadosBD : any;
@@ -37,12 +38,35 @@ export class EncuestaSupervisorPage implements OnInit {
     public firestoreSvc:FirestoreService,
     private fb:FormBuilder,
     private db : AngularFirestore,
-    private utilSvc: UtilidadesService) 
+    private utilidadesSvc: UtilidadesService,
+    private authSvc: AuthService) 
     {
-      let sub = firestoreSvc.obtenerUsuariosPorTipo(eUsuario.cliente);
+      var auxClientes = this.firestoreSvc.obtenerUsuariosByTipo(eUsuario.cliente).subscribe((data)=>{
+        console.log(data);
+        
+          for(let item of data)
+          {
+            if (item.clienteValidado){
+              this.clientesValidos.push(item);
+            }
+          }
+          console.log(this.clientesValidos);
+          auxClientes.unsubscribe();
+        });
       
-      let subEmpleados = this.firestoreSvc.obtenerUsuariosPorTipo(eUsuario.empleado);
+      var auxEmpleados = this.firestoreSvc.obtenerUsuariosByTipo(eUsuario.empleado).subscribe((data)=>{
+          for(let item of data)
+          {
+            if (item.clienteValidado){
+              this.clientesValidos.push(item);
+            }
+          }
+          console.log(this.empleadosActuales);
+          auxEmpleados.unsubscribe();
+        });
 
+      
+      
 
       this.form = this.fb.group({
         'comportamiento':['',Validators.required],
@@ -88,14 +112,14 @@ export class EncuestaSupervisorPage implements OnInit {
 
   EnviarEncuesta()
   {
-    this.firestoreSvc.crearEncuestaSupervisor(this.form.value)
+    this.firestoreSvc.crearEncuestaClienteSupervisor(this.form.value)
     .then(()=>{
       document.getElementById('enviar').setAttribute('disabled', 'disabled');
 
       this.spinner = true;
       
       setTimeout(() => {
-        this.utilSvc.successToast('Se registró la encuesta correctamente.', 2000);
+        this.utilidadesSvc.successToast('Se registró la encuesta correctamente.', 2000);
         
         this.verEncuestas = true;
         this.spinner = false;
@@ -105,32 +129,33 @@ export class EncuestaSupervisorPage implements OnInit {
         this.MostrarEncuestas();
       }, 4000);
     }).catch(error=>{
-      this.utilSvc.errorToast('Ocurrió un error al registrar la encuesta.', 2000);
+      this.utilidadesSvc.errorToast('Ocurrió un error al registrar la encuesta.', 2000);
     });
   }
 
   EnviarEncuestaEmpleados()
   {
-    // this.firestoreSvc.SubirEncuestaEmpleadosDesdeSupervisor(this.formEmpleados.value)
-    // .then(()=>{
-    //   document.getElementById('enviarFormEmpleado').setAttribute('disabled', 'disabled');
+    this.firestoreSvc.crearEncuestaEmpleadoSupervisor(this.formEmpleados.value)
+    .then(()=>{
+      document.getElementById('enviarFormEmpleado').setAttribute('disabled', 'disabled');
 
-    //   this.spinner = true;//mirar spinner
+      this.spinner = true;//mirar spinner
       
-    //   setTimeout(() => {
-    //     this.utilSvc.successToast('Se registró la encuesta correctamente.', 2000);
+      setTimeout(() => {
+        this.utilidadesSvc.successToast('Se registró la encuesta correctamente.', 2000);
         
-    //     this.verEncuestasEmpleados = true;
-    //     this.spinner = false;
-    //   }, 2000);
+        this.verEncuestasEmpleados = true;
+        this.spinner = false;
+      }, 2000);
 
-    //   setTimeout(() => {
-    //     this.MostrarEncuestasEmpleados();
-    //   }, 4000);
-    // }).catch(error=>{
-    //   this.utilSvc.errorToast('Ocurrió un error al registrar la encuesta.', 2000);
-    // });
+      setTimeout(() => {
+        this.MostrarEncuestasEmpleados();
+      }, 4000);
+    }).catch(error=>{
+      this.utilidadesSvc.errorToast('Ocurrió un error al registrar la encuesta.', 2000);
+    });
   }
+
   MostrarEncuestas()
   {
     // let encuestas = this.firestoreSvc.GetColeccion('encuestaClientesDesdeSupervisor').subscribe((data)=>{
@@ -488,6 +513,15 @@ export class EncuestaSupervisorPage implements OnInit {
           ]
         }]
       }
+    });
+  }
+
+  cerrarSesion(){
+    this.authSvc.signOut().then(()=>{
+      this.utilidadesSvc.warningToast("Cerrando sesion.",2000);
+      setTimeout(() => {
+        this.router.navigate(['login']); 
+      }, 2500);
     });
   }
 

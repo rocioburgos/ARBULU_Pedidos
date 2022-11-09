@@ -1,22 +1,22 @@
 <ion-header>
-  <ion-toolbar color="header">
-    <ion-title>
-      <ion-img style="width: 55px; height: 55px;" *ngIf="!spinner" src='assets/iconTransp2.png'></ion-img>
-      <ion-img class="rotate-center" style="width: 55px; height: 55px;" *ngIf="spinner" src='assets/iconTransp2.png'></ion-img>
-    </ion-title>
+  <ion-toolbar color="warning"> 
+    <ion-title>Encuesta Supervisor</ion-title>
+    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
     <ion-buttons slot="end">
-      <ion-menu-button style="margin: auto;" type="button" menu="menu" color="escanear"><ion-icon name="menu"></ion-icon></ion-menu-button>
+      <ion-button color="danger" size="large" (click)="cerrarSesion()">
+        <ion-icon slot="end" name="log-out-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
 </ion-header>
 
 <ion-content slot="fixed">
   <div class="container-datos">
-    <h3>Encuesta de supervisor</h3>
 
     <div class="inputdiv" style="padding-top: 6px;" >
       <ion-item color="transp2">
-        <ion-label color='dark' position="floating" class="label">Selecione tipo de usuario a calificar</ion-label>
+        <ion-label color='dark' position="floating" class="label">Seleccione Usuario</ion-label>
           <ion-select  okText="Seleccionar" cancelText="Cancelar" [(ngModel)]="tipoUsuario" (ionChange)="AsignarTipo($event.target.value)">
             <ion-select-option [value]="cliente">Cliente</ion-select-option>
             <ion-select-option [value]="empleado">Empleado</ion-select-option>
@@ -26,7 +26,7 @@
 
     <div class="inputdiv" style="padding-top: 6px;" *ngIf="tipoUsuario=='Cliente'  && !verEncuestas" >
       <ion-item color="transp2">
-        <ion-label color='dark' position="floating" class="label">Clientes</ion-label>
+        <ion-label color='dark' position="floating" class="label">Seleccione Cliente</ion-label>
           <ion-select okText="Seleccionar" cancelText="Cancelar" >
             <ion-select-option value="{{item.nombre}} {{item.apellido}}" *ngFor="let item of clientesValidos">{{item.nombre}} {{item.apellido}}</ion-select-option>
           </ion-select>
@@ -129,11 +129,11 @@
 
       <div>
         <div class="inputdiv">
-          <ion-label class="label">Calificar comportamiento</ion-label>
+          <ion-label class="label">Energía</ion-label>
           <ion-item color="transp2">
             <ion-range color="dark" pin="true" min="1" max="10" step="1" snaps="true" formControlName="comportamiento">
-              <ion-icon slot="start" name="walk"></ion-icon>
-              <ion-icon slot="end" name="sparkles"></ion-icon>
+              <ion-icon slot="start" name="battery-empty"></ion-icon>
+              <ion-icon slot="end" name="battery-charging"></ion-icon>
             </ion-range>
           </ion-item>
           <ion-label class="invalid" *ngIf="formEmpleados.controls['comportamiento'].errors?.['required'] && formEmpleados.controls['comportamiento'].touched">
@@ -142,6 +142,31 @@
         </div>
 
         <div class="inputdiv">
+          <ion-item color="transp2">
+            <ion-radio-group value="biff" formControlName="comportamiento" style="width: 100%;">
+              <ion-label class="label" style="margin-bottom: 10px;">Calificar comportamiento</ion-label>
+              <ion-item color="transp">
+                <ion-icon class="iconEst" style="color:#59c96c;" name="happy-outline"></ion-icon>
+                <ion-label>Bueno</ion-label>
+                <ion-radio slot="start" value="bueno" color="dark"></ion-radio>
+              </ion-item>
+              <ion-item color="transp">
+                <ion-icon class="iconEst" style="color:#000000;" name="sad-outline"></ion-icon>
+                <ion-label>Regular</ion-label>
+                <ion-radio slot="start" value="regular" color="dark"></ion-radio>
+              </ion-item>
+              <ion-item color="transp">
+                <ion-icon class="iconEst" style="color:#db5252;" name="sad"></ion-icon>
+                <ion-label>Malo</ion-label>
+                <ion-radio slot="start" value="malo" color="dark"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-item>
+          <ion-label class="invalid" *ngIf="formEmpleados.controls['comportamiento'].errors?.['required'] && formEmpleados.controls['comportamiento'].touched">
+            Seleccione una opción.
+          </ion-label>
+        </div>
+        <!-- <div class="inputdiv">
           <ion-item color="transp2">
             <ion-radio-group value="biff" formControlName="falta" style="width: 100%;">
               <ion-label class="label" style="margin-bottom: 10px;">Falta seguido</ion-label>
@@ -165,7 +190,7 @@
           <ion-label class="invalid" *ngIf="formEmpleados.controls['falta'].errors?.['required'] && formEmpleados.controls['falta'].touched">
             Seleccione una opción.
           </ion-label>
-        </div>
+        </div> -->
       </div>
 
       <div class="inputdiv" style="padding-top: 6px;">
@@ -192,7 +217,7 @@
       </div>
       
       <div class="inputdiv">
-        <ion-label color='dark' class="label">¿Algún comentario?</ion-label>
+        <ion-label color='dark' class="label">Comentarios</ion-label>
         <ion-item color="transp" style="padding: 10px">
           <ion-textarea formControlName="comentario"></ion-textarea>
         </ion-item>

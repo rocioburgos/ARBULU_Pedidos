@@ -92,6 +92,10 @@ const routes: Routes = [
   {
     path: 'encuesta-supervisor',
     loadChildren: () => import('./encuesta-supervisor/encuesta-supervisor.module').then( m => m.EncuestaSupervisorPageModule)
+  },
+  {
+    path: 'flechas',
+    loadChildren: () => import('./juegos/flechas/flechas.module').then( m => m.FlechasPageModule)
   }
  
 ];
