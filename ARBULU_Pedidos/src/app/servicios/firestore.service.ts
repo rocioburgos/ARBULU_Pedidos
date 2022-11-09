@@ -16,9 +16,14 @@ export class FirestoreService {
   private mesasRef: AngularFirestoreCollection;
   public usuarioActual: any;
   private usuariosCollection: AngularFirestoreCollection<any>;
+  private encuestasClienteSupervisorRef: AngularFirestoreCollection;
+  private encuestasEmpleadoSupervisorRef: AngularFirestoreCollection;
+  
   constructor(private db: AngularFirestore) {
     this.usuariosRef = this.db.collection('usuarios');
     this.mesasRef = this.db.collection('mesas');
+    this.encuestasClienteSupervisorRef = this.db.collection('encuestas-cliente-supervisor');
+    this.encuestasEmpleadoSupervisorRef = this.db.collection('encuestas-empleado-supervisor');
   }
 
   public crearUsuario(usuario: Usuario) {
@@ -112,6 +117,13 @@ export class FirestoreService {
     return this.usuariosRef.ref.where('tipoCliente', '==', tipo).get();
   }
 
+  public obtenerUsuariosByTipo(tipo: eUsuario) {
+    //return this.usuariosRef.ref.where('tipoCliente', '==', tipo).get();
+     this.usuariosRef = this.db.collection('usuarios', ref =>
+      ref.where('tipo', '==', tipo));
+    return this.usuariosRef.valueChanges({ idField: "uid" });
+  }
+
   public async obtenerClientesInvalidados() {
     return this.usuariosRef.ref.where('tipo', '==', 'cliente').where('clienteValidado', '==', false).get();
   }
@@ -134,5 +146,26 @@ export class FirestoreService {
     this.usuariosCollection = this.db.collection('usuarios');
     return this.usuariosCollection.doc(id).set(Object.assign({}, item));    
   }
+
+  public crearEncuestaClienteSupervisor(encuesta: any) {
+    return this.encuestasClienteSupervisorRef.add({ ...encuesta }).then((data) => {
+      this.updateMesa(data.id, { uid: data.id });
+    });
+  }
+
+  public crearEncuestaEmpleadoSupervisor(encuesta: any) {
+    return this.encuestasEmpleadoSupervisorRef.add({ ...encuesta }).then((data) => {
+      this.updateMesa(data.id, { uid: data.id });
+    });
+  }
+
+  public obtenerEncuestasClienteSupervisor() {
+    return this.encuestasClienteSupervisorRef.valueChanges() as Observable<Object[]>;
+  }
+
+  public obtenerEncuestasEmpleadoSupervisor() {
+    return this.encuestasEmpleadoSupervisorRef.valueChanges() as Observable<Object[]>;
+  }
+
 
 }
