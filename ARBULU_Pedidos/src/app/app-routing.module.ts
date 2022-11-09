@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'encuesta-cliente',
+    redirectTo: 'splash',
     pathMatch: 'full'
   },
   {
