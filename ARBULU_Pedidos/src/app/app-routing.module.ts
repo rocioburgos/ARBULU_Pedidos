@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'splash',
+    redirectTo: 'encuesta-cliente',
     pathMatch: 'full'
   },
   {
@@ -88,7 +88,13 @@ const routes: Routes = [
   {
     path: 'listado-clientes-pendientes',
     loadChildren: () => import('./listado-clientes-pendientes/listado-clientes-pendientes.module').then( m => m.ListadoClientesPendientesPageModule)
-  } 
+  },
+  {
+    path: 'encuesta-cliente',
+    loadChildren: () => import('./encuesta-cliente/encuesta-cliente.module').then( m => m.EncuestaClientePageModule)
+  }
+
+
  
 ];
 

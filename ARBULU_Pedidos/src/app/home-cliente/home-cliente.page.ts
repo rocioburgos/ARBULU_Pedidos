@@ -106,6 +106,7 @@ export class HomeClientePage implements OnInit {
     } 
   }
  
+  RealizarPedido(){}
 
   stopScan() {
     setTimeout(() => {

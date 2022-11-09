@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Mesa } from '../clases/mesa';
 import { Usuario, eUsuario } from '../clases/usuario';
+import { ImagenesService } from './imagenes.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,14 @@ import { Usuario, eUsuario } from '../clases/usuario';
 export class FirestoreService {
   private usuariosRef: AngularFirestoreCollection;
   private mesasRef: AngularFirestoreCollection;
+  private encuestasUsuarios: AngularFirestoreCollection;
   public usuarioActual: any;
   private usuariosCollection: AngularFirestoreCollection<any>;
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore,
+    private imagenes:ImagenesService) {
     this.usuariosRef = this.db.collection('usuarios');
     this.mesasRef = this.db.collection('mesas');
+    this.encuestasUsuarios = this.db.collection('encuestaClientes');
   }
 
   public crearUsuario(usuario: Usuario) {
@@ -135,4 +139,31 @@ export class FirestoreService {
     return this.usuariosCollection.doc(id).set(Object.assign({}, item));    
   }
 
+  async SubirEncuestaCliente(datos: any, fotos: FormData) {
+    let path1 = `fotosEncuestas/${Date.now()}/1`;
+    let path2 = `fotosEncuestas/${Date.now()}/2`;
+    let path3 = `fotosEncuestas/${Date.now()}/3`;
+
+    await this.imagenes.saveFile(fotos.get('foto1'), path1);
+    await this.imagenes.saveFile(fotos.get('foto2'), path2);
+    await this.imagenes.saveFile(fotos.get('foto3'), path3);
+
+    let storageSub1 = this.imagenes.getRef(path1).subscribe((data1)=>{
+      datos.foto1 = data1;
+      let storageSub2 = this.imagenes.getRef(path2).subscribe((data2) => {
+        datos.foto2 = data2;
+        let storageSub3 = this.imagenes.getRef(path3).subscribe((data3) => {
+          datos.foto3 = data3;
+          this.encuestasUsuarios.add(datos);
+          storageSub3.unsubscribe();
+        });
+        storageSub2.unsubscribe();
+      });
+      storageSub1.unsubscribe();
+    });
+  }
+
+  public updateEncuestaCliente(id: string, data: any) {
+    return this.encuestasUsuarios.doc(id).update(data);
+  }
 }
