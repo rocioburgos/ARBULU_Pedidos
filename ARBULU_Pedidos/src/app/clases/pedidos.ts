@@ -3,18 +3,18 @@
    PENDIENTE= 'PENDIENTE',
     CONFIRMADO='CONFIRMADO',
     EN_ELABORACION= 'EN_ELABORACION',
-   
+    TERMINADO='TERMINADO',
     ENTREGADO='ENTREGADO' ,
     RECIBIDO='RECIBIDO',
     CUENTA='CUENTA',
-    PAGADO='PAGADO'   ,
-    TERMINADO='TERMINADO',
-    FINALIZADO= 'FINALIZADO'
+    PAGADO='PAGADO' ,
+    COBRADO='COBRADO',
+    FINALIZADO='FINALIZADO'
  }
  export enum eEstadoProductoPedido{
     PENDIENTE= 'PENDIENTE',
    EN_ELABORACION= 'EN_ELABORACION',
-   TERMINADO='TERMINADO'
+   TERMINADO='TERMINADO' 
 }
 
 export interface productoPedido{ 
@@ -37,4 +37,5 @@ export class Pedido{
     tiempo_elaboracion: number; 
     productos: productoPedido[];
     estado: eEstadPedido; 
+    uid_usuario:string;
 }

@@ -131,10 +131,11 @@ export class CartaProductosPage implements OnInit {
       nuevoPedido.tiempo_elaboracion= this.demoraEstimada;
       nuevoPedido.total= this.total;
       nuevoPedido.uid_mesa=  this.mesaActual.doc_id;
+      nuevoPedido.uid_usuario= this.userLs?.uid;
 
       this.id_doc=this.afStore.createId();
       this.pedidoSrv.GuardarNuevoPedidoWithId(nuevoPedido, this.id_doc).then((res)=>{
-        console.log('RESPUESTA: '+res)
+ 
         localStorage.setItem('pedido', JSON.stringify(
           {
            ...nuevoPedido,

@@ -136,7 +136,9 @@ export class HomeClientePage implements OnInit {
     } 
   }
  
-  RealizarPedido(){}
+  RealizarPedido(){
+    this.router.navigateByUrl('carta-productos')
+  }
 
   stopScan() {
     setTimeout(() => {

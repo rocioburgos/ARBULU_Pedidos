@@ -1,0 +1,45 @@
+<ion-header>
+    <ion-toolbar color="warning">
+        <ion-back-button defaultHref="home-cliente" slot="start"></ion-back-button>
+        <ion-title>Juego mayor menor</ion-title>
+    </ion-toolbar>
+
+</ion-header>
+<ion-content>
+    <div class="centrado">
+        <div class="row" style="text-align:center">
+  
+            <ion-row>
+                <ion-col > 
+                    <strong>Aciertos: {{cuenta}}/5</strong>
+                </ion-col>
+                <ion-col  >
+                  <strong > Vidas restantes </strong><br>
+                  <img *ngFor="let in of counter(vidas) ;let i = index" src="./../../assets/juegos/corazon.png"
+                  width="20px"> 
+                </ion-col>
+                </ion-row>
+                
+        </div>
+ <br><br>
+        <div class="row">
+            <div class="column ">
+                <img width="100px" src={{cartaPrincipal.pathImg}}>
+            </div>
+            <div class="column">
+                <ion-label>Esta carta es: </ion-label>
+                <br>
+                <ion-button (click)='play("mayor")' [disabled]="mostrarFin" class="btn-warning">Mayor</ion-button>
+                <br>
+                <ion-button (click)='play("igual")' [disabled]="mostrarFin" class="btn-warning">Igual</ion-button>
+                <br>
+                <ion-button (click)='play("menor")' [disabled]="mostrarFin" class="btn-warning">Menor</ion-button>
+                <br>
+                <ion-label>que la siguiente</ion-label>
+                <div class="column ">
+                    <img width="100px" src="./../../assets/juegos/mayorMenor/cartas/prox.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>
