@@ -26,6 +26,7 @@ export class HomeClientePage implements OnInit {
   propinaEscaneada = false;
   usuario:any;
   cuenta:boolean = false; 
+  usuarioActual: any;
 
   constructor(
     private firestoreSvc: FirestoreService,
@@ -42,6 +43,7 @@ export class HomeClientePage implements OnInit {
       this.usuario = localStorage.getItem('usuario_ARBULU');
     }
     console.log(this.usuario);
+    this.getClientes();
   }
 
   ngOnInit() {
@@ -148,6 +150,19 @@ export class HomeClientePage implements OnInit {
     BarcodeScanner.showBackground();
     BarcodeScanner.stopScan();
     document.querySelector('body').classList.remove('scanner-active');
+  }
+
+  getClientes() {
+    
+    this.firestoreSvc.obtenerUsuario().subscribe((data: any) => {
+      for (let item of data) {
+        if (item.uid === this.usuario.uid) {
+          this.usuarioActual = item;
+          break;
+        }
+      }
+      alert(this.usuarioActual.nombre);
+    });
   }
 
 
