@@ -104,12 +104,17 @@ const routes: Routes = [
   {
     path: 'poke-preguntados',
     loadChildren: () => import('./poke-preguntados/poke-preguntados.module').then( m => m.PokePreguntadosPageModule)
+  },
+  {
+    path: 'juego-cartas',
+    loadChildren: () => import('./juego-ahorcado/juego-cartas.module').then( m => m.JuegoAhorcadoPageModule)
+  },   {
+    path: 'encuesta-empleado',
+    loadChildren: () => import('./encuesta-empleado/encuesta-empleado.module').then( m => m.EncuestaEmpleadoPageModule)
   }
-
-
-
  
-];
+ 
+]; 
 
 
 @NgModule({

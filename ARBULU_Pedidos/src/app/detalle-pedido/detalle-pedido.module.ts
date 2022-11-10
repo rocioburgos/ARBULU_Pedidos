@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { DetallePedidoPageRoutingModule } from './detalle-pedido-routing.module';
 
 import { DetallePedidoPage } from './detalle-pedido.page';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DetallePedidoPageRoutingModule
+    DetallePedidoPageRoutingModule,
+    NgxSpinnerModule
   ],
   declarations: [DetallePedidoPage]
 })

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { eEstadoProductoPedido, eEstadPedido, productoPedido } from '../clases/pedidos';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
+import { MensajeService } from '../servicios/mensaje.service';
 import { PedidosService } from '../servicios/pedidos.service';
 
 @Component({
@@ -27,7 +29,9 @@ export class DetallePedidoPage implements OnInit {
     private route: ActivatedRoute,
     private pedidoSrv: PedidosService,
     private authSrv:AuthService,
-    private userSrv:FirestoreService) {
+    private userSrv:FirestoreService,
+    private msjSrv:MensajeService,
+    private spinnerSrv:NgxSpinnerService) {
     // this.route.snapshot.paramMap.get('doc_id')
     this.pedido_id = this.route.snapshot.paramMap.get('pedido_id');
 
@@ -82,7 +86,7 @@ export class DetallePedidoPage implements OnInit {
 
   cambiarEstado(item:any,proxEstado:string) {
     let   cantProdPedido= this.pedido.productos.length;
-    alert('len '+cantProdPedido)
+    
     let productosTerminados=0;
     if(this.pedido.estado=='CONFIRMADO'){
       this.pedido.estado= eEstadPedido.EN_ELABORACION;
@@ -124,6 +128,27 @@ export class DetallePedidoPage implements OnInit {
     this.pedido.estado= eEstadPedido.PAGADO; 
     this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
   }
+  confirmarPago(pedidoID:string){
+    this.pedido.estado= eEstadPedido.COBRADO; 
+    this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
+  }
 
+  liberarMesa(pedidoID:string){
+    this.spinnerSrv.show();
+    this.pedido.estado= eEstadPedido.FINALIZADO; 
+    //finalizar pedido
+    this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
+    //Borrar mensajes
+    this.msjSrv.borrarMensajesByMesa(this.pedido.numero_mesa);
+    //Liberar mesa
+    this.userSrv.ActualizarMesaEstado(this.pedido.uid_mesa, false );
+    //liberar usuario
+
+    this.userSrv.ActualizarClienteMesa(this.pedido.uid_usuario, '' );
+
+    setTimeout(() => {
+      this.spinnerSrv.hide();
+    }, 5000);
+  }
 
 }
