@@ -25,7 +25,8 @@ export class PokePreguntadosPage implements OnInit {
     private pokeApi: ApiService,
     private utilidades:UtilidadesService,
     private spinner: NgxSpinnerService,
-    private router:Router
+    private router:Router,
+    private firestore:FirestoreService
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +35,10 @@ export class PokePreguntadosPage implements OnInit {
         this.nombresPokemonTodos.push(element.name);
       });
     });
+  }
+  
+  ionViewDidEnter(){
+    
   }
 
   nuevoPokemon() {

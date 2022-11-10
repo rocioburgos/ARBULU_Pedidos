@@ -24,7 +24,7 @@ export interface productoPedido{
    nombre: string;
    sector: string; 
    selected:boolean;   
-   tiempo_elaboracion: number;  
+   tiempo_elaboracion: number;
 }
 
 export class Pedido{
@@ -33,5 +33,8 @@ export class Pedido{
     total: number;
     tiempo_elaboracion: number; 
     productos: productoPedido[];
-    estado: eEstadPedido; 
+    estado: eEstadPedido;
+   jugado: boolean;
+   descuento: number;
+   nombreJuego: string; 
 }
