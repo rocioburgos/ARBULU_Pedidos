@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { HomeMetrePageRoutingModule } from './home-metre-routing.module';
 
 import { HomeMetrePage } from './home-metre.page';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomeMetrePageRoutingModule
+    HomeMetrePageRoutingModule,
+    NgxSpinnerModule
   ],
   declarations: [HomeMetrePage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

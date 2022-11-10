@@ -90,18 +90,32 @@ const routes: Routes = [
     loadChildren: () => import('./listado-clientes-pendientes/listado-clientes-pendientes.module').then( m => m.ListadoClientesPendientesPageModule)
   },
   {
+    path: 'encuesta-supervisor',
+    loadChildren: () => import('./encuesta-supervisor/encuesta-supervisor.module').then( m => m.EncuestaSupervisorPageModule)
+  },
+  {
+    path: 'flechas',
+    loadChildren: () => import('./juegos/flechas/flechas.module').then( m => m.FlechasPageModule)
+  },
+  {
     path: 'encuesta-cliente',
     loadChildren: () => import('./encuesta-cliente/encuesta-cliente.module').then( m => m.EncuestaClientePageModule)
   },
   {
     path: 'poke-preguntados',
     loadChildren: () => import('./poke-preguntados/poke-preguntados.module').then( m => m.PokePreguntadosPageModule)
+  },
+  {
+    path: 'juego-cartas',
+    loadChildren: () => import('./juego-ahorcado/juego-cartas.module').then( m => m.JuegoAhorcadoPageModule)
+  },   {
+    path: 'encuesta-empleado',
+    loadChildren: () => import('./encuesta-empleado/encuesta-empleado.module').then( m => m.EncuestaEmpleadoPageModule)
   }
-
-
-
  
-];
+ 
+]; 
+
 
 @NgModule({
   imports: [

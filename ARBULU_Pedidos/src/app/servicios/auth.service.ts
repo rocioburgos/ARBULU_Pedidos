@@ -120,8 +120,8 @@ export class AuthService {
   public signOut() {
     this.usuarioLogueado = new Usuario();
     this.logueado = false;
-    localStorage.removeItem('usuario_ARBULU');
-    this.router.navigate(['/login']);
+    localStorage.removeItem('usuario_ARBULU'); 
+    localStorage.removeItem('pedido');
     return this.afAuth.signOut();
   }
 

@@ -6,12 +6,15 @@
     TERMINADO='TERMINADO',
     ENTREGADO='ENTREGADO' ,
     RECIBIDO='RECIBIDO',
-    PAGADO='PAGADO'   
+    CUENTA='CUENTA',
+    PAGADO='PAGADO' ,
+    COBRADO='COBRADO',
+    FINALIZADO='FINALIZADO'
  }
  export enum eEstadoProductoPedido{
     PENDIENTE= 'PENDIENTE',
    EN_ELABORACION= 'EN_ELABORACION',
-   TERMINADO='TERMINADO'
+   TERMINADO='TERMINADO' 
 }
 
 export interface productoPedido{ 
@@ -34,7 +37,8 @@ export class Pedido{
     tiempo_elaboracion: number; 
     productos: productoPedido[];
     estado: eEstadPedido;
-   jugado: boolean;
-   descuento: number;
-   nombreJuego: string; 
+    uid_usuario:string;
+    jugado: boolean;
+    descuento: number;
+    nombreJuego: string; 
 }

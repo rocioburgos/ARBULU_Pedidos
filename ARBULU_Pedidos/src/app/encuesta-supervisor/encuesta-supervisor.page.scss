@@ -1,0 +1,16 @@
+ion-content{
+    --background: none;
+    background: url("../../assets/background/bg.png");
+    background-size: cover;
+    background-position: center center;                                                                                          
+  }
+  
+  .inputdiv{
+    display: inline-table; 
+    width: 100%;
+    text-align: center;
+    background-color: #ffeed62e;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    padding-top: 17px;
+  }

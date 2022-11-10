@@ -53,13 +53,5 @@ export class ListadoClientesPendientesPage implements OnInit {
     });
     this.obtenerClientesInvalidad();
   }
-
-  cerrarSesion(){
-    this.authSvc.signOut().then(()=>{
-      this.utilidadesSvc.warningToast("Cerrando sesion.",2000);
-      setTimeout(() => {
-        this.router.navigate(['login']); 
-      }, 2500);
-    });
-  }
+ 
 }
