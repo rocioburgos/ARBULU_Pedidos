@@ -111,8 +111,6 @@ export class FirestoreService {
     return this.mesasRef.valueChanges({ idField: "doc_id" });
   }
 
-
-
   public updateMesa(id: string, data: any) {
     return this.mesasRef.doc(id).update(data);
   }

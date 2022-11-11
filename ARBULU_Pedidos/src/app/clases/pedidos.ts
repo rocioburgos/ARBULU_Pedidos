@@ -7,6 +7,8 @@
     ENTREGADO='ENTREGADO' ,
     RECIBIDO='RECIBIDO',
     CUENTA='CUENTA',
+
+    
     PAGADO='PAGADO' ,
     COBRADO='COBRADO',
     FINALIZADO='FINALIZADO'
@@ -38,4 +40,6 @@ export class Pedido{
     productos: productoPedido[];
     estado: eEstadPedido; 
     uid_usuario:string;
+    propina:number;
+    nivelSatisfaccion:string;
 }
