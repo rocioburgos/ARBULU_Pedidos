@@ -37,8 +37,9 @@ export class PedidosService {
   TraerPedidos(): Observable<any> {
     return this.dbRef.valueChanges({ idField: "doc_id" });
   }
-  TraerPedido(doc_id): Observable<any> {
-    return this.afStore.doc(`pedidos/${doc_id}`).valueChanges({ idField: "doc_id" });
+  
+  TraerPedido(doc_id): Observable<any>{
+    return this.afStore.doc(`pedidos/${doc_id}`).valueChanges({idField: "doc_id"});
   }
 
   TraerPedidoByUserId(uid_usuario): Observable<any> { 

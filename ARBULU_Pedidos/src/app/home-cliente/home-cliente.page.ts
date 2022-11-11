@@ -31,6 +31,7 @@ export class HomeClientePage implements OnInit {
   tienePedidosEnCurso=false;
   tieneMesa=false;
   pedidoEnCurso:any;
+  usuarioActual: any;
 
   constructor(
     private firestoreSvc: FirestoreService,
@@ -63,7 +64,9 @@ export class HomeClientePage implements OnInit {
     }else{
       this.pedidoEnCurso= res[0]
     }
-   });
+    console.log(this.usuario);
+  }
+ 
   }
 
  async cerrarSesion(){
@@ -167,6 +170,19 @@ export class HomeClientePage implements OnInit {
     BarcodeScanner.showBackground();
     BarcodeScanner.stopScan();
     document.querySelector('body').classList.remove('scanner-active');
+  }
+
+  getClientes() {
+    
+    this.firestoreSvc.obtenerUsuario().subscribe((data: any) => {
+      for (let item of data) {
+        if (item.uid === this.usuario.uid) {
+          this.usuarioActual = item;
+          break;
+        }
+      }
+      alert(this.usuarioActual.nombre);
+    });
   }
 
 

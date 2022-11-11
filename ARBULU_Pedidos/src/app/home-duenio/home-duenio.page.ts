@@ -12,11 +12,15 @@ import { UtilidadesService } from '../servicios/utilidades.service';
 })
 export class HomeDuenioPage implements OnInit {
 
+  usuarioActual: any;
+  
   constructor(private authSvc:AuthService,
     private utilidadesSvc:UtilidadesService,
     private router:Router,
     private alertController:AlertController,
-    private spinner:NgxSpinnerService) { }
+    private spinner:NgxSpinnerService) {
+      this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU')); 
+     }
 
   ngOnInit() {
   }

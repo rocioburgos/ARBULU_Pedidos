@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Puntos } from 'src/app/clases/puntos';
 import { Usuario } from 'src/app/clases/usuario';
 import { AuthService } from 'src/app/servicios/auth.service';
+import { PedidosService } from 'src/app/servicios/pedidos.service';
 
 @Component({
   selector: 'app-flechas',
@@ -50,7 +51,7 @@ export class FlechasPage implements OnInit {
   usuario: Usuario = new Usuario();
   public usuario$: Observable<any> = this.authService.afAuth.user;
 
-  constructor(public router: Router, public authService: AuthService) { 
+  constructor(public router: Router, public authService: AuthService, private pedidoSvc: PedidosService) { 
     //this.puntajeSvc.cargarPuntajesFchs();
     this.usuario$.subscribe((result: any) => {
       this.usuario.email = result['email'];
@@ -58,6 +59,7 @@ export class FlechasPage implements OnInit {
 
     });
    
+    //this.pedidoSvc.TraerPedido();
   }
 
   ngOnInit(): void {

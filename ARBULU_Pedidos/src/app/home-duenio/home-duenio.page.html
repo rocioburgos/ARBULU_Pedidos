@@ -22,7 +22,10 @@
   <br>
   <a [routerLink]="['/alta-mesa']"><ion-button>Alta mesa</ion-button></a>
   <br><br>
-  <br>  
+  <br> 
+  <a [routerLink]="['/encuesta-supervisor']" *ngIf="usuarioActual.tipo === 'supervisor'"><ion-button>Encuesta Supervisor</ion-button></a>
+  <br><br>
+  <br>   
 </div>
 </ion-content>
 <ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>"> 
