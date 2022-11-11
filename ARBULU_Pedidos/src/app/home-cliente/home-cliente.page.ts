@@ -65,7 +65,7 @@ export class HomeClientePage implements OnInit {
       this.pedidoEnCurso= res[0]
     }
     console.log(this.usuario);
-  }
+  });
  
   }
 
