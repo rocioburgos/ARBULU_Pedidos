@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Pedido } from '../clases/pedidos';
 import { ApiService } from '../servicios/api.service';
 import { AuthService } from '../servicios/auth.service';
-import { FirestoreService } from '../servicios/firestore.service';
+import { PedidosService } from '../servicios/pedidos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
@@ -20,13 +21,15 @@ export class PokePreguntadosPage implements OnInit {
   puntaje: number = 0;
   puntajeFinal: number = 0;
   finalizado: boolean = false;
+  pedido: Pedido = new Pedido();
 
   constructor(
     private pokeApi: ApiService,
     private utilidades:UtilidadesService,
     private spinner: NgxSpinnerService,
     private router:Router,
-    private firestore:FirestoreService
+    private pedidos:PedidosService,
+    private auth:AuthService
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +41,13 @@ export class PokePreguntadosPage implements OnInit {
   }
   
   ionViewDidEnter(){
-    
+    var observable = this.pedidos.TraerPedidos().subscribe((data)=>{
+      this.pedido = data.filter((item:Pedido)=>item.uid_usuario == this.auth.usuarioActual.uid);
+      observable.unsubscribe();
+    });
+    this.pedidos.TraerPedidos().subscribe((data)=>{
+      console.log(data);
+    });
   }
 
   nuevoPokemon() {
@@ -109,9 +118,13 @@ export class PokePreguntadosPage implements OnInit {
 
   finalizarJuego() {
     if (this.puntajeFinal == 10) {
-      
+      //this.pedidos.actualizarProductoPedido({jugado:true})
     }else{
 
     }
+
+    // jugado: boolean;
+    // descuento: number;
+    // nombreJuego: string; 
   }
 }
