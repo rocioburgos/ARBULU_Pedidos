@@ -68,13 +68,13 @@ export class LoginPage implements OnInit {
               switch (user.tipo) {
                 case eUsuario.dueño:
                 case eUsuario.supervisor:
-                  this.router.navigateByUrl('home-duenio')
+                  this.router.navigateByUrl('home-duenio');
                   break;
                 case eUsuario.cliente:
-                  this.router.navigateByUrl('home-cliente')
+                  this.router.navigateByUrl('qr-ingreso-local');
                   break;
                 case eUsuario.empleado:
-                  user.tipo_empleado == eEmpleado.mozo ? this.router.navigateByUrl('home-metre') : this.router.navigateByUrl('home-empleado')
+                  user.tipo_empleado == eEmpleado.mozo ? this.router.navigateByUrl('home-metre') : this.router.navigateByUrl('home-empleado');
                   break;
               }
             }, 3000);
