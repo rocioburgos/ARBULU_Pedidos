@@ -3,8 +3,10 @@ import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { AlertController } from '@ionic/angular';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Pedido } from '../clases/pedidos';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
+import { PedidosService } from '../servicios/pedidos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
@@ -13,19 +15,22 @@ import { UtilidadesService } from '../servicios/utilidades.service';
   styleUrls: ['./home-cliente.page.scss'],
 })
 export class HomeClientePage implements OnInit {
-
   scannnedResult: any;
   content_visibility = '';
   scan_visibility = 'hidden';
   scanActive = false;
 
-  escaneoMesa:boolean = false;
+  escaneoMesa:boolean = false;//PONER EL FALSE
   pedido:any = "";
   verEstado:boolean = false;
   propina = 0;
   propinaEscaneada = false;
   usuario:any;
   cuenta:boolean = false; 
+  usuarioLS:any= null;
+  tienePedidosEnCurso=false;
+  tieneMesa=false;
+  pedidoEnCurso:any;
   usuarioActual: any;
 
   constructor(
@@ -35,18 +40,33 @@ export class HomeClientePage implements OnInit {
     private utilidadesSvc: UtilidadesService,
     private authSvc: AuthService,
     private alertController: AlertController,
-    private spinner:NgxSpinnerService) 
+    private spinner:NgxSpinnerService,
+    private pedidoSrv:PedidosService) 
   { 
+
+  }
+
+  ngOnInit() { 
     this.usuario = this.authSvc.usuarioActual;
     if(!this.usuario)
     {
       this.usuario = localStorage.getItem('usuario_ARBULU');
+    } 
+
+   this.usuarioLS= this.authSvc.getCurrentUserLS();
+   this.firestoreSvc.obtenerUsuarioPorId(this.usuarioLS.uid).then((resp:any)=>{
+      console.log(resp.foto)
+   });
+
+   this.pedidoSrv.TraerPedidoByUserId(this.usuarioLS.uid).subscribe((res)=>{
+    if(res==0){ 
+      this.tienePedidosEnCurso= false;
+    }else{
+      this.pedidoEnCurso= res[0]
     }
     console.log(this.usuario);
-    this.getClientes();
-  }
-
-  ngOnInit() {
+  });
+ 
   }
 
  async cerrarSesion(){
@@ -74,8 +94,6 @@ export class HomeClientePage implements OnInit {
                   this.router.navigate(['login']); 
                 }, 3000);
               });
-           
-
           },
         },
       ],

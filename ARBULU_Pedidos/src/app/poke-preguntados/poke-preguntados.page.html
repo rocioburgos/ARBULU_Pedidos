@@ -9,14 +9,13 @@
 </ion-header>
 
 <ion-content>
-  <body>
     <div *ngIf="!finalizado; else finalizadoTemplate" class="container">
-        <h2 class="col text-center title">Adivina el nombre de 10 Pokemon para obtener <strong>20%</strong> de descuento!!!</h2>
+        <h2 class="col text-center title text">Adivina el nombre de 10 Pokemon para obtener <strong>20%</strong> de descuento!!!</h2>
             <div class="col text-center top" style="text-align:center">
                 <img *ngIf="this.pokemonImagen != ''" [src]="this.pokemonImagen" height="60%" width="60%" >
             </div>
             <div class="col text-center">
-                <strong>Puntaje: <mark>{{ puntaje }}</mark></strong>
+                <strong class="text">Puntaje: <mark>{{ puntaje }}</mark></strong>
             </div>
             <hr>
             <div class="row">
@@ -33,7 +32,7 @@
     <ng-template #finalizadoTemplate>
       <div *ngIf="puntajeFinal == 10; else derrotaTemplate" class="container">
          <div class="col text-center top">
-          <h2 class="col text-center title">Felicidades!!! Has obtenido 10% de descuento</h2>
+          <h2 class="col text-center title text">Felicidades!!! Has obtenido 10% de descuento</h2>
                 <strong>Puntaje final: <mark>{{ puntajeFinal }}</mark></strong>
           </div>
           <div class="row">
@@ -45,7 +44,7 @@
       <ng-template #derrotaTemplate>
         <div class="container">
           <div class="col text-center top">
-            <h2 class="col text-center title">Que pena! No has obtenido el 10% de descuento. Mejor suerte la proxima!</h2>
+            <h2 class="col text-center title text">Que pena! No has obtenido el 10% de descuento. Mejor suerte la proxima!</h2>
                   <strong>Puntaje final: <mark>{{ puntajeFinal }}</mark></strong>
             </div>
             <div class="row">
@@ -56,5 +55,4 @@
         </div>
       </ng-template>
     </ng-template>
-</body>
 </ion-content>

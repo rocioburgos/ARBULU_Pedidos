@@ -1,9 +1,11 @@
 
- body{
-    position: relative;
-    height: 92vh;
-    background-color: rgb(136, 171, 83);
-}
+  ion-content{
+    --overflow:hidden;
+    --background: none;
+    background: url("../../assets/background/bg.png");
+    background-size: cover;
+    background-position: center center;              
+  }
 
 .top{
    padding-top:15%;
@@ -16,6 +18,10 @@
 
 .title{
     padding-top:5%;
+}
+
+.text{
+    color:black;
 }
 
 .mg-top{

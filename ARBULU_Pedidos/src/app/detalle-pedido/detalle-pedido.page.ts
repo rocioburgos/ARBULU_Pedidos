@@ -6,7 +6,8 @@ import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { MensajeService } from '../servicios/mensaje.service';
 import { PedidosService } from '../servicios/pedidos.service';
-
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { UtilidadesService } from '../servicios/utilidades.service';
 @Component({
   selector: 'app-detalle-pedido',
   templateUrl: './detalle-pedido.page.html',
@@ -25,12 +26,17 @@ export class DetallePedidoPage implements OnInit {
     esMetre=false;
     esEmpleado=false;
     pedidoLS:any;
+    scanActive = false;
+    content_visibility = '';
+    scan_visibility = 'hidden';
+    satisfaccionPorcent:string;
   constructor(
     private route: ActivatedRoute,
     private pedidoSrv: PedidosService,
     private authSrv:AuthService,
     private userSrv:FirestoreService,
     private msjSrv:MensajeService,
+    private utilidadesSrv:UtilidadesService,
     private spinnerSrv:NgxSpinnerService) {
     // this.route.snapshot.paramMap.get('doc_id')
     this.pedido_id = this.route.snapshot.paramMap.get('pedido_id');
@@ -40,12 +46,12 @@ export class DetallePedidoPage implements OnInit {
 
   ngOnInit() {
     this.usuario=this.authSrv.getCurrentUserLS();
+   
     if(this.usuario.tipo =='cliente'){
       this.esCliente=true;    
       this.esMetre=false;
       this.esEmpleado=false;
-    }else if(this.usuario.tipo =='empleado'){
-      
+    }else if(this.usuario.tipo =='empleado'){ 
       if(this.usuario.tipoEmpleado=='bartender'){
         this.esEmpleado= true;
         this.esCliente=false;    
@@ -64,7 +70,12 @@ export class DetallePedidoPage implements OnInit {
     }
 
     if(this.esCliente){ 
-     this.pedidoLS= localStorage.getItem('pedido');
+
+      this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
+        this.pedido = res[0];
+        console.log('PEDIDO SELECCIONADO: ' + this.pedido)
+      });
+    /* this.pedidoLS= localStorage.getItem('pedido');
       if(this.pedidoLS != null  ){
         this.pedidoLS= JSON.parse(this.pedidoLS); 
         this.pedido =this.pedidoLS;
@@ -72,7 +83,7 @@ export class DetallePedidoPage implements OnInit {
           this.pedido = res;
           console.log('PEDIDO SELECCIONADO: ' + this.pedido)
         });
-        } 
+        } */
     }else{
       this.pedidoSrv.TraerPedido(this.pedido_id).subscribe((res) => {
         this.pedido = res;
@@ -126,6 +137,7 @@ export class DetallePedidoPage implements OnInit {
   }
   pagarPedido(pedidoID:string){
     this.pedido.estado= eEstadPedido.PAGADO; 
+    this.pedido.total=  this.pedido.total+this.pedido.propina - this.pedido.descuento;
     this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
   }
   confirmarPago(pedidoID:string){
@@ -150,5 +162,96 @@ export class DetallePedidoPage implements OnInit {
       this.spinnerSrv.hide();
     }, 5000);
   }
+
+  manejarPropina(){
+    if(this.satisfaccionPorcent=='0%'){
+      //sin propina
+      this.pedido.nivelSatisfaccion='0%';
+      this.pedido.propina=0;
+    }else if(this.satisfaccionPorcent=='5%'){
+      this.pedido.nivelSatisfaccion='5%';
+      this.pedido.propina=this.pedido.total * 0.05;
+    }else if(this.satisfaccionPorcent=='10%'){
+      this.pedido.nivelSatisfaccion='10%';
+      this.pedido.propina=this.pedido.total * 0.10;
+    }else if(this.satisfaccionPorcent=='15%'){
+      this.pedido.nivelSatisfaccion='15%';
+      this.pedido.propina=this.pedido.total * 0.15;
+    }else if(this.satisfaccionPorcent=='20%'){
+      this.pedido.nivelSatisfaccion='20%';
+      this.pedido.propina=this.pedido.total * 0.20;
+      
+    }else{
+      this.utilidadesSrv.errorToast('Escanee un qr de propina', 6000)
+    }
+
+    
+  }
+
+
+  async checkPermission() {
+    try {
+      const status = await BarcodeScanner.checkPermission({ force: true });
+      if (status.granted) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      this.utilidadesSrv.vibracionError();
+      this.utilidadesSrv.mostrartToast('No tiene permisos.')
+      console.log(error);
+    }
+  }
+
+  async startScan() {
+
+    try {
+      document.querySelector('body').classList.add('scanner-active');
+      const permission = await this.checkPermission();
+      if (!permission) {
+        return;
+      }
+      this.scanActive = true;
+      await BarcodeScanner.hideBackground();
+      document.querySelector('body').classList.add('scanner-active');
+      this.content_visibility = 'hidden';
+      this.scan_visibility = '';
+      const result = await BarcodeScanner.startScan();
+
+      this.content_visibility = '';
+      this.scan_visibility = 'hidden';
+      BarcodeScanner.showBackground();
+      document.querySelector('body').classList.remove('scanner-active');
+
+      if (result?.hasContent) { 
+        this.satisfaccionPorcent = result.content;
+        this.manejarPropina();
+        document.querySelector('body').classList.remove('scanner-active');
+        this.scanActive = false; 
+      }
+    } catch (error) {
+      console.log(error);
+      this.utilidadesSrv.vibracionError();
+      this.utilidadesSrv.mostrartToast('Error al escanear el documento.')
+      document.querySelector('body').classList.remove('scanner-active');
+      this.stopScan();
+    } 
+  }
+
+ 
+
+  stopScan() {
+    setTimeout(() => { 
+    }, 3000);
+    this.content_visibility = '';
+    this.scan_visibility = 'hidden';
+    this.scanActive = false;
+    BarcodeScanner.showBackground();
+    BarcodeScanner.stopScan();
+    document.querySelector('body').classList.remove('scanner-active');
+  }
+
+
+
 
 }
