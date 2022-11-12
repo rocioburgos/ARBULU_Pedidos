@@ -198,6 +198,11 @@ export class FirestoreService {
     return this.encuestasEmpleadoSupervisorRef.valueChanges() as Observable<Object[]>;
   }
 
+  public getEncuestasClientes()
+  {
+    return this.encuestasUsuarios.valueChanges() as Observable<Object[]>;
+  }
+
   ActualizarMesaEstado(mesaID:string, est:boolean){
     this.mesasRef.doc(mesaID).update({ocupada: est});
   }

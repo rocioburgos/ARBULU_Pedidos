@@ -41,7 +41,7 @@
 
   <div class="container-datos" *ngIf="escaneoMesa">
     <img src="../../assets/plato.png" style="margin-top: 10%;margin-left: 25%;" width="120px">
-    <div *ngIf="this.pedido == ''">
+    <div>
       <ion-button type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 20%;" (click)="RealizarPedido()">
         <ion-icon class="iconBoton" name="cart-outline"></ion-icon>
         <h3>Realizar pedido</h3>
@@ -54,15 +54,15 @@
         <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
         <h3>Detalle pedido</h3>
       </ion-button>
-      <ion-button routerLink="../encuesta-cliente" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
+      <ion-button *ngIf="this.encuesta == undefined && this.encuesta == ''" routerLink="../encuesta-cliente" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
         <ion-icon name="help-outline"></ion-icon>
         <h3>Encuesta</h3>
       </ion-button>
-      <ion-button routerLink="../juegos/flechas" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
+      <ion-button *ngIf="this.pedido.jugado == false && this.pedido.eEstadoPedido != 'FINALIZADO'" routerLink="../juegos/flechas" id="juego1" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
         <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
         <h3>Juegos</h3>
       </ion-button>
-      <ion-button routerLink="../poke-preguntados" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
+      <ion-button *ngIf="this.pedido.jugado == false" routerLink="../poke-preguntados" id="juego2" type="button" fill="solid" expand="block" color="claro" style="height: 170px; margin-top: 10%;">
         <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
         <h3>Juegos2 (Pokemon)</h3>
       </ion-button>

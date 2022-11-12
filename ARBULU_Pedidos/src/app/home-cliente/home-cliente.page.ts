@@ -3,8 +3,11 @@ import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { AlertController } from '@ionic/angular';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { eEstadPedido, Pedido } from '../clases/pedidos';
 import { AuthService } from '../servicios/auth.service';
+import { EncuestaService } from '../servicios/encuesta.service';
 import { FirestoreService } from '../servicios/firestore.service';
+import { PedidosService } from '../servicios/pedidos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
@@ -21,6 +24,7 @@ export class HomeClientePage implements OnInit {
 
   escaneoMesa:boolean = false;
   pedido:any = "";
+  encuesta:any = "";
   verEstado:boolean = false;
   propina = 0;
   propinaEscaneada = false;
@@ -35,18 +39,36 @@ export class HomeClientePage implements OnInit {
     private utilidadesSvc: UtilidadesService,
     private authSvc: AuthService,
     private alertController: AlertController,
-    private spinner:NgxSpinnerService) 
+    private pedidos: PedidosService,
+    private spinner:NgxSpinnerService,
+    private encuestaSvc:EncuestaService) 
   { 
     this.usuario = this.authSvc.usuarioActual;
     if(!this.usuario)
     {
       this.usuario = localStorage.getItem('usuario_ARBULU');
     }
-    console.log(this.usuario);
     this.getClientes();
   }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter(){
+    this.spinner.show();
+    var observable = this.pedidos.TraerPedidos().subscribe((data)=>{
+      this.pedido = data.filter((item:Pedido)=>item.uid_usuario == this.authSvc.usuarioActual.uid && item.estado != eEstadPedido.FINALIZADO)[0];
+      this.pedidos.pedido_uid = this.pedido.doc_id;
+      var observable2 = this.firestoreSvc.getEncuestasClientes().subscribe((data)=>{
+        this.encuesta = data.filter((item:any)=>item.uid_cliente == this.authSvc.usuarioActual.uid && item.uid_pedido == this.pedido.doc_id)[0];
+        console.log(this.encuesta);
+        this.spinner.hide();
+        observable2.unsubscribe();
+      })
+      this.spinner.hide();
+      observable.unsubscribe();
+    })
+
   }
 
  async cerrarSesion(){
@@ -163,7 +185,6 @@ export class HomeClientePage implements OnInit {
           break;
         }
       }
-      alert(this.usuarioActual.nombre);
     });
   }
 
