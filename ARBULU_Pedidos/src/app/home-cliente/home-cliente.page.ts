@@ -75,13 +75,13 @@ export class HomeClientePage implements OnInit {
                 this.pedidoEnCurso = element;
                 this.tienePedidosEnCurso = true;
                 console.log("tiene pedido");
-                this.escaneoMesa = true;
+                
                 
               }
               else{
                 
                 console.log("NO tiene pedido");
-                this.escaneoMesa = true;
+                
               }
             });
             // alert(resp);
