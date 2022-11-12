@@ -32,12 +32,12 @@ export class QrIngresoLocalPage implements OnInit {
     this.spinner.show();
     
     this.usuarioActual = this.authSvc.usuarioActual;
-    alert(this.usuarioActual);
+    //alert(this.usuarioActual);
     // var auxUsuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
     // this.usuarioActual = this.firestoreSvc.getUsuarioActualByID(auxUsuario.uid);
 
     if(this.usuarioActual){
-      alert("usuario" +this.usuarioActual);
+      //alert("usuario" +this.usuarioActual);
       console.log(this.usuarioActual);
       setTimeout(() => {
                     this.spinner.hide();
@@ -49,7 +49,7 @@ export class QrIngresoLocalPage implements OnInit {
     else{
       setTimeout(() => {
         this.spinner.hide();
-        alert("anoniomo"  + this.usuarioActual);
+        //alert("anoniomo"  + this.usuarioActual);
         this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
       }, 1000);
       
@@ -92,7 +92,7 @@ export class QrIngresoLocalPage implements OnInit {
       this.scan_visibility = 'hidden';
       BarcodeScanner.showBackground();
       document.querySelector('body').classList.remove('scanner-active');
-      alert(result.content + result?.hasContent);
+      //alert(result.content + result?.hasContent);
       if (result?.hasContent) {
         if(result.content === 'qrIngresoAListaDeEspera'){
           this.firestoreSvc.update(this.usuarioActual.uid, {enListaDeEspera: true});

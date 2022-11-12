@@ -54,7 +54,7 @@ export class HomeClientePage implements OnInit {
       this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
       console.log("ls: " + this.usuario);
 
-      alert("anonimo " + this.usuario);
+      //alert("anonimo " + this.usuario);
     }
 
     this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
@@ -206,11 +206,11 @@ export class HomeClientePage implements OnInit {
       if (result?.hasContent) {
         console.log(result);
         if (result.content === this.usuario.mesa) {
-          alert(this.usuario.id);
+          //alert(this.usuario.id);
           //this.firestoreSvc.update(this.usuario.id, {enListaDeEspera: true});
           this.escaneoMesa = true;
           this.utilidadesSvc.successToast("Escaneo de mesa correcto", 2000);
-          alert(result.content);
+          //alert(result.content);
         }
         else {
           this.stopScan();
