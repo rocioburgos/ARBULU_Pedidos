@@ -54,14 +54,19 @@ export class HomeClientePage implements OnInit {
     } 
 
    this.usuarioLS= this.authSvc.getCurrentUserLS();
-   this.firestoreSvc.obtenerUsuarioPorId(this.usuarioLS.uid).then((resp:any)=>{
-      console.log(resp.foto)
+  
+    this.firestoreSvc.usuarioPorId(this.usuarioLS.uid).subscribe((res:any)=>{
+    this.usuario= res[0];
+    console.log(res[0])
    });
 
+
+   
    this.pedidoSrv.TraerPedidoByUserId(this.usuarioLS.uid).subscribe((res)=>{
     if(res==0){ 
       this.tienePedidosEnCurso= false;
     }else{
+      this.tienePedidosEnCurso= true;
       this.pedidoEnCurso= res[0]
     }
     console.log(this.usuario);
