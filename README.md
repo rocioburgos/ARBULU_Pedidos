@@ -12,9 +12,9 @@ Somos estudiantes de Tecnicatura Universitaria en programación  en UTN-FRA
 
 👩‍💻Alfa:  [@rocioburgos](https://www.github.com/rocioburgos) 
 
-👨‍💻Beta [@EzequielArchilla](https://www.github.com/EzequielArchilla)
+👨‍💻Beta: [@EzequielArchilla](https://www.github.com/EzequielArchilla)
 
-👨‍💻Gama [@EliseoLuquez](https://www.github.com/EliseoLuquez) 
+👨‍💻Gama: [@EliseoLuquez](https://www.github.com/EliseoLuquez) 
 
 
 
@@ -35,8 +35,8 @@ Somos estudiantes de Tecnicatura Universitaria en programación  en UTN-FRA
 |   |Gestion -Realizar pedidos (platos y bebidas)|👩‍💻Rocio   |🟢Finalizado|
 |   |Gestion- Confirmar pedidos|👩‍💻Rocio |🟢Finalizado|
 | # | Tercer sprint Fecha: 5/11/2022 a 12/11/2022  |  |  |
-|   |Gestion-Entrega de pedido y cobro|👩‍💻Rocio |🟡 Iniciado|
-|   |Encuesta cliente | 👨‍💻Ezequiel |🟡 Iniciado|
+|   |Gestion-Entrega de pedido y cobro|👩‍💻Rocio |🟢Finalizado|
+|   |Encuesta cliente | 👨‍💻Ezequiel |🟢Finalizado|
 |   |Encuesta supervisor | 👨‍💻Eliseo        |🟡 Iniciado|   
 |   | Encuesta Empleados|👩‍💻Rocio  |🟡 Iniciado|
 |   |Juego para un 15% de descuento|👩‍💻Rocio|🟡 Iniciado|
@@ -48,3 +48,39 @@ Somos estudiantes de Tecnicatura Universitaria en programación  en UTN-FRA
 |   |Push Notification-Consultar al mozo | Sin asignar|🔴Sin iniciar|
 |   |Push Notification-Confirmar pedido (por parte del mozo)| Sin asignar|🔴Sin iniciar|
 |   |Push Notification-Confirmar realización del pedido (por parte del cocinero o bartender)| Sin asignar|🔴Sin iniciar|
+
+# Qr ingreso a la lista de espera 📋
+ ![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/qrIngresoAListaDeEspera.jpeg?raw=true)
+
+# Qrs Mesas🪑
+#### 1
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/mesas/1.jpeg?raw=true)
+#### 2
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/mesas/2.jpeg?raw=true)
+#### 3
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/mesas/3.jpeg?raw=true)
+#### 4
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/mesas/4.jpeg?raw=true)
+#### 5
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/mesas/5.jpeg?raw=true)
+#### 6
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/mesas/6.jpeg?raw=true)
+#### 7
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/mesas/7.jpeg?raw=true)
+#### 8
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/mesas/8.jpeg?raw=true)
+#### 9
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/mesas/9.jpeg?raw=true)
+#### 10
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/mesas/10.jpeg?raw=true)
+
+
+# Qrs Satisfacción💁‍♂️
+#### 0%
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/satisfaccion/0%25.jpeg?raw=true)
+#### 10%
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/satisfaccion/10%25.jpeg?raw=true)
+#### 15%
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/satisfaccion/15%25.jpeg?raw=true)
+#### 20%
+![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/satisfaccion/20%25.jpeg?raw=true)
