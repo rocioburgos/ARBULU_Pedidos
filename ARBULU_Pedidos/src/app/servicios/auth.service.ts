@@ -17,6 +17,7 @@ export class AuthService {
   private email: string;
   public usuarioActual: any;
   private usuarios: any;
+
   constructor(
     public afAuth: AngularFireAuth,
     private utilidadesSrv: UtilidadesService,
@@ -46,7 +47,7 @@ export class AuthService {
     this.firestoreSvc.obtenerColeccionUsuario().subscribe((res) => {
       this.usuarios = res;
     });
-
+    
   }
 
   async Register(email: string, password: string) {
@@ -73,8 +74,12 @@ export class AuthService {
         .signInWithEmailAndPassword(email, pass);
       this.ngZone.run(() => {
         this.usuarios.forEach(user => {
-
+          console.log(user);
+          
           if (user.email == email) {
+            this.usuarioActual = user;
+            console.log(this.usuarioActual);
+            
             localStorage.setItem('usuario_ARBULU', JSON.stringify(
               {
                 'uid': user.uid,

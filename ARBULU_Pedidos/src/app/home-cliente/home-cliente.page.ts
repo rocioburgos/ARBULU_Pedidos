@@ -20,56 +20,76 @@ export class HomeClientePage implements OnInit {
   scan_visibility = 'hidden';
   scanActive = false;
 
-  escaneoMesa:boolean = false;//PONER EL FALSE
-  pedido:any = "";
-  verEstado:boolean = false;
+  escaneoMesa: boolean = false;//PONER EL FALSE
+  pedido: any = "";
+  verEstado: boolean = false;
   propina = 0;
   propinaEscaneada = false;
-  usuario:any;
-  cuenta:boolean = false; 
-  usuarioLS:any= null;
-  tienePedidosEnCurso=false;
-  tieneMesa=false;
-  pedidoEnCurso:any;
+  usuario: any;
+  cuenta: boolean = false;
+  usuarioLS: any = null;
+  tienePedidosEnCurso = false;
+  tieneMesa = false;
+  pedidoEnCurso: any;
   usuarioActual: any;
 
   constructor(
     private firestoreSvc: FirestoreService,
     //public pushNotificationService: PushNotificationService, 
-    private router:Router,
+    private router: Router,
     private utilidadesSvc: UtilidadesService,
     private authSvc: AuthService,
     private alertController: AlertController,
-    private spinner:NgxSpinnerService,
-    private pedidoSrv:PedidosService) 
-  { 
+    private spinner: NgxSpinnerService,
+    private pedidoSrv: PedidosService) {
+      this.usuario = this.authSvc.usuarioActual;
+      alert(this.usuario);
+      if (!this.usuario) {
+        this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+        console.log("ls: " + this.usuario);
+        
+        alert("anonimo " + this.usuario);
+      }
+  
+      this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
+        var usuarios = data;
+        console.log(usuarios);
+        
+        usuarios.forEach(element => {
+          console.log(element.uid+" " +" "+this.usuario.uid);
+          
+          if (element.uid == this.usuario.uid) {
+            this.usuario = element;
+            alert(this.usuario); 
+            console.log(this.usuario);
+            
+            this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
+              console.log(res);
+              
+              if (res == 0) {
+                this.tienePedidosEnCurso = false;
+              } else {
+                this.pedidoEnCurso = res[0]
+              }
+              console.log(this.usuario);
+            });
+          }
+        });
+      })
+  
+      //  this.firestoreSvc.obtenerUsuarioPorId(this.usuario.uid).then((resp:any)=>{
+  
+      //     this.usuario = resp;
+      //  });
+      
+  }
+
+  ngOnInit() {
+    
 
   }
 
-  ngOnInit() { 
-    this.usuario = this.authSvc.usuarioActual;
-    if(!this.usuario)
-    {
-      this.usuario = localStorage.getItem('usuario_ARBULU');
-    } 
-
-   this.usuarioLS= this.authSvc.getCurrentUserLS();
-   this.firestoreSvc.obtenerUsuarioPorId(this.usuarioLS.uid).then((resp:any)=>{
-      console.log(resp.foto)
-   });
-
-   this.pedidoSrv.TraerPedidoByUserId(this.usuarioLS.uid).subscribe((res)=>{
-    if(res==0){ 
-      this.tienePedidosEnCurso= false;
-    }else{
-      this.pedidoEnCurso= res[0]
-    }
-    console.log(this.usuario);
-  });
- 
-  }
-
- async cerrarSesion(){
+  async cerrarSesion() {
 
     const alert = await this.alertController.create({
       header: '¿Seguro que quiere cerrar sesión?',
@@ -84,25 +104,25 @@ export class HomeClientePage implements OnInit {
           text: 'Si',
           role: 'confirm',
           handler: () => {
-          
-            this.spinner.show(); 
-            this.utilidadesSvc.warningToast("Cerrando sesion.",2000);
-              this.authSvc.signOut().then(()=>{ 
-                setTimeout(() => {
-                 
-                  this.spinner.hide();
-                  this.router.navigate(['login']); 
-                }, 3000);
-              });
+
+            this.spinner.show();
+            this.utilidadesSvc.warningToast("Cerrando sesion.", 2000);
+            this.authSvc.signOut().then(() => {
+              setTimeout(() => {
+
+                this.spinner.hide();
+                this.router.navigate(['login']);
+              }, 3000);
+            });
           },
         },
       ],
-    });  
-    await alert.present(); 
+    });
+    await alert.present();
 
 
   }
-  
+
   async checkPermission() {
     try {
       const status = await BarcodeScanner.checkPermission({ force: true });
@@ -116,7 +136,7 @@ export class HomeClientePage implements OnInit {
   }
 
   async startScan() {
-     
+
     try {
       const permission = await this.checkPermission();
       if (!permission) {
@@ -135,14 +155,14 @@ export class HomeClientePage implements OnInit {
       document.querySelector('body').classList.remove('scanner-active');
       if (result?.hasContent) {
         console.log(result);
-        if(result.content === this.usuario.mesa){
+        if (result.content === this.usuario.mesa) {
           alert(this.usuario.id);
           //this.firestoreSvc.update(this.usuario.id, {enListaDeEspera: true});
           this.escaneoMesa = true;
           this.utilidadesSvc.successToast("Escaneo de mesa correcto", 2000);
           alert(result.content);
         }
-        else{
+        else {
           this.stopScan();
           this.utilidadesSvc.errorToast("Mesa Incorrecta", 2000);
         }
@@ -153,10 +173,10 @@ export class HomeClientePage implements OnInit {
       console.log(error);
       this.stopScan();
       this.utilidadesSvc.errorToast("Error al escanear", 3000);
-    } 
+    }
   }
- 
-  RealizarPedido(){
+
+  RealizarPedido() {
     this.router.navigateByUrl('carta-productos')
   }
 
@@ -173,7 +193,7 @@ export class HomeClientePage implements OnInit {
   }
 
   getClientes() {
-    
+
     this.firestoreSvc.obtenerUsuario().subscribe((data: any) => {
       for (let item of data) {
         if (item.uid === this.usuario.uid) {

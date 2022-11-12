@@ -1,10 +1,4 @@
-ion-content {
-	--overflow: hidden;
-	--background: none;
-	background: url("../../assets/background/bg.png");
-	background-size: cover;
-	background-position: center center;
-}
+
 
 ion-toolbar {
 
@@ -132,5 +126,13 @@ ion-spinner {
 	top: 50%;
 	transform: translate(-50%, -50%);
 	width: 300px;
+}
+
+ion-content {
+	--overflow: hidden;
+	--background: none;
+	background: url("../../assets/background/bg.png");
+	background-size: cover;
+	background-position: center center;
 }
 

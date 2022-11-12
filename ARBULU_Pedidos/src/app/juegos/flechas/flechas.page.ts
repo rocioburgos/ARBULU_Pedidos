@@ -14,35 +14,35 @@ import { PedidosService } from 'src/app/servicios/pedidos.service';
 export class FlechasPage implements OnInit {
 
   imagenes = [
-    {src:'../../../assets/flechas/arriba.jpg', direccion:"arriba"},
-    {src:'../../../assets/flechas/abajo.jpg', direccion:"abajo"},
-    {src:'../../../assets/flechas/derecha.jpg', direccion:"derecha"},
-    {src:'../../../assets/flechas/izquierda.jpg', direccion:"izquierda"},
-    {src:'../../../assets/flechas/arriba1.jpg', direccion:"arriba"},
-    {src:'../../../assets/flechas/abajo1.jpg', direccion:"abajo"},
-    {src:'../../../assets/flechas/derecha1.jpg', direccion:"derecha"},
-    {src:'../../../assets/flechas/izquierda1.jpg', direccion:"izquierda"},
-    {src:'../../../assets/flechas/arriba2.jpg', direccion:"arriba"},
-    {src:'../../../assets/flechas/abajo2.jpg', direccion:"abajo"},
-    {src:'../../../assets/flechas/derecha2.jpg', direccion:"derecha"},
-    {src:'../../../assets/flechas/izquierda2.jpg', direccion:"izquierda"},
-    {src:'../../../assets/flechas/arriba3.jpg', direccion:"arriba"},
-    {src:'../../../assets/flechas/abajo3.jpg', direccion:"abajo"},
-    {src:'../../../assets/flechas/derecha3.jpg', direccion:"derecha"},
-    {src:'../../../assets/flechas/izquierda3.jpg', direccion:"izquierda"},
-    {src:'../../../assets/flechas/arriba4.jpg', direccion:"arriba"},
-    {src:'../../../assets/flechas/abajo4.jpg', direccion:"abajo"},
-    {src:'../../../assets/flechas/derecha4.jpg', direccion:"derecha"},
-    {src:'../../../assets/flechas/izquierda4.jpg', direccion:"izquierda"},
-    {src:'../../../assets/flechas/arriba5.jpg', direccion:"arriba"},
-    {src:'../../../assets/flechas/abajo5.jpg', direccion:"abajo"},
-    {src:'../../../assets/flechas/derecha5.jpg', direccion:"derecha"},
-    {src:'../../../assets/flechas/izquierda5.jpg', direccion:"izquierda"},
+    { src: '../../../assets/flechas/arriba.jpg', direccion: "arriba" },
+    { src: '../../../assets/flechas/abajo.jpg', direccion: "abajo" },
+    { src: '../../../assets/flechas/derecha.jpg', direccion: "derecha" },
+    { src: '../../../assets/flechas/izquierda.jpg', direccion: "izquierda" },
+    { src: '../../../assets/flechas/arriba1.jpg', direccion: "arriba" },
+    { src: '../../../assets/flechas/abajo1.jpg', direccion: "abajo" },
+    { src: '../../../assets/flechas/derecha1.jpg', direccion: "derecha" },
+    { src: '../../../assets/flechas/izquierda1.jpg', direccion: "izquierda" },
+    { src: '../../../assets/flechas/arriba2.jpg', direccion: "arriba" },
+    { src: '../../../assets/flechas/abajo2.jpg', direccion: "abajo" },
+    { src: '../../../assets/flechas/derecha2.jpg', direccion: "derecha" },
+    { src: '../../../assets/flechas/izquierda2.jpg', direccion: "izquierda" },
+    { src: '../../../assets/flechas/arriba3.jpg', direccion: "arriba" },
+    { src: '../../../assets/flechas/abajo3.jpg', direccion: "abajo" },
+    { src: '../../../assets/flechas/derecha3.jpg', direccion: "derecha" },
+    { src: '../../../assets/flechas/izquierda3.jpg', direccion: "izquierda" },
+    { src: '../../../assets/flechas/arriba4.jpg', direccion: "arriba" },
+    { src: '../../../assets/flechas/abajo4.jpg', direccion: "abajo" },
+    { src: '../../../assets/flechas/derecha4.jpg', direccion: "derecha" },
+    { src: '../../../assets/flechas/izquierda4.jpg', direccion: "izquierda" },
+    { src: '../../../assets/flechas/arriba5.jpg', direccion: "arriba" },
+    { src: '../../../assets/flechas/abajo5.jpg', direccion: "abajo" },
+    { src: '../../../assets/flechas/derecha5.jpg', direccion: "derecha" },
+    { src: '../../../assets/flechas/izquierda5.jpg', direccion: "izquierda" },
   ];
-  
+
   currentImage: any = "";
   puntaje: number = 0;
-  empezado:boolean = false;
+  empezado: boolean = false;
   timeLeft: number = 60;
   interval: any;
   tiempoTerminado: boolean = false;
@@ -50,23 +50,31 @@ export class FlechasPage implements OnInit {
   listaOrdenada: Array<Puntos> = new Array<Puntos>();
   usuario: Usuario = new Usuario();
   public usuario$: Observable<any> = this.authService.afAuth.user;
+  pedidos: any = [];
+  pedido: any;
 
-  constructor(public router: Router, public authService: AuthService, private pedidoSvc: PedidosService) { 
+  constructor(public router: Router, public authService: AuthService, private pedidoSvc: PedidosService) {
     //this.puntajeSvc.cargarPuntajesFchs();
     this.usuario$.subscribe((result: any) => {
       this.usuario.email = result['email'];
       this.usuario.uid = result['uid']
 
     });
-   
-    //this.pedidoSvc.TraerPedido();
+    this.pedidos = this.pedidoSvc.TraerPedidos();
+
+    this.pedidos.forEach(element => {
+      if (element.uid_usuario == this.usuario.uid) {
+        this.pedido = element;
+      }
+    });
+
   }
 
   ngOnInit(): void {
 
   }
 
-  empezar(){
+  empezar() {
     this.currentImage = this.updateRandomImage();
     this.empezado = true;
     this.tiempoTerminado = false;
@@ -83,96 +91,86 @@ export class FlechasPage implements OnInit {
     return this.currentImage.src;
   }
 
-  onArriba(){
+  onArriba() {
     console.log(this.currentImage.direccion);
-    if(this.currentImage.direccion.includes("arriba")){
+    if (this.currentImage.direccion.includes("arriba")) {
       this.puntaje += 10;
       this.currentImage = this.updateRandomImage();
     }
-    else
-    {
-      this.puntaje -=5;
+    else {
+      this.puntaje -= 5;
       this.currentImage = this.updateRandomImage();
     }
   }
 
-  onAbajo(){
+  onAbajo() {
     console.log(this.currentImage.direccion);
-    if(this.currentImage.direccion.includes("abajo")){
+    if (this.currentImage.direccion.includes("abajo")) {
       this.puntaje += 10;
       this.currentImage = this.updateRandomImage();
     }
-    else
-    {
-      this.puntaje -=5;
+    else {
+      this.puntaje -= 5;
       this.currentImage = this.updateRandomImage();
     }
   }
 
-  onIzquierda(){
+  onIzquierda() {
     console.log(this.currentImage.direccion);
-    if(this.currentImage.direccion.includes("izquierda")){
+    if (this.currentImage.direccion.includes("izquierda")) {
       this.puntaje += 10;
       this.currentImage = this.updateRandomImage();
     }
-    else
-    {
-      this.puntaje -=5;
-      this.currentImage = this.updateRandomImage();
-    }
-  }
-  
-  onDerecha(){
-    console.log(this.currentImage.direccion);
-    if(this.currentImage.direccion.includes("derecha")){
-      this.puntaje += 10;
-      this.currentImage = this.updateRandomImage();
-    }
-    else
-    {
-      this.puntaje -=5;
+    else {
+      this.puntaje -= 5;
       this.currentImage = this.updateRandomImage();
     }
   }
 
- 
+  onDerecha() {
+    console.log(this.currentImage.direccion);
+    if (this.currentImage.direccion.includes("derecha")) {
+      this.puntaje += 10;
+      this.currentImage = this.updateRandomImage();
+    }
+    else {
+      this.puntaje -= 5;
+      this.currentImage = this.updateRandomImage();
+    }
+  }
 
-startTimer() {
+
+
+  startTimer() {
     this.interval = setInterval(() => {
-      if(this.timeLeft > 0) {
+      if (this.timeLeft > 0) {
         this.timeLeft--;
       } else {
         this.timeLeft = 60;
         this.tiempoTerminado = true;
         this.empezado = false;
         console.log(this.puntaje);
-        if(this.tiempoTerminado){
+        if (this.tiempoTerminado) {
           this.pauseTimer();
         }
-        if(this.puntaje > 0){
-          this.addPuntaje(this.usuario.uid, this.usuario.email, this.puntaje);
-        }
-        this.cargarPuntajes();
+        this.pedido.jugado = true;
+        this.pedidos.descuento = this.puntaje < 100 ? 0 : 20;
+        this.updatePedidoPuntaje();
+
+
       }
-    },1000)
+    }, 1000)
   }
 
   pauseTimer() {
     clearInterval(this.interval);
   }
 
-  cargarPuntajes(){
-    this.listaPuntajes = [];
-    // this.puntajeSvc.puntajes.subscribe((puntaje:any) =>{
-    //   this.listaPuntajes = puntaje;
-    //   this.listaOrdenada = this.listaPuntajes.slice(0, 10);
-    //   console.log(this.listaPuntajes);
-    // });
+  updatePedidoPuntaje() {
+    this.pedidoSvc.actualizarProductoPedido(this.pedido, this.pedido.id_doc);
   }
 
-  addPuntaje(usuarioId: string, usuario: string, puntaje: number){
-    //this.puntajeSvc.addPuntaje(usuarioId, usuario, puntaje, this.puntajeSvc.puntajesCollectionFchs);
-  }
+
 
 
 

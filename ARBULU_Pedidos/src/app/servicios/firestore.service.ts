@@ -35,7 +35,7 @@ export class FirestoreService {
       this.update(data.id, { uid: data.id });
       console.log(usuario.email);
 
-      var anonimo = usuario.email == null ? true : false;
+      //var anonimo = usuario.email == null ? true : false;
       localStorage.removeItem('usuario_ARBULU');
       localStorage.setItem('usuario_ARBULU', JSON.stringify(
         {
@@ -43,8 +43,7 @@ export class FirestoreService {
           'email': usuario.email,
           'sesion': 'activa',
           'tipo': usuario.tipo,
-          'tipoEmpleado': usuario.tipoEmpleado,
-          'anonimo': anonimo
+          'tipoEmpleado': usuario.tipoEmpleado
         }));
     });
   }
@@ -144,6 +143,7 @@ export class FirestoreService {
     this.usuariosCollection = this.db.collection('usuarios');
     return this.usuariosCollection.doc(id).get();
   }
+  
   setItemWithId(item: any, id:string) {
     this.usuariosCollection = this.db.collection('usuarios');
     return this.usuariosCollection.doc(id).set(Object.assign({}, item));    
@@ -176,16 +176,25 @@ export class FirestoreService {
   public updateEncuestaCliente(id: string, data: any) {
     return this.encuestasUsuarios.doc(id).update(data);
   }
+
   public crearEncuestaClienteSupervisor(encuesta: any) {
     return this.encuestasClienteSupervisorRef.add({ ...encuesta }).then((data) => {
-      this.updateMesa(data.id, { uid: data.id });
+      this.updateEncuestaClienteSupervisor(data.id, { uid: data.id });
     });
+  }
+
+  public updateEncuestaClienteSupervisor(id: string, data: any) {
+    return this.encuestasClienteSupervisorRef.doc(id).update(data);
   }
 
   public crearEncuestaEmpleadoSupervisor(encuesta: any) {
     return this.encuestasEmpleadoSupervisorRef.add({ ...encuesta }).then((data) => {
-      this.updateMesa(data.id, { uid: data.id });
+      this.updateEncuestaEmpleadoSupervisor(data.id, { uid: data.id });
     });
+  }
+
+  public updateEncuestaEmpleadoSupervisor(id: string, data: any) {
+    return this.encuestasEmpleadoSupervisorRef.doc(id).update(data);
   }
 
   public obtenerEncuestasClienteSupervisor() {

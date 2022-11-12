@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { QrIngresoLocalPageRoutingModule } from './qr-ingreso-local-routing.module';
 
 import { QrIngresoLocalPage } from './qr-ingreso-local.page';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    QrIngresoLocalPageRoutingModule
+    QrIngresoLocalPageRoutingModule,
+    NgxSpinnerModule
   ],
   declarations: [QrIngresoLocalPage]
 })

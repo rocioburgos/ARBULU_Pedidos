@@ -4,6 +4,7 @@ import { FirestoreService } from '../servicios/firestore.service';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { AuthService } from '../servicios/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-qr-ingreso-local',
@@ -12,6 +13,7 @@ import { AuthService } from '../servicios/auth.service';
 })
 export class QrIngresoLocalPage implements OnInit {
 
+  usuarios: any;
   usuarioActual: any;
   scannnedResult: any;
   content_visibility = '';
@@ -23,13 +25,36 @@ export class QrIngresoLocalPage implements OnInit {
     //public pushNotificationService: PushNotificationService, 
     private router: Router,
     private utilidadesSvc: UtilidadesService,
-    private authSvc: AuthService) 
+    private authSvc: AuthService,
+    private spinner: NgxSpinnerService) 
   { 
+
+    this.spinner.show();
+    
     this.usuarioActual = this.authSvc.usuarioActual;
-    if(!this.usuarioActual){
-      this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));  
-      this.usuarioActual = this.firestoreSvc.obtenerUsuarioPorId(this.usuarioActual.uid);
+    alert(this.usuarioActual);
+    // var auxUsuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+    // this.usuarioActual = this.firestoreSvc.getUsuarioActualByID(auxUsuario.uid);
+
+    if(this.usuarioActual){
+      alert("usuario" +this.usuarioActual);
+      console.log(this.usuarioActual);
+      setTimeout(() => {
+                    this.spinner.hide();
+                    if(this.usuarioActual.enListaDeEspera){
+                      this.router.navigate(['home-cliente']);
+                    }
+                  }, 1000);
     }
+    else{
+      setTimeout(() => {
+        this.spinner.hide();
+        alert("anoniomo"  + this.usuarioActual);
+        this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+      }, 1000);
+      
+    }
+
   }
 
  
