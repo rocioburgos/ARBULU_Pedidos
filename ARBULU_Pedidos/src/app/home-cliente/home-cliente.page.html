@@ -67,7 +67,7 @@
     </ion-button>
 
     <div *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='CUENTA' || pedidoEnCurso.estado!='PAGADO' || pedidoEnCurso.estado!='FINALIZADO' 
-      || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE')">
+      || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE') && pedidoEnCurso.jugado == false">
       <ion-button routerLink="../juegos/felchas" type="button" fill="solid" expand="block" color="primary"
         style="height: 170px; margin-top: 10%;">
         <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>

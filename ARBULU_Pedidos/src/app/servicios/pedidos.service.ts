@@ -13,6 +13,7 @@ import { switchMap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class PedidosService {
+  pedido_uid:any = '';
 
   items: Observable<any[]>;
   public dbRef: AngularFirestoreCollection<any>;
@@ -64,4 +65,10 @@ export class PedidosService {
 
 
 
+  async actualizarPedido(pedido:any, id_doc:string){
+      this.dbRef.doc(id_doc).update(pedido)
+    } 
+
+   
+  
 }

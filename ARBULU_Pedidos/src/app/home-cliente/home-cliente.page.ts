@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { AlertController } from '@ionic/angular';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Pedido } from '../clases/pedidos';
+import { eEstadPedido, Pedido } from '../clases/pedidos';
 import { AuthService } from '../servicios/auth.service';
+import { EncuestaService } from '../servicios/encuesta.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { PedidosService } from '../servicios/pedidos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
@@ -22,6 +23,7 @@ export class HomeClientePage implements OnInit {
 
   escaneoMesa: boolean = false;//PONER EL FALSE
   pedido: any = "";
+  encuesta: any = "";
   verEstado: boolean = false;
   propina = 0;
   propinaEscaneada = false;
@@ -42,51 +44,58 @@ export class HomeClientePage implements OnInit {
     private alertController: AlertController,
     private spinner: NgxSpinnerService,
     private pedidoSrv: PedidosService) {
-      this.usuario = this.authSvc.usuarioActual;
-      alert(this.usuario);
-      if (!this.usuario) {
-        this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
-        console.log("ls: " + this.usuario);
-        
-        alert("anonimo " + this.usuario);
-      }
-  
-      this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
-        var usuarios = data;
-        console.log(usuarios);
-        
-        usuarios.forEach(element => {
-          console.log(element.uid+" " +" "+this.usuario.uid);
-          
-          if (element.uid == this.usuario.uid) {
-            this.usuario = element;
-            alert(this.usuario); 
+    this.usuario = this.authSvc.usuarioActual;
+    alert(this.usuario);
+    if (!this.usuario) {
+      this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+      console.log("ls: " + this.usuario);
+
+      alert("anonimo " + this.usuario);
+    }
+
+    this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
+      var usuarios = data;
+      console.log(usuarios);
+
+      usuarios.forEach(element => {
+        console.log(element.uid + " " + " " + this.usuario.uid);
+
+        if (element.uid == this.usuario.uid) {
+          this.usuario = element;
+          alert(this.usuario);
+          console.log(this.usuario);
+
+          this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
+            console.log(res);
+
+            if (res == 0) {
+              this.tienePedidosEnCurso = false;
+            } else {
+              this.tienePedidosEnCurso = true;
+              this.pedidoEnCurso = res[0]
+            }
             console.log(this.usuario);
-            
-            this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
-              console.log(res);
-              
-              if(res==0){ 
-                this.tienePedidosEnCurso= false;
-              }else{
-                this.tienePedidosEnCurso= true;
-                this.pedidoEnCurso= res[0]
-              }
-              console.log(this.usuario);
-            });
-          }
-        });
-      })
-  
-      //  this.firestoreSvc.obtenerUsuarioPorId(this.usuario.uid).then((resp:any)=>{
-  
-      //     this.usuario = resp;
-      //  });
-      
+            this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
+            console.log(this.pedidoEnCurso);
+            var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
+              this.encuesta = data.filter((item: any) => item.uid_cliente == this.authSvc.usuarioActual.uid && item.uid_pedido == this.pedido.doc_id)[0];
+              this.spinner.hide();
+              observable.unsubscribe();
+            })
+          });
+        }
+      });
+    })
+
+    //  this.firestoreSvc.obtenerUsuarioPorId(this.usuario.uid).then((resp:any)=>{
+
+    //     this.usuario = resp;
+    //  });
+
   }
 
   ngOnInit() {
-    
+
 
   }
 
@@ -202,7 +211,6 @@ export class HomeClientePage implements OnInit {
           break;
         }
       }
-      alert(this.usuarioActual.nombre);
     });
   }
 

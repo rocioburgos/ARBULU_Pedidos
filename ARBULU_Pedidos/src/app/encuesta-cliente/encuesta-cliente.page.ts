@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
+import { PedidosService } from '../servicios/pedidos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class EncuestaClientePage implements OnInit {
     private fb: FormBuilder,
     private utilidades:UtilidadesService,
     private auth:AuthService,
-    private spinner: NgxSpinnerService) {
+    private spinner: NgxSpinnerService,
+    private pedido:PedidosService) {
     this.form = this.fb.group({
       'limpieza': ['', Validators.required],
       'inconvenientes': ['', Validators.required],
@@ -31,7 +33,9 @@ export class EncuestaClientePage implements OnInit {
       'quejas': ['', Validators.required],
       'foto1': [''],
       'foto2': [''],
-      'foto3': ['']
+      'foto3': [''],
+      'uid_cliente': [this.auth.usuarioActual.uid],
+      'uid_pedido': [this.pedido.pedido_uid]
     });
   }
 
@@ -55,14 +59,10 @@ export class EncuestaClientePage implements OnInit {
 
         setTimeout(() => {
           this.utilidades.successToast("Se registró la encuesta correctamente.");
-
-        }, 2000);
-
-        setTimeout(() => {
-          this.firestore.update(this.auth.usuarioActual, {encuestaCompletada: true});
           this.spinner.hide();
-          this.router.navigateByUrl('home-cliente');
+          this.router.navigate(['/home-cliente']);
         }, 2000);
+
       }).catch(error => {
         this.utilidades.errorToast("Ocurrió un error al registrar la encuesta.");
         this.spinner.hide();

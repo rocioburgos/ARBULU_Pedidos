@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Pedido } from '../clases/pedidos';
+import { eEstadPedido, Pedido } from '../clases/pedidos';
 import { ApiService } from '../servicios/api.service';
 import { AuthService } from '../servicios/auth.service';
 import { PedidosService } from '../servicios/pedidos.service';
@@ -21,7 +21,7 @@ export class PokePreguntadosPage implements OnInit {
   puntaje: number = 0;
   puntajeFinal: number = 0;
   finalizado: boolean = false;
-  pedido: Pedido = new Pedido();
+  pedido: any;
 
   constructor(
     private pokeApi: ApiService,
@@ -45,8 +45,10 @@ export class PokePreguntadosPage implements OnInit {
       this.pedido = data.filter((item:Pedido)=>item.uid_usuario == this.auth.usuarioActual.uid);
       observable.unsubscribe();
     });
-    this.pedidos.TraerPedidos().subscribe((data)=>{
-      console.log(data);
+    var observable2 = this.pedidos.TraerPedidos().subscribe((data)=>{
+      this.pedido = data.filter((item:Pedido)=>item.estado != eEstadPedido.FINALIZADO && item.uid_usuario == this.auth.usuarioActual.uid)[0];
+      this.pedidos.actualizarPedido({jugado:true}, this.pedido.doc_id)
+      observable2.unsubscribe();
     });
   }
 
@@ -117,14 +119,15 @@ export class PokePreguntadosPage implements OnInit {
   }
 
   finalizarJuego() {
+    this.spinner.show();
     if (this.puntajeFinal == 10) {
-      //this.pedidos.actualizarProductoPedido({jugado:true})
+      this.pedidos.actualizarPedido({jugado:true, descuento:10, nombreJuego:'poke-preguntados'}, this.pedido.doc_id).then((ok)=>{
+        this.spinner.hide();
+      });
     }else{
-
+      this.pedidos.actualizarPedido({jugado:true,descuento:0, nombreJuego:'poke-preguntados'},this.pedido.doc_id).then((ok)=>{
+        this.spinner.hide();
+      });
     }
-
-    // jugado: boolean;
-    // descuento: number;
-    // nombreJuego: string; 
   }
 }
