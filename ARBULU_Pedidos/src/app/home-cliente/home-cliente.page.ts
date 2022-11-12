@@ -75,7 +75,7 @@ export class HomeClientePage implements OnInit {
                 this.pedidoEnCurso = element;
                 this.tienePedidosEnCurso = true;
                 console.log("tiene pedido");
-                
+                this.escaneoMesa = true;
                 
               }
               else{
@@ -94,7 +94,7 @@ export class HomeClientePage implements OnInit {
             //   alert(this.pedidoEnCurso);
             // }
             console.log(this.tienePedidosEnCurso);
-            //alert(this.pedido);
+            alert(this.pedido);
             console.log(this.pedidoEnCurso);
             
             this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
