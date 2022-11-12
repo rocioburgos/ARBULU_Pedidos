@@ -66,10 +66,11 @@ export class HomeClientePage implements OnInit {
             this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
               console.log(res);
               
-              if (res == 0) {
-                this.tienePedidosEnCurso = false;
-              } else {
-                this.pedidoEnCurso = res[0]
+              if(res==0){ 
+                this.tienePedidosEnCurso= false;
+              }else{
+                this.tienePedidosEnCurso= true;
+                this.pedidoEnCurso= res[0]
               }
               console.log(this.usuario);
             });

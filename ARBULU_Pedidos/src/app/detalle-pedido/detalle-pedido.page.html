@@ -132,12 +132,13 @@
 
       <ion-card-content>
         <ion-label>Estado: {{pedido.estado }}</ion-label><br>
-        <ion-label>Total💵 ${{pedido.total}} </ion-label> <br>
+        <ion-label *ngIf="pedido.estado=='FINALIZADO'" style="text-align: right;">Descuentos ${{pedido.descuento}} </ion-label> <br>
+        <ion-label *ngIf="pedido.estado=='FINALIZADO'" style="text-align: right;">Propina: ${{pedido.propina}} </ion-label> <br>
+        <ion-label   style="text-align: right;">Total💵: ${{pedido.total}}</ion-label><br>
+ 
         <ion-label>Tiempo estimado 🕗{{pedido.tiempo_elaboracion}} </ion-label> <br>
+
       </ion-card-content>
-
-
-
     </ion-card>
 
 
@@ -159,30 +160,33 @@
         </ion-card-content>
 
       </ion-card>
-    </div>
-
-
-
-  </div>
-
-
+    </div> 
+  </div> 
 </ion-content>
+
+
 <ion-footer collapse="fade"
 [hidden]="scanActive"
   *ngIf="(pedido.estado == 'CUENTA' ||  pedido.estado == 'PAGADO'  || pedido.estado == 'FINALIZADO') && esCliente">
 
   <ion-label style="text-align: right;">Descuentos ${{pedido.descuento}} </ion-label> <br>
-  <ion-label style="text-align: right;">Propina ${{pedido.propina}} </ion-label> <br>
-  <ion-label style="text-align: right;">Total💵 ${{pedido.total + pedido.propina - pedido.descuento}}</ion-label>
+  <ion-label style="text-align: right;">Propina: ${{pedido.propina}} </ion-label> <br>
+  <ion-label style="text-align: right;">Total💵: ${{pedido.total + pedido.propina - pedido.descuento}}</ion-label>
 
   <ion-button *ngIf="pedido.estado=='CUENTA'" [disabled]="pedido.estado!='CUENTA'" color='success'
     (click)="pagarPedido(pedido.doc_id )" expand="full" shape="round" color="success">
     PAGAR
   </ion-button>
 </ion-footer>
+<ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado == 'PENDIENTE' )">
+  <ion-button  expand="full" shape="round" color="success"    
+  (click)="confirmarPedido(pedido, 'CONFIRMADO')">Confirmar pedido</ion-button>
 
-
-<ion-footer collapse="fade" *ngIf="pedido.estado == 'PAGADO' && esMetre">
+</ion-footer>
+<ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado == 'TERMINADO' )"> 
+<ion-button  expand="full" shape="round" color="success"  (click)="confirmarPedido(pedido, 'ENTREGADO')">Entregar pedido</ion-button> 
+</ion-footer>
+<ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado == 'PAGADO' || pedido.estado == 'COBRADO') ">
 
   <ion-label style="text-align: right;">Descuentos aplicados: ${{pedido.descuento}}</ion-label> <br>
   <ion-label style="text-align: right;">Propina: ${{pedido.propina}}</ion-label> <br>
@@ -190,16 +194,9 @@
 
   <ion-button *ngIf="pedido.estado=='PAGADO'" color='success' (click)="confirmarPago(pedido.doc_id)" expand="full"
     shape="round" color="success">
-    CONFIRMAR COBRO
-  </ion-button>
-
-  <ion-button *ngIf="pedido.estado=='COBRADO'" color='success' (click)="liberarMesa(pedido.doc_id)" expand="full"
-    shape="round" color="success">
-    FINALIZAR Y LIBERAR MESA
-  </ion-button>
-</ion-footer>
-
-
+    Confirmar pago y liberar mesa
+  </ion-button>  
+ </ion-footer>
 <ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>">
   <p>Cargando...</p>
 </ngx-spinner>

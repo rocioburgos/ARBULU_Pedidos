@@ -95,6 +95,13 @@ export class DetallePedidoPage implements OnInit {
 
   }
 
+  confirmarPedido(pedido_sel:any,proxEstado:string) { 
+   
+      this.pedido.estado= (proxEstado==eEstadPedido.CONFIRMADO )? eEstadPedido.CONFIRMADO : eEstadPedido.ENTREGADO;
+      this.pedidoSrv.actualizarProductoPedido(this.pedido, this.pedido.doc_id)
+    
+  } 
+
   cambiarEstado(item:any,proxEstado:string) {
     let   cantProdPedido= this.pedido.productos.length;
     
@@ -142,7 +149,11 @@ export class DetallePedidoPage implements OnInit {
   }
   confirmarPago(pedidoID:string){
     this.pedido.estado= eEstadPedido.COBRADO; 
-    this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
+    this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID).then(()=>{
+      this.liberarMesa(pedidoID)
+    });
+
+  
   }
 
   liberarMesa(pedidoID:string){

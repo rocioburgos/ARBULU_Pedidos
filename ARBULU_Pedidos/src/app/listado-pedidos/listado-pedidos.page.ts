@@ -81,7 +81,9 @@ export class ListadoPedidosPage implements OnInit {
         console.log('PEDIDO SELECCIONADO: ' +  pedido)
       });
        pedido.estado= eEstadPedido.COBRADO; 
-      this.pedidosSrv.actualizarProductoPedido( pedido, pedidoID);
+      this.pedidosSrv.actualizarProductoPedido( pedido, pedidoID).then((res)=>{
+        this.liberarMesa(pedidoID);
+      });
     }
   
     liberarMesa(pedidoID:string){

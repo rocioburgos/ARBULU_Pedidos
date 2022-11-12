@@ -58,6 +58,8 @@ export class FirestoreService {
     return this.usuariosRef.valueChanges() as Observable<Object[]>;
   }
 
+
+
   public update(id: string, data: any) {
     return this.usuariosRef.doc(id).update(data);
   }
@@ -135,6 +137,17 @@ export class FirestoreService {
   return this.usuariosRef.valueChanges({idField: "doc_id"}); */
   }
 
+
+  
+  usuarioPorId(id: string){ 
+    this.usuariosCollection =  this.db.collection('usuarios', 
+                                      ref => ref.where('uid', '==', id)    
+                                    );  
+      return this.usuariosCollection.valueChanges({ idField: "doc_id" }); 
+ 
+  }
+
+
   getUserByUid(uid:string){
     return this.getItemById(uid);
   }
@@ -209,7 +222,8 @@ export class FirestoreService {
     this.mesasRef.doc(mesaID).update({ocupada: est});
   }
 
-  ActualizarClienteMesa(mesaID:string, est:string){
-    this.mesasRef.doc(mesaID).update({mesa: est});
+  //    this.userSrv.ActualizarClienteMesa(this.pedido.uid_usuario, '' );
+  ActualizarClienteMesa(USERID:string, est:string){
+    this.usuariosRef.doc(USERID).update({mesa: est});
   }
 }
