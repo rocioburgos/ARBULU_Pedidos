@@ -30,18 +30,19 @@ Somos estudiantes de Tecnicatura Universitaria en programación  en UTN-FRA
 |   | Inicio de sesion  |👨‍💻Eliseo|🟢Finalizado|
 |   |Alta de clientes |👨‍💻Eliseo   |🟢Finalizado|
 |  #| Segundo sprint Fecha: 29/10/2022 a 5/11/2022  |  |  |
-|   | Gestion- Ingresar al local|👨‍💻Eliseo |🟡Iniciado|
-|   |Gestion -Agregar un nuevo cliente registrado  |👨‍💻Ezequiel|🟡Iniciado|
-|   |Gestion -Realizar pedidos (platos y bebidas)|👩‍💻Rocio   |🟡Iniciado|
-|   |Gestion- Confirmar pedidos|👩‍💻Rocio |🟡Iniciado|
+|   | Gestion- Ingresar al local|👨‍💻Eliseo |🟢Finalizado|
+|   |Gestion -Agregar un nuevo cliente registrado  |👨‍💻Ezequiel|🟢Finalizado|
+|   |Gestion -Realizar pedidos (platos y bebidas)|👩‍💻Rocio   |🟢Finalizado|
+|   |Gestion- Confirmar pedidos|👩‍💻Rocio |🟢Finalizado|
 | # | Tercer sprint Fecha: 5/11/2022 a 12/11/2022  |  |  |
-|   |Gestion-Entrega de pedido y cobro| Sin asignar |🔴Sin iniciar|
-|   |Encuesta cliente | 👨‍💻Ezequiel |🔴Sin iniciar|
-|   |Encuesta supervisor | 👨‍💻Eliseo        |🔴Sin iniciar|   
-|   | Encuesta Empleados|👩‍💻Rocio  |🔴Sin iniciar|
-|   |Juego para un 15% de descuento|👩‍💻Rocio|🔴Sin iniciar|
-|   |Juego para un 10% de descuento| 👨‍💻Ezequiel |🔴Sin iniciar|
-|   |Juego para un 20% de descuento| 👨‍💻Eliseo|🔴Sin iniciar|
+|   |Gestion-Entrega de pedido y cobro|👩‍💻Rocio |🟡 Iniciado|
+|   |Encuesta cliente | 👨‍💻Ezequiel |🟡 Iniciado|
+|   |Encuesta supervisor | 👨‍💻Eliseo        |🟡 Iniciado|   
+|   | Encuesta Empleados|👩‍💻Rocio  |🟡 Iniciado|
+|   |Juego para un 15% de descuento|👩‍💻Rocio|🟡 Iniciado|
+|   |Juego para un 10% de descuento| 👨‍💻Ezequiel |🟡 Iniciado|
+|   |Juego para un 20% de descuento| 👨‍💻Eliseo|🟡 Iniciado|
+| # | Cuarto sprint Fecha: 12/11/2022 a 17/11/2022  |  |  |
 |   | Push Notification- Agregar cliente nuevo| Sin asignar |🔴Sin iniciar|
 |   |Push Notification-Ingreso al local| Sin asignar|🔴Sin iniciar|
 |   |Push Notification-Consultar al mozo | Sin asignar|🔴Sin iniciar|
