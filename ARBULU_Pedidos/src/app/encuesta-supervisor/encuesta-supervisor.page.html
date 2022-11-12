@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="warning"> 
     <ion-title>Encuesta Supervisor</ion-title>
-    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    <ion-back-button defaultHref="home-duenio" slot="start"></ion-back-button>
     <ion-buttons slot="end">
       <ion-button color="danger" size="large" (click)="cerrarSesion()">
         <ion-icon slot="end" name="log-out-outline"></ion-icon>
@@ -24,66 +24,60 @@
       </ion-item>
     </div>
 
-    <div class="inputdiv" style="padding-top: 6px;" *ngIf="tipoUsuario=='Cliente'  && !verEncuestas" >
-      <ion-item color="transp2">
-        <ion-label color='dark' position="floating" class="label">Seleccione Cliente</ion-label>
-          <ion-select okText="Seleccionar" cancelText="Cancelar" >
-            <ion-select-option value="{{item.nombre}} {{item.apellido}}" *ngFor="let item of clientesValidos">{{item.nombre}} {{item.apellido}}</ion-select-option>
-          </ion-select>
-      </ion-item>
-    </div>
+   
 
-    <div class="inputdiv" style="padding-top: 6px;" *ngIf="tipoUsuario=='Empleado' && !verEncuestasEmpleados">
-      <ion-item color="transp2">
-        <ion-label color='dark' position="floating" class="label">Empleados</ion-label>
-          <ion-select  okText="Seleccionar" cancelText="Cancelar">
-            <ion-select-option value="{{item.nombre}} {{item.apellido}}" *ngFor="let item of empleadosActuales">{{item.nombre}} {{item.apellido}}</ion-select-option>
-          </ion-select>
-      </ion-item>
-    </div>
+   
     
 
     <form [formGroup]="form" (ngSubmit)="EnviarEncuesta()" *ngIf="!verEncuestas && tipoUsuario=='Cliente'">
       <br>
-
+      <div class="inputdiv" style="padding-top: 6px;" *ngIf="tipoUsuario=='Cliente'  && !verEncuestas" >
+        <ion-item color="transp2">
+          <ion-label color='dark' position="floating" class="label">Seleccione Cliente</ion-label>
+            <ion-select okText="Seleccionar" cancelText="Cancelar" formControlName="clienteSeleccionado">
+              <ion-select-option value="{{item.nombre}} {{item.apellido}}" *ngFor="let item of clientesValidos">{{item.nombre}} {{item.apellido}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+      </div>
       <!-- <ion-button type="button" class="omitir" fill="solid" expand="block" color="omitir" (click)="Omitir()">Omitir</ion-button> -->
 
       <div>
         <div class="inputdiv">
-          <ion-label class="label">Calificar comportamiento</ion-label>
+          <ion-label class="label">Calificar consumo</ion-label>
           <ion-item color="transp2">
-            <ion-range color="dark" pin="true" min="1" max="10" step="1" snaps="true" formControlName="comportamiento">
+            <ion-range color="dark" pin="true" min="1" max="10" step="1" snaps="true" formControlName="consumo">
               <ion-icon slot="start" name="walk"></ion-icon>
-              <ion-icon slot="end" name="sparkles"></ion-icon>
+              <ion-icon slot="end" name="restaurant-outline"></ion-icon>
             </ion-range>
           </ion-item>
-          <ion-label class="invalid" *ngIf="form.controls['comportamiento'].errors?.['required'] && form.controls['comportamiento'].touched">
+          <ion-label class="invalid" *ngIf="form.controls['consumo'].errors?.['required'] && form.controls['consumo'].touched">
             Coloque en un valor.
           </ion-label>
         </div>
 
         <div class="inputdiv">
           <ion-item color="transp2">
-            <ion-radio-group value="biff" formControlName="vecesQueViene" style="width: 100%;">
-              <ion-label class="label" style="margin-bottom: 10px;">Viene seguido</ion-label>
-              <ion-item color="transp">
-                <ion-icon class="iconEst" style="color:#db5252;" name="sad-outline"></ion-icon>
-                <ion-label>Pocas veces</ion-label>
-                <ion-radio slot="start" value="pocas" color="dark"></ion-radio>
-              </ion-item>
-              <ion-item color="transp">
-                <ion-icon class="iconEst" style="color:#e0cb4f;" name="alert-circle-outline"></ion-icon>
-                <ion-label>Varias veces</ion-label>
-                <ion-radio slot="start" value="varias" color="dark"></ion-radio>
-              </ion-item>
+            <ion-radio-group value="biff" formControlName="tratoConPersonal" style="width: 100%;">
+              <ion-label class="label" style="margin-bottom: 10px;">Trato con el personal</ion-label>
               <ion-item color="transp">
                 <ion-icon class="iconEst" style="color:#59c96c;" name="happy-outline"></ion-icon>
-                <ion-label>Muchas veces</ion-label>
-                <ion-radio slot="start" value="muchas" color="dark"></ion-radio>
+                <ion-label>Bueno</ion-label>
+                <ion-radio slot="start" value="bueno" color="dark"></ion-radio>
               </ion-item>
+              <ion-item color="transp">
+                <ion-icon class="iconEst" style="color:#db5252;" name="sad-outline"></ion-icon>
+                <ion-label>Malo</ion-label>
+                <ion-radio slot="start" value="malo" color="dark"></ion-radio>
+              </ion-item>
+              <ion-item color="transp">
+                <ion-icon class="iconEst" style="color:#000000;" name="sad-outline"></ion-icon>
+                <ion-label>Regular</ion-label>
+                <ion-radio slot="start" value="regular" color="dark"></ion-radio>
+              </ion-item>
+              
             </ion-radio-group>
           </ion-item>
-          <ion-label class="invalid" *ngIf="form.controls['vecesQueViene'].errors?.['required'] && form.controls['vecesQueViene'].touched">
+          <ion-label class="invalid" *ngIf="form.controls['tratoConPersonal'].errors?.['required'] && form.controls['tratoConPersonal'].touched">
             Seleccione una opción.
           </ion-label>
         </div>
@@ -92,22 +86,21 @@
       <div class="inputdiv" style="padding-top: 6px;">
         <ion-item color="transp2">
           <ion-checkbox color="dark" formControlName="propina"></ion-checkbox>
-          <ion-label class="label" style="margin-left: 20px;">¿Deja buena propina?</ion-label>
+          <ion-label class="label" style="margin-left: 20px;">¿Deja propina?</ion-label>
         </ion-item>
       </div>
 
       <div class="inputdiv" style="padding-top: 6px;">
         <ion-item color="transp2">
-          <ion-label color='dark' position="floating" class="label">¿Con cuantos comensales suele venir?</ion-label>
-            <ion-select value="0" formControlName="comensales" okText="Confirmar" cancelText="Cancelar">
+          <ion-label color='dark' position="floating" class="label">¿Concurre seguido?</ion-label>
+            <ion-select value="0" formControlName="concurrencia" okText="Confirmar" cancelText="Cancelar">
               <ion-select-option value="0">Ninguno</ion-select-option>
-              <ion-select-option value="1">1</ion-select-option>
-              <ion-select-option value="2">2</ion-select-option>
-              <ion-select-option value="3">3</ion-select-option>
-              <ion-select-option value="4">Más de 3</ion-select-option>
+              <ion-select-option value="1 día a la semana">1 día a la semana</ion-select-option>
+              <ion-select-option value="3 días a la semana">3 días a la semana</ion-select-option>
+              <ion-select-option value="4 días a la semana">Más de 3 días a la semana</ion-select-option>
             </ion-select>
         </ion-item>
-        <ion-label class="invalid" *ngIf="form.controls['comensales'].errors?.['required'] && form.controls['comensales'].touched">
+        <ion-label class="invalid" *ngIf="form.controls['concurrencia'].errors?.['required'] && form.controls['concurrencia'].touched">
           Campo requerido.
         </ion-label>
       </div>
@@ -124,19 +117,27 @@
 
     <form [formGroup]="formEmpleados" (ngSubmit)="EnviarEncuestaEmpleados()" *ngIf="!verEncuestasEmpleados && tipoUsuario=='Empleado'">
       <br>
-
+      <div class="inputdiv" style="padding-top: 6px;" *ngIf="tipoUsuario=='Empleado' && !verEncuestasEmpleados">
+        <ion-item color="transp2">
+          <ion-label color='dark' position="floating" class="label">Empleados</ion-label>
+            <ion-select  okText="Seleccionar" cancelText="Cancelar" formControlName="empleadoSeleccionado">
+              <ion-select-option value="{{item.nombre}} {{item.apellido}}" *ngFor="let item of empleadosActuales">{{item.nombre}} {{item.apellido}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+      </div>
+      <br>
       <!-- <ion-button type="button" class="omitir" fill="solid" expand="block" color="omitir" (click)="Omitir()">Omitir</ion-button> -->
 
       <div>
         <div class="inputdiv">
           <ion-label class="label">Energía</ion-label>
           <ion-item color="transp2">
-            <ion-range color="dark" pin="true" min="1" max="10" step="1" snaps="true" formControlName="comportamiento">
+            <ion-range color="dark" pin="true" min="1" max="10" step="1" snaps="true" formControlName="energia">
               <ion-icon slot="start" name="battery-empty"></ion-icon>
               <ion-icon slot="end" name="battery-charging"></ion-icon>
             </ion-range>
           </ion-item>
-          <ion-label class="invalid" *ngIf="formEmpleados.controls['comportamiento'].errors?.['required'] && formEmpleados.controls['comportamiento'].touched">
+          <ion-label class="invalid" *ngIf="formEmpleados.controls['energia'].errors?.['required'] && formEmpleados.controls['energia'].touched">
             Coloque en un valor.
           </ion-label>
         </div>
@@ -195,23 +196,23 @@
 
       <div class="inputdiv" style="padding-top: 6px;">
         <ion-item color="transp2">
-          <ion-checkbox color="dark" formControlName="llegaTarde"></ion-checkbox>
-          <ion-label class="label" style="margin-left: 20px;">¿Llega tarde?</ion-label>
+          <ion-checkbox color="dark" formControlName="faltaSinAviso"></ion-checkbox>
+          <ion-label class="label" style="margin-left: 20px;">¿Falta sin aviso?</ion-label>
         </ion-item>
       </div>
 
       <div class="inputdiv" style="padding-top: 6px;">
         <ion-item color="transp2">
-          <ion-label color='dark' position="floating" class="label">¿Inconvenientes con los clientes?</ion-label>
-            <ion-select value="0" formControlName="inconvenientes" okText="Confirmar" cancelText="Cancelar">
-              <ion-select-option value="0">Ninguno</ion-select-option>
-              <ion-select-option value="1">1</ion-select-option>
-              <ion-select-option value="2">2</ion-select-option>
-              <ion-select-option value="3">3</ion-select-option>
-              <ion-select-option value="4">Más de 3</ion-select-option>
+          <ion-label color='dark' position="floating" class="label">¿Cómo es la atención al cliente?</ion-label>
+            <ion-select value="0" formControlName="atencion" okText="Confirmar" cancelText="Cancelar">
+              <ion-select-option value="Ninguno">Ninguno</ion-select-option>
+              <ion-select-option value="Muy Buena">Muy Buena</ion-select-option>
+              <ion-select-option value="Buena">Buena</ion-select-option>
+              <ion-select-option value="Regular">Regular</ion-select-option>
+              <ion-select-option value="Mala">Mala</ion-select-option>
             </ion-select>
         </ion-item>
-        <ion-label class="invalid" *ngIf="formEmpleados.controls['inconvenientes'].errors?.['required'] && formEmpleados.controls['inconvenientes'].touched">
+        <ion-label class="invalid" *ngIf="formEmpleados.controls['atencion'].errors?.['required'] && formEmpleados.controls['atencion'].touched">
           Campo requerido.
         </ion-label>
       </div>
@@ -250,7 +251,7 @@
 
     <ion-card>
       <ion-card-header>
-       Deja buena propina
+       Propina
       </ion-card-header>
       <ion-card-content>
         <canvas #propinaCanvas style="position: relative; height:20vh; width:40vw"></canvas>
@@ -259,7 +260,7 @@
 
     <ion-card>
       <ion-card-header>
-        Con cuantos comensales viene
+        Concurrencia
       </ion-card-header>
       <ion-card-content>
         <canvas #comensalesCanvas style="position: relative; height:20vh; width:40vw"></canvas>
@@ -281,7 +282,7 @@
 
     <ion-card>
       <ion-card-header>
-       Falta
+       Ausencia
       </ion-card-header>
       <ion-card-content>
         <canvas #faltaCanvas style="position: relative; height:20vh; width:40vw"></canvas>

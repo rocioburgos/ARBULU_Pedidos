@@ -44,8 +44,12 @@ export class HomeClientePage implements OnInit {
     private alertController: AlertController,
     private spinner: NgxSpinnerService,
     private pedidoSrv: PedidosService) {
+    
+  }
+
+  ngOnInit() {
     this.usuario = this.authSvc.usuarioActual;
-    alert(this.usuario);
+    //alert(this.usuario);
     if (!this.usuario) {
       this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
       console.log("ls: " + this.usuario);
@@ -62,27 +66,67 @@ export class HomeClientePage implements OnInit {
 
         if (element.uid == this.usuario.uid) {
           this.usuario = element;
-          alert(this.usuario);
+          //alert(this.usuario);
           console.log(this.usuario);
-
-          this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
-            console.log(res);
-
-            if (res == 0) {
-              this.tienePedidosEnCurso = false;
-            } else {
-              this.tienePedidosEnCurso = true;
-              this.pedidoEnCurso = res[0]
-            }
-            console.log(this.usuario);
+          this.pedido = this.pedidoSrv.TraerPedidos().subscribe( resp => {
+            this.pedido = resp;
+            this.pedido.forEach(element => {
+              if(element.uid_usuario == this.usuario.uid){
+                this.pedidoEnCurso = element;
+                this.tienePedidosEnCurso = true;
+                console.log("tiene pedido");
+                this.escaneoMesa = true;
+                
+              }
+              else{
+                
+                console.log("NO tiene pedido");
+                this.escaneoMesa = true;
+              }
+            });
+            // alert(resp);
+            // if (resp == 0) {
+            //   alert(this.tienePedidosEnCurso);
+            //   this.tienePedidosEnCurso = false;
+            // } else {
+            //   this.tienePedidosEnCurso = true;
+            //   this.pedidoEnCurso = resp[0];
+            //   alert(this.pedidoEnCurso);
+            // }
+            console.log(this.tienePedidosEnCurso);
+            //alert(this.pedido);
+            console.log(this.pedidoEnCurso);
+            
             this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
             console.log(this.pedidoEnCurso);
             var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
-              this.encuesta = data.filter((item: any) => item.uid_cliente == this.authSvc.usuarioActual.uid && item.uid_pedido == this.pedido.doc_id)[0];
+              this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuario.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);
               this.spinner.hide();
               observable.unsubscribe();
-            })
+            });
           });
+
+          // this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
+          //   console.log(res);
+          //   alert(res);
+          //   if (res == 0) {
+          //     alert(this.tienePedidosEnCurso);
+          //     this.tienePedidosEnCurso = false;
+          //   } else {
+          //     this.tienePedidosEnCurso = true;
+          //     this.pedidoEnCurso = res[0];
+          //     alert(this.pedidoEnCurso);
+          //   }
+          //   console.log(this.usuario);
+          //   alert(this.pedido);
+          //   this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
+          //   console.log(this.pedidoEnCurso);
+          //   var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
+          //     this.encuesta = data.filter((item: any) => item.uid_cliente == this.authSvc.usuarioActual.uid && item.uid_pedido == this.pedido.doc_id)[0];
+          //     this.spinner.hide();
+          //     observable.unsubscribe();
+          //   })
+          // });
         }
       });
     })
@@ -91,10 +135,6 @@ export class HomeClientePage implements OnInit {
 
     //     this.usuario = resp;
     //  });
-
-  }
-
-  ngOnInit() {
 
 
   }
