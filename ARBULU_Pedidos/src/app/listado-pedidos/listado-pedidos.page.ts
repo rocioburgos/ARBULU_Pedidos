@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { eEstadPedido } from '../clases/pedidos';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
@@ -24,7 +25,8 @@ export class ListadoPedidosPage implements OnInit {
     private pedidosSrv:PedidosService ,
     private authSrv:AuthService,
     private msjSrv:MensajeService,
-    private fireSrv:FirestoreService) { }
+    private fireSrv:FirestoreService,
+    private spinnerSrv:NgxSpinnerService) { }
 
   ngOnInit() {
     this.pedidosSrv.TraerPedidos().subscribe((res)=>{
@@ -59,7 +61,7 @@ export class ListadoPedidosPage implements OnInit {
     }); 
   } 
   //solo el mozo
-  finalizarPedido(pedido_sel:any,proxEstado:string){
+ /* finalizarPedido(pedido_sel:any,proxEstado:string){
      
        pedido_sel.estado= eEstadPedido.FINALIZADO; 
       this.pedidosSrv.actualizarProductoPedido(pedido_sel, pedido_sel.doc_id);
@@ -68,5 +70,43 @@ export class ListadoPedidosPage implements OnInit {
       //Liberar mesa y cliente
        setTimeout(() => { 
        }, 3000);
+    }
+*/
+
+
+    confirmarPago(pedidoID:string){
+      let pedido;
+      this.pedidosSrv.TraerPedido(pedidoID).subscribe((res) => {
+         pedido = res;
+        console.log('PEDIDO SELECCIONADO: ' +  pedido)
+      });
+       pedido.estado= eEstadPedido.COBRADO; 
+      this.pedidosSrv.actualizarProductoPedido( pedido, pedidoID).then((res)=>{
+        this.liberarMesa(pedidoID);
+      });
+    }
+  
+    liberarMesa(pedidoID:string){
+      this.spinnerSrv.show();
+      let pedido;
+      this.pedidosSrv.TraerPedido(pedidoID).subscribe((res) => {
+         pedido = res;
+        console.log('PEDIDO SELECCIONADO: ' +  pedido)
+         //finalizar pedido 
+        pedido.estado= eEstadPedido.FINALIZADO; 
+        this.pedidosSrv.actualizarProductoPedido(pedido, pedidoID);
+        //Borrar mensajes
+        this.msjSrv.borrarMensajesByMesa( pedido.numero_mesa);
+        //Liberar mesa
+        this.fireSrv.ActualizarMesaEstado( pedido.uid_mesa, false );
+        //liberar usuario
+    
+        this.fireSrv.ActualizarClienteMesa( pedido.uid_usuario, '' );
+    
+      });
+
+      setTimeout(() => {
+        this.spinnerSrv.hide();
+      }, 6000);
     }
 }

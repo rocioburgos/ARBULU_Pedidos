@@ -16,13 +16,12 @@ import { UtilidadesService } from '../servicios/utilidades.service';
   styleUrls: ['./home-cliente.page.scss'],
 })
 export class HomeClientePage implements OnInit {
-
   scannnedResult: any;
   content_visibility = '';
   scan_visibility = 'hidden';
   scanActive = false;
 
-  escaneoMesa:boolean = false;
+  escaneoMesa:boolean = false;//PONER EL FALSE
   pedido:any = "";
   encuesta:any = "";
   verEstado:boolean = false;
@@ -30,6 +29,10 @@ export class HomeClientePage implements OnInit {
   propinaEscaneada = false;
   usuario:any;
   cuenta:boolean = false; 
+  usuarioLS:any= null;
+  tienePedidosEnCurso=false;
+  tieneMesa=false;
+  pedidoEnCurso:any;
   usuarioActual: any;
 
   constructor(
@@ -39,36 +42,44 @@ export class HomeClientePage implements OnInit {
     private utilidadesSvc: UtilidadesService,
     private authSvc: AuthService,
     private alertController: AlertController,
-    private pedidos: PedidosService,
     private spinner:NgxSpinnerService,
+    private pedidosSrv: PedidosService,
     private encuestaSvc:EncuestaService) 
   { 
+
+  }
+
+  ngOnInit() { 
     this.usuario = this.authSvc.usuarioActual;
     if(!this.usuario)
     {
       this.usuario = localStorage.getItem('usuario_ARBULU');
+    } 
+
+   this.usuarioLS= this.authSvc.getCurrentUserLS();
+  
+    this.firestoreSvc.usuarioPorId(this.usuarioLS.uid).subscribe((res:any)=>{
+    this.usuario= res[0];
+    console.log(res[0])
+   });
+
+
+   
+   this.pedidosSrv.TraerPedidoByUserId(this.usuarioLS.uid).subscribe((res)=>{
+    if(res==0){ 
+      this.tienePedidosEnCurso= false;
+    }else{
+      this.tienePedidosEnCurso= true;
+      this.pedidoEnCurso= res[0]
     }
-    this.getClientes();
-  }
-
-  ngOnInit() {
-  }
-
-  ionViewDidEnter(){
-    this.spinner.show();
-    var observable = this.pedidos.TraerPedidos().subscribe((data)=>{
-      this.pedido = data.filter((item:Pedido)=>item.uid_usuario == this.authSvc.usuarioActual.uid && item.estado != eEstadPedido.FINALIZADO)[0];
-      this.pedidos.pedido_uid = this.pedido.doc_id;
-      var observable2 = this.firestoreSvc.getEncuestasClientes().subscribe((data)=>{
-        this.encuesta = data.filter((item:any)=>item.uid_cliente == this.authSvc.usuarioActual.uid && item.uid_pedido == this.pedido.doc_id)[0];
-        console.log(this.encuesta);
-        this.spinner.hide();
-        observable2.unsubscribe();
-      })
+    this.pedidosSrv.pedido_uid = this.pedidoEnCurso.doc_id;
+    console.log(this.pedidoEnCurso);
+    var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data)=>{
+      this.encuesta = data.filter((item:any)=>item.uid_cliente == this.authSvc.usuarioActual.uid && item.uid_pedido == this.pedido.doc_id)[0];
       this.spinner.hide();
       observable.unsubscribe();
     })
-
+  });
   }
 
  async cerrarSesion(){
@@ -96,8 +107,6 @@ export class HomeClientePage implements OnInit {
                   this.router.navigate(['login']); 
                 }, 3000);
               });
-           
-
           },
         },
       ],

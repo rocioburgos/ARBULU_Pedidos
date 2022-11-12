@@ -132,6 +132,11 @@ export class CartaProductosPage implements OnInit {
       nuevoPedido.total= this.total;
       nuevoPedido.uid_mesa=  this.mesaActual.doc_id;
       nuevoPedido.uid_usuario= this.userLs?.uid;
+      nuevoPedido.nivelSatisfaccion= '0%';
+      nuevoPedido.propina=0;
+      nuevoPedido.jugado= false;
+      nuevoPedido.descuento=0;
+      nuevoPedido.nombreJuego='';
 
       this.id_doc=this.afStore.createId();
       this.pedidoSrv.GuardarNuevoPedidoWithId(nuevoPedido, this.id_doc).then((res)=>{
