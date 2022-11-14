@@ -48,7 +48,36 @@ export class HomeClientePage implements OnInit {
   }
 
   ngOnInit() {
+
     this.usuario = this.authSvc.usuarioActual;
+    if(!this.usuario)
+    {
+      this.usuario = localStorage.getItem('usuario_ARBULU');
+    } 
+
+   this.usuarioLS= this.authSvc.getCurrentUserLS();
+   this.firestoreSvc.obtenerUsuarioPorId(this.usuarioLS.uid).then((resp:any)=>{
+      this.usuarioActual= resp
+   });
+
+   this.pedidoSrv.TraerPedidoByUserId(this.usuarioLS.uid).subscribe((res)=>{
+    if(res==0){ 
+      this.tienePedidosEnCurso= false;
+    }else{
+      this.tienePedidosEnCurso= true;
+      this.pedidoEnCurso= res[0]
+    }
+   });
+
+   this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
+   console.log(this.pedidoEnCurso);
+   var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
+     this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuarioLS.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);
+   
+     observable.unsubscribe();
+   });
+
+ /*    this.usuario = this.authSvc.usuarioActual;
     //alert(this.usuario);
     if (!this.usuario) {
       this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
@@ -57,7 +86,7 @@ export class HomeClientePage implements OnInit {
       //alert("anonimo " + this.usuario);
     }
 
-    this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
+   this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
       var usuarios = data;
       console.log(usuarios);
 
@@ -129,7 +158,7 @@ export class HomeClientePage implements OnInit {
           // });
         }
       });
-    })
+    })*/
 
     //  this.firestoreSvc.obtenerUsuarioPorId(this.usuario.uid).then((resp:any)=>{
 
