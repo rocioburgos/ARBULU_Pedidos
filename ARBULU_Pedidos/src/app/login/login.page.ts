@@ -15,6 +15,7 @@ import { MailService } from '../servicios/mail.service';
 export class LoginPage implements OnInit {
 
   formulario!: FormGroup;
+  usuario: any;
 
   constructor(
     public fb: FormBuilder,
@@ -25,7 +26,14 @@ export class LoginPage implements OnInit {
     private router: Router,
     private userSrv: FirestoreService,
     private mail:MailService
-  ) {  }
+  ) 
+  { 
+    // this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+    // console.log(this.usuario);
+    // if(!this.usuario){
+    //   this.route.navigate(['home-cliente']);
+    // }
+  }
 
   BuildForm() {
     this.formulario = this.fb.group({
