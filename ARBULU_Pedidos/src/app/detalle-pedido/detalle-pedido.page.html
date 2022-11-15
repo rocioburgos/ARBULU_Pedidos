@@ -171,8 +171,8 @@
 
   <ion-label style="text-align: right;">Descuentos ${{pedido.descuento}} </ion-label> <br>
   <ion-label style="text-align: right;">Propina: ${{pedido.propina}} </ion-label> <br>
-  <ion-label style="text-align: right;">Total💵: ${{pedido.total + pedido.propina - pedido.descuento}}</ion-label>
-
+  <ion-label style="text-align: right;" *ngIf="pedido.estado=='CUENTA'">Total💵: ${{pedido.total + pedido.propina - pedido.descuento}}</ion-label>
+  <ion-label style="text-align: right;" *ngIf="pedido.estado == 'FINALIZADO'|| pedido.estado == 'PAGADO'|| pedido.estado == 'COBRADO'">Total💵: ${{pedido.total}}</ion-label>
   <ion-button *ngIf="pedido.estado=='CUENTA'" [disabled]="pedido.estado!='CUENTA'" color='success'
     (click)="pagarPedido(pedido.doc_id )" expand="full" shape="round" color="success">
     PAGAR

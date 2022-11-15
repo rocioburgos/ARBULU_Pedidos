@@ -44,7 +44,7 @@
   <div class="container-datos" *ngIf="escaneoMesa">
     <img src="../../assets/plato.png" style="margin-top: 10%;margin-left: 25%;" width="120px">
 
-    <ion-button *ngIf="tienePedidosEnCurso==false && usuario.mesa != '' " type="button" fill="solid" expand="block" color="primary"
+    <ion-button *ngIf="!tienePedidosEnCurso  && usuario.mesa != '' " type="button" fill="solid" expand="block" color="primary"
       style="height: 170px; margin-top: 20%;" (click)="RealizarPedido()">
       <ion-icon class="iconBoton" name="cart-outline"></ion-icon>
       <h3>Realizar pedido</h3>
@@ -54,7 +54,7 @@
       <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
       <h3>Consultar al mozo</h3>
     </ion-button>
-    <ion-button *ngIf="tienePedidosEnCurso!=false" routerLink="../detalle-pedido/" type="button" fill="solid" expand="block"
+    <ion-button *ngIf="tienePedidosEnCurso" routerLink="../detalle-pedido/" type="button" fill="solid" expand="block"
       color="primary" style="height: 170px; margin-top: 10%;">
       <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
       <h3>Detalle pedido</h3>

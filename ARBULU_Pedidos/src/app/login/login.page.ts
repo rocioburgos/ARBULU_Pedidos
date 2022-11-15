@@ -120,7 +120,7 @@ export class LoginPage implements OnInit {
       setTimeout(() => {
         this.spinner.hide();
         this.utilidadesSrv.successToast("Ingreso exitoso.", 2000);
-        this.router.navigate(['home-cliente']);
+        this.router.navigate(['qr-ingreso-local']);
       }, 3000);
     });
   }
