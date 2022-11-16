@@ -127,6 +127,13 @@ export class FirestoreService {
     return this.usuariosRef.valueChanges({ idField: "uid" });
   }
 
+  
+  public obtenerUsuarios() {
+    //return this.usuariosRef.ref.where('tipoCliente', '==', tipo).get();
+     this.usuariosRef = this.db.collection('usuarios');
+    return this.usuariosRef.valueChanges({ idField: "uid" });
+  }
+
   public async obtenerClientesInvalidados() {
     return this.usuariosRef.ref.where('tipo', '==', 'cliente').where('clienteValidado', '==', false).get();
   }

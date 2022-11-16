@@ -136,8 +136,13 @@ export class NotificationService {
       'localNotificationActionPerformed',
       (notificationAction) => {
         console.log('action local notification', notificationAction);
-
+        if(notificationAction.notification.extra.data.pedido_id!= null){
+          this.router.navigate([notificationAction.notification.extra.data.ruta,
+             { pedido_id: notificationAction.notification.extra.data.pedido_id }]);
+        }
         this.router.navigateByUrl(notificationAction.notification.extra.data.ruta)
+
+        
       }
     );
   }
