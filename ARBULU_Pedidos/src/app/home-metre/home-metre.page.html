@@ -53,7 +53,7 @@
         </ion-slides>
       </div> -->
         <!-- <p style="font-size: 20px; height: 46px;text-align: center;text-transform: uppercase;">{{itemCliente.nombre}}</p> -->
-        <ion-item class="datos">{{itemCliente.nombre}}
+        <ion-item class="datos" *ngIf="itemCliente.mesa == ''">{{itemCliente.nombre}}
           <ion-list>
             <ion-item>
               <ion-label>Asignar Mesa</ion-label>

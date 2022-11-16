@@ -7,22 +7,40 @@ import { AuthService } from '../servicios/auth.service';
   providedIn: 'root'
 })
 export class LogueadoGuard implements CanActivate {
-  
-  
-  constructor(private route:Router, private authSrv:AuthService){
+
+
+  constructor(private route: Router, private authSrv: AuthService) {
   }
 
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-      if( this.authSrv.getCurrentUserLS() == null){  
-         this.route.navigate(['login']);
-         
-        return false; 
-      }else{
-        return true;
+    var usuario = this.authSrv.getCurrentUserLS();
+    if (usuario == null) {
+      //this.route.navigate(['login']);
+      console.log('usuario NO logueado');
+      return true;
+    } else {
+      console.log('usuario ya logueado');
+      
+      switch (usuario.tipo) {
+        case 'cliente':
+          console.log("cliente salto");
+          this.route.navigate(['home-cliente']);
+          break;
+        case 'dueño':
+          this.route.navigate(['home-duenio']);
+          break;
+        case 'supervisor':
+          this.route.navigate(['home-duenio']);
+          break;
+        case 'empleado':
+          this.route.navigate(['home-empleado']);
+          break;
       }
+      return false;
+    }
 
   }
 }

@@ -44,57 +44,125 @@ export class HomeClientePage implements OnInit {
     private alertController: AlertController,
     private spinner: NgxSpinnerService,
     private pedidoSrv: PedidosService) {
+    
+  }
+
+  ngOnInit() {
+
     this.usuario = this.authSvc.usuarioActual;
-    alert(this.usuario);
+    if(!this.usuario)
+    {
+      this.usuario = localStorage.getItem('usuario_ARBULU');
+    } 
+
+   this.usuarioLS= this.authSvc.getCurrentUserLS();
+   this.firestoreSvc.obtenerUsuarioPorId(this.usuarioLS.uid).then((resp:any)=>{
+      this.usuarioActual= resp
+   });
+
+   this.pedidoSrv.TraerPedidoByUserId(this.usuarioLS.uid).subscribe((res)=>{
+    if(res==0){ 
+      this.tienePedidosEnCurso= false;
+    }else{
+      this.tienePedidosEnCurso= true;
+      this.pedidoEnCurso= res[0]
+    }
+   });
+
+   this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
+   console.log(this.pedidoEnCurso);
+   var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
+     this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuarioLS.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);
+   
+     observable.unsubscribe();
+   });
+
+ /*    this.usuario = this.authSvc.usuarioActual;
+    //alert(this.usuario);
     if (!this.usuario) {
       this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
       console.log("ls: " + this.usuario);
 
-      alert("anonimo " + this.usuario);
+      //alert("anonimo " + this.usuario);
     }
 
-    this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
+   this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
       var usuarios = data;
       console.log(usuarios);
 
       usuarios.forEach(element => {
-        console.log(element.uid + " " + " " + this.usuario.uid);
 
         if (element.uid == this.usuario.uid) {
           this.usuario = element;
-          alert(this.usuario);
+          //alert(this.usuario);
           console.log(this.usuario);
-
-          this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
-            console.log(res);
-
-            if (res == 0) {
-              this.tienePedidosEnCurso = false;
-            } else {
-              this.tienePedidosEnCurso = true;
-              this.pedidoEnCurso = res[0]
-            }
-            console.log(this.usuario);
+          this.pedido = this.pedidoSrv.TraerPedidos().subscribe( resp => {
+            this.pedido = resp;
+            this.pedido.forEach(element => {
+              if(element.uid_usuario == this.usuario.uid){
+                this.pedidoEnCurso = element;
+                this.tienePedidosEnCurso = true;
+                console.log("tiene pedido");
+                this.escaneoMesa = true;
+                
+              }
+              else{
+                
+                console.log("NO tiene pedido");
+                
+              }
+            });
+            // alert(resp);
+            // if (resp == 0) {
+            //   alert(this.tienePedidosEnCurso);
+            //   this.tienePedidosEnCurso = false;
+            // } else {
+            //   this.tienePedidosEnCurso = true;
+            //   this.pedidoEnCurso = resp[0];
+            //   alert(this.pedidoEnCurso);
+            // }
+            console.log(this.tienePedidosEnCurso);
+            alert(this.pedido);
+            console.log(this.pedidoEnCurso);
+            
             this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
             console.log(this.pedidoEnCurso);
             var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
-              this.encuesta = data.filter((item: any) => item.uid_cliente == this.authSvc.usuarioActual.uid && item.uid_pedido == this.pedido.doc_id)[0];
+              this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuario.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);
               this.spinner.hide();
               observable.unsubscribe();
-            })
+            });
           });
+
+          // this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
+          //   console.log(res);
+          //   alert(res);
+          //   if (res == 0) {
+          //     alert(this.tienePedidosEnCurso);
+          //     this.tienePedidosEnCurso = false;
+          //   } else {
+          //     this.tienePedidosEnCurso = true;
+          //     this.pedidoEnCurso = res[0];
+          //     alert(this.pedidoEnCurso);
+          //   }
+          //   console.log(this.usuario);
+          //   alert(this.pedido);
+          //   this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
+          //   console.log(this.pedidoEnCurso);
+          //   var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
+          //     this.encuesta = data.filter((item: any) => item.uid_cliente == this.authSvc.usuarioActual.uid && item.uid_pedido == this.pedido.doc_id)[0];
+          //     this.spinner.hide();
+          //     observable.unsubscribe();
+          //   })
+          // });
         }
       });
-    })
+    })*/
 
     //  this.firestoreSvc.obtenerUsuarioPorId(this.usuario.uid).then((resp:any)=>{
 
     //     this.usuario = resp;
     //  });
-
-  }
-
-  ngOnInit() {
 
 
   }
@@ -117,9 +185,9 @@ export class HomeClientePage implements OnInit {
 
             this.spinner.show();
             this.utilidadesSvc.warningToast("Cerrando sesion.", 2000);
+            localStorage.removeItem('usuario_ARBULU');
             this.authSvc.signOut().then(() => {
               setTimeout(() => {
-
                 this.spinner.hide();
                 this.router.navigate(['login']);
               }, 3000);
@@ -166,11 +234,11 @@ export class HomeClientePage implements OnInit {
       if (result?.hasContent) {
         console.log(result);
         if (result.content === this.usuario.mesa) {
-          alert(this.usuario.id);
+          //alert(this.usuario.id);
           //this.firestoreSvc.update(this.usuario.id, {enListaDeEspera: true});
           this.escaneoMesa = true;
           this.utilidadesSvc.successToast("Escaneo de mesa correcto", 2000);
-          alert(result.content);
+          //alert(result.content);
         }
         else {
           this.stopScan();

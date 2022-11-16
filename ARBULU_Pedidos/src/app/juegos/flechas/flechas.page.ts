@@ -60,13 +60,17 @@ export class FlechasPage implements OnInit {
       this.usuario.uid = result['uid']
 
     });
-    this.pedidos = this.pedidoSvc.TraerPedidos();
-
-    this.pedidos.forEach(element => {
-      if (element.uid_usuario == this.usuario.uid) {
-        this.pedido = element;
-      }
+    this.pedidoSvc.TraerPedidos().subscribe(data => {
+      this.pedidos = data;
+      this.pedidos.forEach(element => {
+        if (element.uid_usuario == this.usuario.uid) {
+          this.pedido = element;
+          console.log(this.pedido);
+          
+        }
+      });
     });
+
 
   }
 
@@ -150,13 +154,14 @@ export class FlechasPage implements OnInit {
         this.tiempoTerminado = true;
         this.empezado = false;
         console.log(this.puntaje);
+        this.pedido.jugado = true;
+        this.pedido.descuento = this.puntaje < 800 ? 0 : 20;
+        this.updatePedidoPuntaje();
+        
         if (this.tiempoTerminado) {
           this.pauseTimer();
+          this.router.navigate(['home-cliente']);
         }
-        this.pedido.jugado = true;
-        this.pedidos.descuento = this.puntaje < 100 ? 0 : 20;
-        this.updatePedidoPuntaje();
-
 
       }
     }, 1000)
@@ -167,7 +172,7 @@ export class FlechasPage implements OnInit {
   }
 
   updatePedidoPuntaje() {
-    this.pedidoSvc.actualizarProductoPedido(this.pedido, this.pedido.id_doc);
+    this.pedidoSvc.actualizarProductoPedido(this.pedido, this.pedido.doc_id);
   }
 
 

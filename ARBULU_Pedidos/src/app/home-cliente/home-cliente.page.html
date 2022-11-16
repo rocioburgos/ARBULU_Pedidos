@@ -16,26 +16,26 @@
 
 </ion-header>
 
-<ion-content slot="fixed" *ngIf="this.usuario" [hidden]="scanActive">
+<ion-content slot="fixed" *ngIf="usuario" [hidden]="scanActive">
   <div class="container-datos" *ngIf="!escaneoMesa">
     <!-- ICONO DE COCINA CUANDO ESTA EL CLIENTE ASIGNADO -->
-    <!-- <img *ngIf="this.usuario.mesa != ''" src="assets/iconTransp.png" style="margin-top: 10%;" width="120px"> -->
+    <!-- <img *ngIf="usuario.mesa != ''" src="assets/iconTransp.png" style="margin-top: 10%;" width="120px"> -->
 
     <!-- <div style="height: 250px;">
-      <ion-icon *ngIf="this.usuario.mesa != ''" name="qr-code-outline" style="margin-top: 20%; font-size: 150px;" color="claro" (click)="this.EscanearMesa()"></ion-icon> 
+      <ion-icon *ngIf="usuario.mesa != ''" name="qr-code-outline" style="margin-top: 20%; font-size: 150px;" color="claro" (click)="EscanearMesa()"></ion-icon> 
     </div> -->
 
     <ion-button [hidden]="scanActive" expand="block" size="large" shape="round" color="success" (click)="startScan()"
-      *ngIf="this.usuario.mesa != ''">
+      *ngIf="usuario.mesa != ''">
       <ion-icon name="qr-code-outline" color="dark"></ion-icon>
       QR Mesa
     </ion-button>
 
     <div class="texto">
-      <h4 *ngIf="this.usuario.mesa == ''">Espera a que se te asigne una mesa.</h4> <!-- No asignado y si ingreso -->
-      <div *ngIf="this.usuario.mesa != ''">
+      <h4 *ngIf="usuario.mesa == ''">Espera a que se te asigne una mesa.</h4> <!-- No asignado y si ingreso -->
+      <div *ngIf="usuario.mesa != ''">
         <!-- Si asignado y si ingreso -->
-        <h1>Se le asigno la Mesa <b>{{this.usuario.mesa}}</b></h1>
+        <h1>Se le asigno la Mesa <b>{{usuario.mesa}}</b></h1>
         <h2>Escanee el QR de la mesa.</h2>
       </div>
     </div>
@@ -44,17 +44,17 @@
   <div class="container-datos" *ngIf="escaneoMesa">
     <img src="../../assets/plato.png" style="margin-top: 10%;margin-left: 25%;" width="120px">
 
-    <ion-button *ngIf="tienePedidosEnCurso==false && this.usuario.mesa != '' " type="button" fill="solid" expand="block" color="primary"
+    <ion-button *ngIf="!tienePedidosEnCurso  && usuario.mesa != '' " type="button" fill="solid" expand="block" color="primary"
       style="height: 170px; margin-top: 20%;" (click)="RealizarPedido()">
       <ion-icon class="iconBoton" name="cart-outline"></ion-icon>
       <h3>Realizar pedido</h3>
     </ion-button>
-    <ion-button *ngIf="this.usuario.mesa != ''" routerLink="../chat" type="button" fill="solid" expand="block"
+    <ion-button *ngIf="usuario.mesa != ''" routerLink="../chat" type="button" fill="solid" expand="block"
       color="primary" style="height: 170px; margin-top: 10%;">
       <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
       <h3>Consultar al mozo</h3>
     </ion-button>
-    <ion-button *ngIf="tienePedidosEnCurso!=false" routerLink="../detalle-pedido/" type="button" fill="solid" expand="block"
+    <ion-button *ngIf="tienePedidosEnCurso" routerLink="../detalle-pedido/" type="button" fill="solid" expand="block"
       color="primary" style="height: 170px; margin-top: 10%;">
       <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
       <h3>Detalle pedido</h3>
@@ -68,18 +68,18 @@
 
     <div *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='CUENTA' || pedidoEnCurso.estado!='PAGADO' || pedidoEnCurso.estado!='FINALIZADO' 
       || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE') && pedidoEnCurso.jugado == false">
-      <ion-button routerLink="../juegos/felchas" type="button" fill="solid" expand="block" color="primary"
-        style="height: 170px; margin-top: 10%;">
+      <ion-button routerLink="../juegos/flechas" type="button" fill="solid" expand="block" color="primary"
+        style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
         <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
-        <h3>Juego fLechas</h3>
+        <h3>Juego Flechas</h3>
       </ion-button>
       <ion-button routerLink="../poke-preguntados" type="button" fill="solid" expand="block" color="primary"
-        style="height: 170px; margin-top: 10%;">
+        style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
         <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
         <h3>Juegos Pokemon</h3>
       </ion-button>
       <ion-button routerLink="../juego-cartas" type="button" fill="solid" expand="block" color="primary"
-        style="height: 170px; margin-top: 10%;">
+        style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
         <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
         <h3>Juego de cartas</h3>
       </ion-button>

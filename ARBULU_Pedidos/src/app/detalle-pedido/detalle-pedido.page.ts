@@ -39,10 +39,8 @@ export class DetallePedidoPage implements OnInit {
     private utilidadesSrv:UtilidadesService,
     private spinnerSrv:NgxSpinnerService) {
     // this.route.snapshot.paramMap.get('doc_id')
-    this.pedido_id = this.route.snapshot.paramMap.get('pedido_id');
-
-      
-  }
+    this.pedido_id = this.route.snapshot.paramMap.get('pedido_id'); 
+   }
 
   ngOnInit() {
     this.usuario=this.authSrv.getCurrentUserLS();

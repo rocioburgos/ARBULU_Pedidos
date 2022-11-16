@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { ClienteAprobadoGuard } from './guards/cliente-aprobado.guard';
+import { LogueadoGuard } from './guards/logueado.guard';
 
 const routes: Routes = [
   {
@@ -31,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule), canActivate:[LogueadoGuard]
   },
   {
     path: 'alta-clientes',

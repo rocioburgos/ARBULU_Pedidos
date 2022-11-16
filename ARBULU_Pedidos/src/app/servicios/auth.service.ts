@@ -74,11 +74,11 @@ export class AuthService {
         .signInWithEmailAndPassword(email, pass);
       this.ngZone.run(() => {
         this.usuarios.forEach(user => {
-          console.log(user);
+          //console.log(user);
           
           if (user.email == email) {
             this.usuarioActual = user;
-            console.log(this.usuarioActual);
+            //console.log(this.usuarioActual);
             
             localStorage.setItem('usuario_ARBULU', JSON.stringify(
               {

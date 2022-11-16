@@ -7,6 +7,7 @@ import { FirestoreService } from '../servicios/firestore.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 import { Chart, registerables } from 'chart.js';
 import { AuthService } from '../servicios/auth.service';
+import { AnonymousSubject } from 'rxjs/internal/Subject';
 
 @Component({
   selector: 'app-encuesta-supervisor',
@@ -15,93 +16,87 @@ import { AuthService } from '../servicios/auth.service';
 })
 export class EncuestaSupervisorPage implements OnInit {
 
-  spinner:boolean = false;
-  form!:FormGroup;
+  spinner: boolean = false;
+  form!: FormGroup;
   //foto:FormData = new FormData();
-  encuestas:Array<any> = [];
-  verEncuestas:boolean = false;
+  encuestas: Array<any> = [];
+  verEncuestas: boolean = false;
 
-  formEmpleados!:FormGroup;
-  encuestasEmpleados:Array<any> = [];
-  verEncuestasEmpleados:boolean = false;
+  formEmpleados!: FormGroup;
+  encuestasEmpleados: Array<any> = [];
+  verEncuestasEmpleados: boolean = false;
 
   clientesValidos: any = [];
   empleadosActuales: any = [];
-  // coleccionEmpleados : any;
-  // empleados : any;
-  // empleadosBD : any;
-  // empleadosActuales : any[] = [];
+  empleadoSeleccionado: any;
+  clienteSeleccionado: any;
+  tipoUsuario: string = "";
 
-  tipoUsuario:string="";
-
-  constructor(private router:Router, 
-    public firestoreSvc:FirestoreService,
-    private fb:FormBuilder,
-    private db : AngularFirestore,
+  constructor(private router: Router,
+    public firestoreSvc: FirestoreService,
+    private fb: FormBuilder,
+    private db: AngularFirestore,
     private utilidadesSvc: UtilidadesService,
-    private authSvc: AuthService) 
-    {
-      var auxClientes = this.firestoreSvc.obtenerUsuariosByTipo(eUsuario.cliente).subscribe((data)=>{
-        console.log(data);
-        
-          for(let item of data)
-          {
-            if (item.clienteValidado){
-              this.clientesValidos.push(item);
-            }
-          }
-          console.log(this.clientesValidos);
-          auxClientes.unsubscribe();
-        });
-      
-      var auxEmpleados = this.firestoreSvc.obtenerUsuariosByTipo(eUsuario.empleado).subscribe((data)=>{
-          for(let item of data)
-          {
-            if (item.clienteValidado){
-              this.clientesValidos.push(item);
-            }
-          }
-          console.log(this.empleadosActuales);
-          auxEmpleados.unsubscribe();
-        });
+    private authSvc: AuthService) {
+    var auxClientes = this.firestoreSvc.obtenerUsuariosByTipo(eUsuario.cliente).subscribe((data) => {
+      console.log(data);
 
-      
-      
+      for (let item of data) {
+        if (item.clienteValidado) {
+          this.clientesValidos.push(item);
+        }
+      }
+      console.log(this.clientesValidos);
+      auxClientes.unsubscribe();
+    });
 
-      this.form = this.fb.group({
-        'comportamiento':['',Validators.required],
-        'vecesQueViene':['',Validators.required],
-        'propina':[true],
-        'comentario':[''],
-        'comensales':['',Validators.required],
-      });
+    var auxEmpleados = this.firestoreSvc.obtenerUsuariosByTipo(eUsuario.empleado).subscribe((data) => {
+      for (let item of data) {
 
-      this.formEmpleados = this.fb.group({
-        'comportamiento':['',Validators.required],
-        'falta':['',Validators.required],
-        'llegaTarde':[true],
-        'comentario':[''],
-        'inconvenientes':['',Validators.required],
-      });
-      Chart.register(...registerables);
-    }
+        this.empleadosActuales.push(item);
 
-  ngOnInit() 
-  {
-    this.verEncuestas=false;
-    this.verEncuestasEmpleados=false;
+      }
+      console.log(this.empleadosActuales);
+      auxEmpleados.unsubscribe();
+    });
+
+
+
+
+    this.form = this.fb.group({
+      'consumo': ['', Validators.required],
+      'tratoConPersonal': ['', Validators.required],
+      'propina': [true],
+      'comentario': [''],
+      'concurrencia': ['', Validators.required],
+      'clienteSeleccionado': ['', Validators.required],
+    });
+
+    this.formEmpleados = this.fb.group({
+      'energia': ['', Validators.required],
+      'comportamiento': ['', Validators.required],
+      'faltaSinAviso': [true],
+      'comentario': [''],
+      'atencion': ['', Validators.required],
+      'empleadoSeleccionado': ['', Validators.required],
+    });
+    Chart.register(...registerables);
   }
 
-  AsignarTipo(tipoUsuario:any){
-    console.log("tipousuario "+tipoUsuario);
+  ngOnInit() {
+    this.verEncuestas = false;
+    this.verEncuestasEmpleados = false;
+  }
+
+  AsignarTipo(tipoUsuario: any) {
+    console.log("tipousuario " + tipoUsuario);
     console.log(this.tipoUsuario);
   }
 
-  Omitir()
-  {
+  Omitir() {
     this.spinner = true;
-    this.verEncuestas=false;
-    this.verEncuestasEmpleados=false;
+    this.verEncuestas = false;
+    this.verEncuestasEmpleados = false;
     this.form.reset();
     this.formEmpleados.reset();
     setTimeout(() => {
@@ -110,75 +105,71 @@ export class EncuestaSupervisorPage implements OnInit {
     }, 2000);
   }
 
-  EnviarEncuesta()
-  {
+  EnviarEncuesta() {
     this.firestoreSvc.crearEncuestaClienteSupervisor(this.form.value)
-    .then(()=>{
-      document.getElementById('enviar').setAttribute('disabled', 'disabled');
+      .then(() => {
+        document.getElementById('enviar').setAttribute('disabled', 'disabled');
 
-      this.spinner = true;
-      
-      setTimeout(() => {
-        this.utilidadesSvc.successToast('Se registró la encuesta correctamente.', 2000);
-        
-        this.verEncuestas = true;
-        this.spinner = false;
-      }, 2000);
+        this.spinner = true;
 
-      setTimeout(() => {
-        this.MostrarEncuestas();
-      }, 4000);
-    }).catch(error=>{
-      this.utilidadesSvc.errorToast('Ocurrió un error al registrar la encuesta.', 2000);
-    });
+        setTimeout(() => {
+          this.utilidadesSvc.successToast('Se registró la encuesta correctamente.', 2000);
+
+          this.verEncuestas = true;
+          this.spinner = false;
+        }, 2000);
+
+        setTimeout(() => {
+          this.MostrarEncuestas();
+        }, 4000);
+      }).catch(error => {
+        this.utilidadesSvc.errorToast('Ocurrió un error al registrar la encuesta.', 2000);
+      });
   }
 
-  EnviarEncuestaEmpleados()
-  {
+  EnviarEncuestaEmpleados() {
     this.firestoreSvc.crearEncuestaEmpleadoSupervisor(this.formEmpleados.value)
-    .then(()=>{
-      document.getElementById('enviarFormEmpleado').setAttribute('disabled', 'disabled');
+      .then(() => {
+        document.getElementById('enviarFormEmpleado').setAttribute('disabled', 'disabled');
 
-      this.spinner = true;//mirar spinner
-      
-      setTimeout(() => {
-        this.utilidadesSvc.successToast('Se registró la encuesta correctamente.', 2000);
-        
-        this.verEncuestasEmpleados = true;
-        this.spinner = false;
-      }, 2000);
+        this.spinner = true;//mirar spinner
 
-      setTimeout(() => {
-        this.MostrarEncuestasEmpleados();
-      }, 4000);
-    }).catch(error=>{
-      this.utilidadesSvc.errorToast('Ocurrió un error al registrar la encuesta.', 2000);
+        setTimeout(() => {
+          this.utilidadesSvc.successToast('Se registró la encuesta correctamente.', 2000);
+
+          this.verEncuestasEmpleados = true;
+          this.spinner = false;
+        }, 2000);
+
+        setTimeout(() => {
+          this.MostrarEncuestasEmpleados();
+        }, 4000);
+      }).catch(error => {
+        this.utilidadesSvc.errorToast('Ocurrió un error al registrar la encuesta.', 2000);
+      });
+  }
+
+  MostrarEncuestas() {
+    let encuestas = this.firestoreSvc.obtenerEncuestasClienteSupervisor().subscribe((data)=>{
+      console.log(data);
+      this.encuestas = data;  
+      this.barChartEncuestaComportamiento();   
+      this.doughnutChartPropina(); 
+      this.doughnutChartComensales();
+      this.doughnutChartVecesQueViene();
+      encuestas.unsubscribe();
     });
   }
 
-  MostrarEncuestas()
-  {
-    // let encuestas = this.firestoreSvc.GetColeccion('encuestaClientesDesdeSupervisor').subscribe((data)=>{
-    //   console.log(data);
-    //   this.encuestas = data;  
-    //   this.barChartEncuestaComportamiento();   
-    //   this.doughnutChartPropina(); 
-    //   this.doughnutChartComensales();
-    //   this.doughnutChartVecesQueViene();
-    //   encuestas.unsubscribe();
-    // });
-  }
-
-  MostrarEncuestasEmpleados()
-  {
-    // let encuestasSub = this.firestoreSvc.GetColeccion('encuestaEmpleadosDesdeSupervisor').subscribe((data)=>{
-    //   this.encuestasEmpleados = data;  
-    //   this.barChartEncuestaComportamientoEmpleados();   
-    //   this.doughnutChartFalta();
-    //   this.doughnutChartLlegaTarde(); 
-    //   this.doughnutChartInconvenientes();
-    //   encuestasSub.unsubscribe();
-    // });
+  MostrarEncuestasEmpleados() {
+    let encuestasSub = this.firestoreSvc.obtenerEncuestasEmpleadoSupervisor().subscribe((data) => {
+      this.encuestasEmpleados = data;
+      this.barChartEncuestaComportamientoEmpleados();
+      this.doughnutChartFalta();
+      this.doughnutChartLlegaTarde();
+      this.doughnutChartInconvenientes();
+      encuestasSub.unsubscribe();
+    });
   }
 
   @ViewChild('comportamientoCanvas') private comportamientoCanvas: ElementRef;
@@ -208,8 +199,8 @@ export class EncuestaSupervisorPage implements OnInit {
       9: 0,
       10: 0
     };
-    this.encuestas.forEach( (encuesta:any) => {
-      valoresPorPuntaje[encuesta.comportamiento]++;  
+    this.encuestas.forEach((encuesta: any) => {
+      valoresPorPuntaje[encuesta.comportamiento]++;
     });
 
     this.barChart = new Chart(this.comportamientoCanvas.nativeElement, {
@@ -260,8 +251,17 @@ export class EncuestaSupervisorPage implements OnInit {
       9: 0,
       10: 0
     };
-    this.encuestasEmpleados.forEach( (encuesta:any) => {
-      valoresPorPuntaje[encuesta.comportamiento]++;  
+    this.encuestasEmpleados.forEach((encuesta: any) => {
+      switch(encuesta.comportamiento){
+        case 'buena':
+          valoresPorPuntaje['10']++;
+          break;
+        case 'mala':
+          valoresPorPuntaje['0']++;
+        case 'regular':
+          valoresPorPuntaje['5']++;
+          break;
+      }
     });
 
     this.barChart = new Chart(this.comportamientoEmpleadosCanvas.nativeElement, {
@@ -307,7 +307,7 @@ export class EncuestaSupervisorPage implements OnInit {
       muchas: 0
     };
 
-    this.encuestasEmpleados.forEach( (encuesta:any) => {
+    this.encuestasEmpleados.forEach((encuesta: any) => {
       valoresPorPuntaje[encuesta.falta]++;
     });
 
@@ -340,7 +340,7 @@ export class EncuestaSupervisorPage implements OnInit {
       muchas: 0
     };
 
-    this.encuestas.forEach( (encuesta:any) => {
+    this.encuestas.forEach((encuesta: any) => {
       valoresPorPuntaje[encuesta.vecesQueViene]++;
     });
 
@@ -372,14 +372,13 @@ export class EncuestaSupervisorPage implements OnInit {
       no: 0
     };
 
-    this.encuestas.forEach( (encuesta:any) => {
-      if(encuesta.propina)
-      {
+    this.encuestas.forEach((encuesta: any) => {
+      if (encuesta.propina) {
         valoresPorPuntaje['si']++;
       }
-      else{
+      else {
         valoresPorPuntaje['no']++;
-      } 
+      }
     });
 
     this.doughnutChart = new Chart(this.propinaCanvas.nativeElement, {
@@ -408,14 +407,13 @@ export class EncuestaSupervisorPage implements OnInit {
       no: 0
     };
 
-    this.encuestasEmpleados.forEach( (encuesta:any) => {
-      if(encuesta.llegaTarde)
-      {
+    this.encuestasEmpleados.forEach((encuesta: any) => {
+      if (encuesta.llegaTarde) {
         valoresPorPuntaje['si']++;
       }
-      else{
+      else {
         valoresPorPuntaje['no']++;
-      } 
+      }
     });
 
     this.doughnutChart = new Chart(this.llegaTardeCanvas.nativeElement, {
@@ -447,7 +445,7 @@ export class EncuestaSupervisorPage implements OnInit {
       4: 0
     };
 
-    this.encuestas.forEach( (encuesta:any) => {
+    this.encuestas.forEach((encuesta: any) => {
       valoresPorPuntaje[encuesta.comensales]++;
     });
 
@@ -486,7 +484,7 @@ export class EncuestaSupervisorPage implements OnInit {
       4: 0
     };
 
-    this.encuestasEmpleados.forEach( (encuesta:any) => {
+    this.encuestasEmpleados.forEach((encuesta: any) => {
       valoresPorPuntaje[encuesta.inconvenientes]++;
     });
 
@@ -516,11 +514,11 @@ export class EncuestaSupervisorPage implements OnInit {
     });
   }
 
-  cerrarSesion(){
-    this.authSvc.signOut().then(()=>{
-      this.utilidadesSvc.warningToast("Cerrando sesion.",2000);
+  cerrarSesion() {
+    this.authSvc.signOut().then(() => {
+      this.utilidadesSvc.warningToast("Cerrando sesion.", 2000);
       setTimeout(() => {
-        this.router.navigate(['login']); 
+        this.router.navigate(['login']);
       }, 2500);
     });
   }
