@@ -39,15 +39,15 @@ Somos estudiantes de Tecnicatura Universitaria en programación  en UTN-FRA
 |   |Encuesta cliente | 👨‍💻Ezequiel |🟢Finalizado|
 |   |Encuesta supervisor | 👨‍💻Eliseo        |🟡 Iniciado|   
 |   | Encuesta Empleados|👩‍💻Rocio  |🟡 Iniciado|
-|   |Juego para un 15% de descuento|👩‍💻Rocio|🟡 Iniciado|
-|   |Juego para un 10% de descuento| 👨‍💻Ezequiel |🟡 Iniciado|
-|   |Juego para un 20% de descuento| 👨‍💻Eliseo|🟡 Iniciado|
+|   |Juego para un 15% de descuento|👩‍💻Rocio 👨‍💻Ezequiel |🟢Finalizado|
+|   |Juego para un 10% de descuento| 👨‍💻Ezequiel |🟢Finalizado|
+|   |Juego para un 20% de descuento| 👨‍💻Eliseo|🟢Finalizado|
 | # | Cuarto sprint Fecha: 12/11/2022 a 17/11/2022  |  |  |
-|   | Push Notification- Agregar cliente nuevo| Sin asignar |🔴Sin iniciar|
-|   |Push Notification-Ingreso al local| Sin asignar|🔴Sin iniciar|
-|   |Push Notification-Consultar al mozo | Sin asignar|🔴Sin iniciar|
-|   |Push Notification-Confirmar pedido (por parte del mozo)| Sin asignar|🔴Sin iniciar|
-|   |Push Notification-Confirmar realización del pedido (por parte del cocinero o bartender)| Sin asignar|🔴Sin iniciar|
+|   | Push Notification- Agregar cliente nuevo|👩‍💻Rocio |🟡 Iniciado|
+|   |Push Notification-Ingreso al local|👩‍💻Rocio|🟡 Iniciado|
+|   |Push Notification-Consultar al mozo | 👩‍💻Rocio|🟡 Iniciado|
+|   |Push Notification-Confirmar pedido (por parte del mozo)|👩‍💻Rocio|🟡 Iniciado|
+|   |Push Notification-Confirmar realización del pedido (por parte del cocinero o bartender)|👩‍💻Rocio|🟡 Iniciado|
 
 # Qr ingreso a la lista de espera 📋
  ![alt text](https://github.com/rocioburgos/ARBULU_Pedidos/blob/alfa/qrs/qrIngresoAListaDeEspera.jpeg?raw=true)
