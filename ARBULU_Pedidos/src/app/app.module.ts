@@ -13,6 +13,10 @@ import { SwiperModule } from 'swiper/angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire/compat';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { environment } from 'src/environments/environment';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -25,7 +29,11 @@ import { HttpClientModule } from '@angular/common/http';
     SwiperModule,
     BrowserAnimationsModule,
     NgxSpinnerModule,
-    HttpClientModule
+    HttpClientModule,
+
+    AngularFireModule.initializeApp(environment.firebase), 
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
   ],
   providers: [Vibration,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

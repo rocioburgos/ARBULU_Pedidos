@@ -57,7 +57,7 @@ export class HomeClientePage implements OnInit {
 
    this.usuarioLS= this.authSvc.getCurrentUserLS();
    this.firestoreSvc.obtenerUsuarioPorId(this.usuarioLS.uid).then((resp:any)=>{
-      this.usuarioActual= resp
+      this.usuarioActual= resp 
    });
 
    this.pedidoSrv.TraerPedidoByUserId(this.usuarioLS.uid).subscribe((res)=>{
@@ -70,7 +70,7 @@ export class HomeClientePage implements OnInit {
    });
 
    this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
-   console.log(this.pedidoEnCurso);
+ 
    var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
      this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuarioLS.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);
    
@@ -185,12 +185,15 @@ export class HomeClientePage implements OnInit {
 
             this.spinner.show();
             this.utilidadesSvc.warningToast("Cerrando sesion.", 2000);
-            localStorage.removeItem('usuario_ARBULU');
+           // localStorage.removeItem('usuario_ARBULU');
+          // this.usuarioActual.token='';
+         // this.firestoreSvc.update(this.usuarioLS.uid,{token:''});
+           
             this.authSvc.signOut().then(() => {
               setTimeout(() => {
                 this.spinner.hide();
                 this.router.navigate(['login']);
-              }, 3000);
+              }, 7000);
             });
           },
         },
