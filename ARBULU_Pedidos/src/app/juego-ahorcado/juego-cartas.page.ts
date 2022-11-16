@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';  
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/servicios/auth.service';
+import { eEstadPedido, Pedido } from '../clases/pedidos';
+import { PedidosService } from '../servicios/pedidos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
@@ -13,10 +16,11 @@ export class JuegoCartasPage implements OnInit {
   cartaPrincipal;
   cartaSecundaria;
   mensaje!:string;
- 
+  descuento:number = 0;
   cuenta: number = 0;
   vidas: number = 3;
   mostrarFin: boolean= false;
+  pedido: any;
 
   cartas = [{ numero: 1, pathImg: './../../../../assets/juegos/mayorMenor/cartas/1.jpg' },
   { numero: 2, pathImg: './../../../../assets/juegos/mayorMenor/cartas/2.jpg' },
@@ -35,9 +39,19 @@ export class JuegoCartasPage implements OnInit {
 
 
   constructor( private authSrv:AuthService,
-    private utilSrv:UtilidadesService) {
+    private utilSrv:UtilidadesService,
+    private pedidos:PedidosService,
+    private spinner:NgxSpinnerService) {
     this.cartaPrincipal = this.calcularCartaRandom();
     this.cartaSecundaria = this.calcularCartaRandom();
+  }
+
+  ionViewDidEnter(){
+    var observable = this.pedidos.TraerPedidos().subscribe((data)=>{
+      this.pedido = data.filter((item:Pedido)=>item.estado != eEstadPedido.FINALIZADO && item.uid_usuario == this.authSrv.usuarioActual.uid)[0];
+      this.pedidos.actualizarPedido({jugado:true}, this.pedido.doc_id)
+      observable.unsubscribe();
+    });
   }
 
   counter(i: number) {
@@ -61,6 +75,8 @@ export class JuegoCartasPage implements OnInit {
       if(this.cuenta==5){
         this.mostrarFin= true; 
         this.utilSrv.successToast('¡Felicitaciones! Ganaste el descuento',5000);
+        this.descuento = 15;
+        this.guardarResultados();
       }
     }else{
       if(this.vidas > 0){ 
@@ -74,6 +90,7 @@ export class JuegoCartasPage implements OnInit {
         this.mostrarFin= true; 
         if(this.cuenta ==5){
         this.utilSrv.successToast('¡Felicitaciones! Ganaste el descuento',5000);
+        this.descuento = 15;
        }else{
         this.utilSrv.errorToast('No ganaste el descuento ¡suerte la proxima!',5000)
        }
@@ -123,7 +140,12 @@ export class JuegoCartasPage implements OnInit {
      let now = new Date();
      let fecha = now.getDate() + "-" + now.getMonth() + "-" + now.getFullYear(); 
      let email = this.authSrv.getCurrentUserLS().email;
-     let resultados = { 'email': email, 'fecha':fecha, 'juego': 'mayorMenor', 'puntaje': this.cuenta }
-      //GUARDAR RESULTADO
+     //let resultados = { 'email': email, 'fecha':fecha, 'juego': 'mayorMenor', 'puntaje': this.cuenta }
+     this.spinner.show();
+     this.pedidos.actualizarPedido({jugado:true, descuento:this.descuento, nombreJuego:'cartas'}, this.pedido.doc_id).then((ok)=>{
+     this.spinner.hide();
+    }).catch((err)=>{
+      this.spinner.hide();
+    });
   }
 }

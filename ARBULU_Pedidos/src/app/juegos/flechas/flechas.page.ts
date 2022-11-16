@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { Puntos } from 'src/app/clases/puntos';
 import { Usuario } from 'src/app/clases/usuario';
 import { AuthService } from 'src/app/servicios/auth.service';
 import { PedidosService } from 'src/app/servicios/pedidos.service';
+import { UtilidadesService } from 'src/app/servicios/utilidades.service';
 
 @Component({
   selector: 'app-flechas',
@@ -53,7 +55,11 @@ export class FlechasPage implements OnInit {
   pedidos: any = [];
   pedido: any;
 
-  constructor(public router: Router, public authService: AuthService, private pedidoSvc: PedidosService) {
+  constructor(public router: Router, 
+    public authService: AuthService, 
+    private pedidoSvc: PedidosService, 
+    private spinner:NgxSpinnerService,
+    private utilidades:UtilidadesService) {
     //this.puntajeSvc.cargarPuntajesFchs();
     this.usuario$.subscribe((result: any) => {
       this.usuario.email = result['email'];
@@ -66,12 +72,11 @@ export class FlechasPage implements OnInit {
         if (element.uid_usuario == this.usuario.uid) {
           this.pedido = element;
           console.log(this.pedido);
-          
+          this.pedidos.actualizarPedido({jugado:true}, this.pedido.doc_id)
+          console.log("Pedido actualizado, jugado en true");
         }
       });
     });
-
-
   }
 
   ngOnInit(): void {
@@ -172,7 +177,26 @@ export class FlechasPage implements OnInit {
   }
 
   updatePedidoPuntaje() {
-    this.pedidoSvc.actualizarProductoPedido(this.pedido, this.pedido.doc_id);
+    this.spinner.show();
+    this.pedidos.actualizarPedido({jugado:true, descuento:this.pedido.descuento, nombreJuego:'flechas'}, this.pedido.doc_id).then((ok)=>{
+      if(this.pedido.descuento == 0)
+      {
+        this.utilidades.successToast("Felicitaciones, ha logrado un 20% de descuento!", 4000);
+      }
+      else{
+        this.utilidades.warningToast("No ha logrado el descuento, mejor suerte la proxima!", 4000)
+      }
+      setTimeout(()=>{
+        this.router.navigate(['home-cliente']);
+        this.spinner.hide();
+        console.log("Pedido actualizado, jugado en true, descuento y juegoJugado en flechas");
+      },4000);
+    }).catch((err)=>{
+      setTimeout(()=>{
+        this.router.navigate(['home-cliente']);
+        this.spinner.hide();
+      },4000)
+    });
   }
 
 
