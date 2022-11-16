@@ -20,6 +20,7 @@ export class QrIngresoLocalPage implements OnInit {
   content_visibility = '';
   scan_visibility = 'hidden';
   scanActive = false;
+  usuarioLS: any;
 
   constructor(
     private firestoreSvc: FirestoreService,
@@ -33,16 +34,32 @@ export class QrIngresoLocalPage implements OnInit {
 
     this.spinner.show();
     
-    this.usuarioActual = this.authSvc.usuarioActual;
+    //this.usuarioActual = this.authSvc.usuarioActual;
     // var auxUsuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
     // this.usuarioActual = this.firestoreSvc.getUsuarioActualByID(auxUsuario.uid);
+    this.usuarioActual = this.authSvc.usuarioActual;
+    console.log(this.usuarioActual);
+    
+    if(!this.usuarioActual)
+    {
+      this.usuarioActual = localStorage.getItem('usuario_ARBULU');
+    } 
 
+   this.usuarioLS= this.authSvc.getCurrentUserLS();
+   this.firestoreSvc.obtenerUsuarioPorId(this.usuarioLS.uid).then((resp:any)=>{
+      this.usuarioActual= resp 
+   });
+
+
+    alert(this.usuarioActual);
     if(this.usuarioActual){
       //alert("usuario" +this.usuarioActual);
       console.log(this.usuarioActual);
       setTimeout(() => {
                     this.spinner.hide();
-                    if(this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa != ''){
+                    console.log(!this.usuarioActual.enListaDeEspera);
+                    
+                    if(!this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa != ''){
                       this.router.navigate(['home-cliente']);
                     }
                   }, 1000);

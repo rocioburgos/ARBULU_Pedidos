@@ -44,56 +44,32 @@ export class HomeClientePage implements OnInit {
     private alertController: AlertController,
     private spinner: NgxSpinnerService,
     private pedidoSrv: PedidosService) {
-    
+
   }
 
   ngOnInit() {
 
     this.usuario = this.authSvc.usuarioActual;
-    if(!this.usuario)
-    {
-      this.usuario = localStorage.getItem('usuario_ARBULU');
-    } 
-
-   this.usuarioLS= this.authSvc.getCurrentUserLS();
-   this.firestoreSvc.obtenerUsuarioPorId(this.usuarioLS.uid).then((resp:any)=>{
-      this.usuarioActual= resp 
-   });
-
-   this.pedidoSrv.TraerPedidoByUserId(this.usuarioLS.uid).subscribe((res)=>{
-    if(res==0){ 
-      this.tienePedidosEnCurso= false;
-    }else{
-      this.tienePedidosEnCurso= true;
-      this.pedidoEnCurso= res[0]
-    }
-   });
-
-   this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
- 
-   var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
-     this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuarioLS.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);
-   
-     observable.unsubscribe();
-   });
-
- /*    this.usuario = this.authSvc.usuarioActual;
-    //alert(this.usuario);
+    
     if (!this.usuario) {
       this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
-      console.log("ls: " + this.usuario);
-
-      //alert("anonimo " + this.usuario);
+      console.log(this.usuario);
     }
-
-   this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
+    this.spinner.show();
+    this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
       var usuarios = data;
-      console.log(usuarios);
+      //console.log(usuarios);
 
       usuarios.forEach(element => {
+        //console.log(element.uid + " " + " " + this.usuario.uid);
 
         if (element.uid == this.usuario.uid) {
           this.usuario = element;
+          if(this.usuario.mesa != '' && !this.usuario.enListaDeEspera){
+            this.escaneoMesa = true;
+          }
+            console.log(this.usuario.mesa);
+          
           //alert(this.usuario);
           console.log(this.usuario);
           this.pedido = this.pedidoSrv.TraerPedidos().subscribe( resp => {
@@ -101,10 +77,11 @@ export class HomeClientePage implements OnInit {
             this.pedido.forEach(element => {
               if(element.uid_usuario == this.usuario.uid){
                 this.pedidoEnCurso = element;
-                this.tienePedidosEnCurso = true;
-                console.log("tiene pedido");
-                this.escaneoMesa = true;
-                
+                if(this.pedidoEnCurso.estado != 'FINALIZADO'){
+                  this.tienePedidosEnCurso = true;
+                  console.log("tiene pedido");
+                  this.escaneoMesa = true;
+                }
               }
               else{
                 
@@ -122,7 +99,7 @@ export class HomeClientePage implements OnInit {
             //   alert(this.pedidoEnCurso);
             // }
             console.log(this.tienePedidosEnCurso);
-            alert(this.pedido);
+            //alert(this.pedido);
             console.log(this.pedidoEnCurso);
             
             this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
@@ -157,12 +134,31 @@ export class HomeClientePage implements OnInit {
           // });
         }
       });
-    })*/
+    });
+   
+    
 
-    //  this.firestoreSvc.obtenerUsuarioPorId(this.usuario.uid).then((resp:any)=>{
+    //this.usuarioLS = this.authSvc.getCurrentUserLS();
+    // this.firestoreSvc.obtenerUsuarioPorId(this.usuarioActual.uid).then((resp: any) => {
+    //   this.usuarioActual = resp;
+    //   console.log(this.usuarioActual);
+    // });
+    
+    // this.pedidoSrv.TraerPedidoByUserId(this.usuarioActual.uid).subscribe((res) => {
+    //   if (res == 0) {
+    //     this.tienePedidosEnCurso = false;
+    //   } else {
+    //     this.tienePedidosEnCurso = true;
+    //     this.pedidoEnCurso = res[0];
+    //     this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
+    //   }
+    // });
 
-    //     this.usuario = resp;
-    //  });
+    // var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
+    //   this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuarioActual.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);
+
+    //   observable.unsubscribe();
+    // });
 
 
   }
@@ -185,10 +181,10 @@ export class HomeClientePage implements OnInit {
 
             this.spinner.show();
             this.utilidadesSvc.warningToast("Cerrando sesion.", 2000);
-           // localStorage.removeItem('usuario_ARBULU');
-          // this.usuarioActual.token='';
-         // this.firestoreSvc.update(this.usuarioLS.uid,{token:''});
-           
+            // localStorage.removeItem('usuario_ARBULU');
+            // this.usuarioActual.token='';
+            // this.firestoreSvc.update(this.usuarioLS.uid,{token:''});
+
             this.authSvc.signOut().then(() => {
               setTimeout(() => {
                 this.spinner.hide();
@@ -238,7 +234,7 @@ export class HomeClientePage implements OnInit {
         console.log(result);
         if (result.content === this.usuario.mesa) {
           //alert(this.usuario.id);
-          //this.firestoreSvc.update(this.usuario.id, {enListaDeEspera: true});
+          this.firestoreSvc.update(this.usuario.id, { enListaDeEspera: false });
           this.escaneoMesa = true;
           this.utilidadesSvc.successToast("Escaneo de mesa correcto", 2000);
           //alert(result.content);
@@ -278,7 +274,7 @@ export class HomeClientePage implements OnInit {
     this.firestoreSvc.obtenerUsuario().subscribe((data: any) => {
       for (let item of data) {
         if (item.uid === this.usuario.uid) {
-          this.usuarioActual = item;
+          this.usuario = item;
           break;
         }
       }
