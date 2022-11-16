@@ -47,11 +47,22 @@ export class ListadoClientesPendientesPage implements OnInit {
     let usuario = this.listaUsuarios[index];
     this.firestore.update(usuario.uid, {clienteValidado:true}).then((ok)=>{
       this.utilidadesSvc.successToast('Cliente validado');
-      this.mail.enviarEmail(usuario.nombre, usuario.email, "Su usuario fue correctamente validado")
+      this.mail.enviarEmail(usuario.nombre, usuario.email, "Su usuario fue correctamente validado");
+      this.obtenerClientesInvalidad();
     }).catch((err)=>{
       this.utilidadesSvc.errorToast('Error al validar');
     });
-    this.obtenerClientesInvalidad();
+    
   }
- 
+  
+  borrar(index:number){
+    let usuario = this.listaUsuarios[index];
+    this.firestore.delete(usuario.uid).then((ok)=>{
+      this.utilidadesSvc.successToast('Cliente rechazado');
+      this.mail.enviarEmail(usuario.nombre, usuario.email, "Su usuario fue rechazado");
+      this.obtenerClientesInvalidad();
+    }).catch((err)=>{
+      this.utilidadesSvc.errorToast('Error al rechazar');
+    });
+  }
 }
