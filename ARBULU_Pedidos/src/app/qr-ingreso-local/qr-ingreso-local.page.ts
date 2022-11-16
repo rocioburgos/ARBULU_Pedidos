@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { AuthService } from '../servicios/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NotificationService } from '../servicios/notification.service';
 
 @Component({
   selector: 'app-qr-ingreso-local',
@@ -26,7 +27,8 @@ export class QrIngresoLocalPage implements OnInit {
     private router: Router,
     private utilidadesSvc: UtilidadesService,
     private authSvc: AuthService,
-    private spinner: NgxSpinnerService) 
+    private spinner: NgxSpinnerService,
+    private pushSrv:NotificationService) 
   { 
 
     this.spinner.show();
@@ -95,6 +97,10 @@ export class QrIngresoLocalPage implements OnInit {
       if (result?.hasContent) {
         if(result.content === 'qrIngresoAListaDeEspera'){
           this.firestoreSvc.update(this.usuarioActual.uid, {enListaDeEspera: true});
+
+          //mandar push notification
+          this.notificar();
+
           this.router.navigate(['/home-cliente']);
           this.utilidadesSvc.successToast("En lista de espera...", 2000);
         }
@@ -136,5 +142,27 @@ export class QrIngresoLocalPage implements OnInit {
   //   this.pushNotificationService.EnviarNotificationAUnUsuario(idUser,"PRUEBA PRUEBA","PROBANDO PROBANDO");
   // }
 
-
+  notificar(){
+    this.usuarios.forEach(user => {
+      if(user.token!='' && user.tipo=='empleado' && user.tipoEmpleado=='metre' || user.tipoEmpleado=='mozo'){
+      this.pushSrv 
+      .sendPushNotification({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        registration_ids: [
+          // eslint-disable-next-line max-len
+          user.token 
+        ],
+        notification: {
+          title: 'Nuevo cliente en lista de espera',
+          body: 'Hay un cliente que ingreso al local',
+        },
+        data: {
+          ruta: 'home-metre', 
+        },
+      })
+      .subscribe((data) => {
+        console.log(data);
+      });}
+    });
+  }
 }

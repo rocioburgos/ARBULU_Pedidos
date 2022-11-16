@@ -147,7 +147,7 @@ export class AltaClientesPage implements OnInit {
 
   notificar(){
     this.usuarios.forEach(user => {
-      if(user.token!='' && user.tipo=='dueño'){
+      if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){
       this.pushSrv 
       .sendPushNotification({
         // eslint-disable-next-line @typescript-eslint/naming-convention

@@ -4,6 +4,7 @@ import { Mensaje } from '../clases/mensaje';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { MensajeService } from '../servicios/mensaje.service';
+import { NotificationService } from '../servicios/notification.service';
 
 @Component({
   selector: 'app-chat',
@@ -26,10 +27,12 @@ export class ChatPage implements OnInit {
   user: any;
   mesasOcupadas:any;
   flagMesaElegida= false;
+  usuarios:any;
   constructor(private msjSrv: MensajeService,
     private authSrv: AuthService
     , private spiner: NgxSpinnerService,
-    private userSrv: FirestoreService) { }
+    private userSrv: FirestoreService,
+    private pushSrv:NotificationService ) { }
 
   async ngOnInit() {
     this.spiner.show()
@@ -51,6 +54,10 @@ export class ChatPage implements OnInit {
         this.mesasOcupadas= res;
       })
     }
+
+    this.userSrv.obtenerUsuarios( ).subscribe((res)=>{
+      this.usuarios= res;
+    })
 
     setTimeout(() => {
       this.spiner.hide();
@@ -94,6 +101,7 @@ export class ChatPage implements OnInit {
       if (this.mensajeEnviar != '' && this.mensajeEnviar != null && this.mensajeEnviar) {
         let mensaje: Mensaje = new Mensaje(this.user.email, this.mensajeEnviar, this.horario(), this.nroMesa, date);
         console.log(mensaje)
+        this.notificar(this.nroMesa, mensaje)
         this.msjSrv.nuevoMensaje(mensaje).then((res) => {
           this.mensajeEnviar = '';
         }).catch((err) => {
@@ -112,4 +120,30 @@ export class ChatPage implements OnInit {
       + ' ' + date.getHours().toString() + ':' + date.getMinutes().toString();
     return fecha;
   }
+
+
+  notificar(mesa:string, mensaje:Mensaje){
+    this.usuarios.forEach(user => {
+      if(user.token!='' && user.tipo=='empleado' && user.tipoEmpleado=='mozo' ||user.tipoEmpleado=='metre' ){
+      this.pushSrv 
+      .sendPushNotification({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        registration_ids: [
+          // eslint-disable-next-line max-len
+          user.token 
+        ],
+        notification: {
+          title: 'Consulta Mesa'+ mesa,
+          body: mensaje.mensaje,
+        },
+        data: {
+          ruta: 'chat', 
+        },
+      })
+      .subscribe((data) => {
+        console.log(data);
+      });}
+    });
+  }
+
 }
