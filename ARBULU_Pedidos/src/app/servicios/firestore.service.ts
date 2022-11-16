@@ -231,4 +231,13 @@ export class FirestoreService {
   ActualizarClienteMesa(USERID:string, est:string){
     this.usuariosRef.doc(USERID).update({mesa: est});
   }
+
+  
+  actualizarToken(token:string, id:string){
+    let usuarioAct =   this.db.collection('usuarios').doc(id);
+ 
+    return usuarioAct.update({ 
+      token: token
+    }); 
+   }  
 }

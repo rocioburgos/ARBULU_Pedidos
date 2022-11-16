@@ -5,6 +5,7 @@ import { UtilidadesService } from './utilidades.service';
 import { Usuario } from '../clases/usuario';
 import { Observable } from 'rxjs';
 import { FirestoreService } from './firestore.service';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,8 @@ export class AuthService {
     private utilidadesSrv: UtilidadesService,
     public ngZone: NgZone,
     public router: Router,
-    private firestoreSvc: FirestoreService) {
+    private firestoreSvc: FirestoreService,
+    private notiSrv:NotificationService) {
 
     console.log(this.usuario$);
     this.usuario$.subscribe(result => {
@@ -88,7 +90,10 @@ export class AuthService {
                 'tipo': user.tipo,
                 'tipoEmpleado': user.tipoEmpleado
               }));
+
+              this.notiSrv.RegisterFCM(user.uid)
           }
+ 
         }); 
       });
 
@@ -122,12 +127,22 @@ export class AuthService {
     return this.afAuth.createUserWithEmailAndPassword(mail, password);
   }
 
-  public signOut() {
+  public signOut() { 
     this.usuarioLogueado = new Usuario();
     this.logueado = false;
-    localStorage.removeItem('usuario_ARBULU'); 
-    localStorage.removeItem('pedido');
-    return this.afAuth.signOut();
+     //eliminar el token de la coleccion usuarios 
+        // usuario_actual?.uid
+        /*this.firestoreSvc.obtenerUsuarioPorId(usuario_actual?.uid).then((user:any)=>{
+          user.token=''; 
+          this.firestoreSvc.update( user.doc_id, user)
+        })*/
+      //  this.firestoreSvc.update( usuario_actual?.uid, {token:''})
+
+      
+        localStorage.removeItem('usuario_ARBULU'); 
+        localStorage.removeItem('pedido');
+  
+      return this.afAuth.signOut();
   }
 
   getCurrentUserFirebase(): Observable<any> {

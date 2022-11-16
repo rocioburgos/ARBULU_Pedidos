@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'arbulu',
-  appName: 'ARBULU',
+  appId: 'io.arbulu.pedidos',
+  appName: 'ARBULU_Pedidos',
   webDir: 'www',
   bundledWebRuntime: false,
   "plugins": {
