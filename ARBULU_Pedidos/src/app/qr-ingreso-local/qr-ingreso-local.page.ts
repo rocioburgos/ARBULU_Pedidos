@@ -40,7 +40,7 @@ export class QrIngresoLocalPage implements OnInit {
       console.log(this.usuarioActual);
       setTimeout(() => {
                     this.spinner.hide();
-                    if(this.usuarioActual.enListaDeEspera){
+                    if(this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa != ''){
                       this.router.navigate(['home-cliente']);
                     }
                   }, 1000);
