@@ -20,7 +20,7 @@ export class ClienteAprobadoGuard implements CanActivate {
     }
     else if(this.auth.usuarioActual.tipo == 'cliente')
     {
-      if(this.auth.usuarioActual.clienteValidado == true)
+      if(this.auth.usuarioActual.clienteValidado == 'aceptado')
       {
         return true;
       }
