@@ -312,7 +312,7 @@ export class DetallePedidoPage implements OnInit {
     this.usuarios.forEach(user => {
 
       if (user.token != '' && user.tipo == 'empleado' && (user.tipoEmpleado == 'cocinero' || user.tipoEmpleado == 'bartender')) {
-        if (this.pedidosDeSuSector(user.tipoEmpleado, pedido)) {
+       
 
           this.pushSrv
             .sendPushNotification({
@@ -333,7 +333,7 @@ export class DetallePedidoPage implements OnInit {
             .subscribe((data) => {
               console.log(data);
             });
-        }
+        
       }
     });
 
