@@ -21,7 +21,7 @@ export class HomeClientePage implements OnInit {
   scan_visibility = 'hidden';
   scanActive = false;
 
-  escaneoMesa: boolean = false;//PONER EL FALSE
+  escaneoMesa: boolean = true;//PONER EL FALSE
   pedido: any = "";
   encuesta: any = "";
   verEstado: boolean = false;

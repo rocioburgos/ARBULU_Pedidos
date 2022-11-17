@@ -1,28 +1,35 @@
-<ion-header >
+<ion-header>
   <ion-toolbar>
     <ion-title size="large">Inicio empleado</ion-title>
-    <ion-button color="danger" (click)="cerrarSesion()"  slot="end"> 
+    <ion-button color="danger" (click)="cerrarSesion()" slot="end">
       <ion-icon name="log-out-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
 
 </ion-header>
 <ion-content>
-<div id="container">  
- 
-  <a [routerLink]="['/alta-producto']"><ion-button> Alta productos</ion-button></a>
-  <br><br> 
-  <br>
-  <a [routerLink]="['/listado-productos']"><ion-button> Listado productos</ion-button></a>
-  <br><br>
-  <br>
-  <a [routerLink]="['/listado-pedidos']"><ion-button>Ordenes</ion-button></a>
-  <br><br>
-  <br>  
-  <a [routerLink]="['/encuesta-empleado']"><ion-button>Encuesta </ion-button></a>
-  <br><br>
-  <br> 
-</div>
+  <ion-row>
+    <ion-col size="12">
+      <div class="centrado" [routerLink]="['/alta-producto']">
+        <img width="100px" src="./../../assets/imagenesHomes/comida-rapida.png">
+        <p> Alta productos</p>
+      </div> <br>
+    </ion-col>
+    <ion-col size="12">
+      <div class="centrado"  [routerLink]="['/listado-productos']"> 
+        <img width="100px" src="./../../assets/imagenesHomes/pedido-en-linea.png">
+        <p>Listado productos</p>
+      </div> <br>
+    </ion-col>
+    <ion-col size="12">
+      <div  class="centrado"  [routerLink]="['/listado-pedidos']">
+
+        <img width="100px" src="./../../assets/imagenesHomes/comprobacion.png">
+        <p>Ordenes</p>
+      </div>
+    </ion-col>
+  </ion-row>
+
 </ion-content>
-<ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>"> 
+<ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>">
 </ngx-spinner>

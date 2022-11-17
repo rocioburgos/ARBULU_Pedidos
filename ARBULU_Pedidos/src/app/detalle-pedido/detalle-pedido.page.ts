@@ -156,8 +156,9 @@ export class DetallePedidoPage implements OnInit {
     this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
   }
   pagarPedido(pedidoID: string) {
+    let descuentoCalcu= (this.pedido.total * this.pedido.descuento)/100;
     this.pedido.estado = eEstadPedido.PAGADO;
-    this.pedido.total = this.pedido.total + this.pedido.propina - this.pedido.descuento;
+    this.pedido.total = this.pedido.total + this.pedido.propina - descuentoCalcu;
     this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
   }
   confirmarPago(pedidoID: string) {

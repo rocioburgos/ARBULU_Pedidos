@@ -23,8 +23,7 @@ export class SectorElaboracionPage implements OnInit {
     });
   }
 
-  verDetalle(pedido_id:any){
-    
+  verDetalle(pedido_id:any){ 
     this.router.navigate(['/detalle-pedido/', { pedido_id: pedido_id }]);
   }
 
