@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "784743923611",
+    "project_id": "arbulu-86577",
+    "storage_bucket": "arbulu-86577.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784743923611:android:3005fcfd199898386b6b3e",
+        "android_client_info": {
+          "package_name": "io.arbulu.pedidos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784743923611-om9gc0t176qq85t4te15dafijch9bsok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9qeOg4iXoXLGIhetftQ8f_uXLHdysEuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784743923611-om9gc0t176qq85t4te15dafijch9bsok.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

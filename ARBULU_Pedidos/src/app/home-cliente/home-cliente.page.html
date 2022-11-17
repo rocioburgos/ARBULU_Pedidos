@@ -17,12 +17,15 @@
 </ion-header>
 
 <ion-content slot="fixed" *ngIf="usuario" [hidden]="scanActive">
+  <br>
+  <br>
+  <br>
   <div class="container-datos" *ngIf="!escaneoMesa">
     <!-- ICONO DE COCINA CUANDO ESTA EL CLIENTE ASIGNADO -->
-    <!-- <img *ngIf="usuario.mesa != ''" src="assets/iconTransp.png" style="margin-top: 10%;" width="120px"> -->
+    <!-- <img *ngIf="usuarioActual.mesa != ''" src="assets/iconTransp.png" style="margin-top: 10%;" width="120px"> -->
 
     <!-- <div style="height: 250px;">
-      <ion-icon *ngIf="usuario.mesa != ''" name="qr-code-outline" style="margin-top: 20%; font-size: 150px;" color="claro" (click)="EscanearMesa()"></ion-icon> 
+      <ion-icon *ngIf="usuarioActual.mesa != ''" name="qr-code-outline" style="margin-top: 20%; font-size: 150px;" color="claro" (click)="EscanearMesa()"></ion-icon> 
     </div> -->
 
     <ion-button [hidden]="scanActive" expand="block" size="large" shape="round" color="success" (click)="startScan()"

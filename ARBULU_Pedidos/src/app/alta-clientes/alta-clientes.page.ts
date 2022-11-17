@@ -10,6 +10,7 @@ import { ImagenesService } from '../servicios/imagenes.service';
 import { MailService } from '../servicios/mail.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 import { NgxSpinnerService } from "ngx-spinner";
+import { NotificationService } from '../servicios/notification.service';
 
 @Component({
   selector: 'app-alta-clientes',
@@ -37,6 +38,7 @@ export class AltaClientesPage implements OnInit {
   apellido='';
   dni='';
   fotoUrl='./../../assets/sacarfoto.png';
+  usuarios:any;
   constructor(
     private spinner: NgxSpinnerService,
     private fromBuilder: FormBuilder,
@@ -45,7 +47,8 @@ export class AltaClientesPage implements OnInit {
     private utilidadesSrv:UtilidadesService,
     private firestoreSvc: FirestoreService,
     private authSvc: AuthService,
-    private mail:MailService
+    private mail:MailService,
+    private pushSrv:NotificationService
   ) {
     this.email = '';
     this.clave = '';
@@ -69,6 +72,11 @@ export class AltaClientesPage implements OnInit {
     this.altaFormAnonimo = this.fromBuilder.group({
       'nombre': ['', Validators.required]
     });
+
+
+    this.firestoreSvc.obtenerUsuariosByTipo(eUsuario.dueño).subscribe((res)=>{
+      this.usuarios= res;
+    })
   }
 
   comparePassValidator(clave1: AbstractControl, clave2: AbstractControl) {
@@ -108,7 +116,7 @@ export class AltaClientesPage implements OnInit {
         this.usuario.uid = credential.user.uid;
         this.firestoreSvc.setItemWithId(this.usuario, credential.user.uid).then((usuario)=>{
           console.log(usuario);
-  
+          this.notificar();
           setTimeout(() => {
             this.spinner.hide();
             this.utilidadesSrv.successToast('Registro exitoso');
@@ -136,6 +144,30 @@ export class AltaClientesPage implements OnInit {
  
   }
 
+
+  notificar(){
+    this.usuarios.forEach(user => {
+      if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){
+      this.pushSrv 
+      .sendPushNotification({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        registration_ids: [
+          // eslint-disable-next-line max-len
+          user.token 
+        ],
+        notification: {
+          title: 'Nuevo cliente',
+          body: 'Se registro un nuevo cliente',
+        },
+        data: {
+          ruta: 'listado-clientes-pendientes', 
+        },
+      })
+      .subscribe((data) => {
+        console.log(data);
+      });}
+    });
+  }
 
   navigateTo(url: string) {
     setTimeout(() => {

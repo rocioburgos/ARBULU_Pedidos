@@ -11,7 +11,7 @@ export class Usuario {
         enListaDeEspera: boolean;
         mesa: string;
         clienteValidado: boolean;
-        
+        token:string;
         constructor(){
             this.nombre= '';
             this.apellido= '';
@@ -22,6 +22,7 @@ export class Usuario {
             this.enListaDeEspera = false;
             this.mesa = '';
             this.clienteValidado = false;
+            this.token='';
         }
 }
 

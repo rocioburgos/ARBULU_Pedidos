@@ -7,6 +7,7 @@ import { UtilidadesService } from '../servicios/utilidades.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { eEmpleado, eUsuario } from '../clases/usuario';
 import { MailService } from '../servicios/mail.service';
+import { NotificationService } from '../servicios/notification.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -25,7 +26,8 @@ export class LoginPage implements OnInit {
     private utilidadesSrv: UtilidadesService,
     private router: Router,
     private userSrv: FirestoreService,
-    private mail:MailService
+    private mail:MailService,
+    private pushNotSrv:NotificationService
   ) 
   { 
     // this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
@@ -55,12 +57,14 @@ export class LoginPage implements OnInit {
     this.afAuth.SignIn(Email, Password)
       .then(async (res) => {
         const user = await (await this.userSrv.getUserByUid(res.user.uid).toPromise()).data();
- 
+        
         if (user.tipo == 'cliente' &&  !user.clienteValidado) {
           this.afAuth.signOut();
           this.mail.enviarEmail(user.nombre, user.email, "Su cuenta aun no ha sido validada. Aguarde a nuestro personal para que le permita acceder al sitio.")
           this.utilidadesSrv.errorToast("Todavía no fue confirmada su cuenta")
         } else if((user.tipo == 'cliente' &&   user.clienteValidado )||user.tipo != 'cliente' ){
+
+
           user.uid = res.user.uid;
           localStorage.setItem('usuario_ARBULU', JSON.stringify(
             {
@@ -120,19 +124,22 @@ export class LoginPage implements OnInit {
       setTimeout(() => {
         this.spinner.hide();
         this.utilidadesSrv.successToast("Ingreso exitoso.", 2000);
-        this.router.navigate(['qr-ingreso-local']);
+       this.router.navigate(['qr-ingreso-local']);
+       //this.router.navigate(['home-cliente']);
       }, 3000);
     });
   }
 
   LoginUsuarioDuenio() {
     this.spinner.show();
-    this.afAuth.Login("rocak89763@keshitv.com", "12345678").then((res) => {
+    this.afAuth.Login("rocak89763@keshitv.com", "12345678").then((res:any) => {
+      //this.pushNotSrv.RegisterFCM(res.user.uid);
+       
       setTimeout(() => {
         this.spinner.hide();
         this.utilidadesSrv.successToast("Ingreso exitoso.", 2000);
         this.router.navigate(['home-duenio']);
-      }, 3000);
+      }, 3000); 
     });
   }
 
@@ -148,8 +155,12 @@ export class LoginPage implements OnInit {
   }
 
   LoginUsuarioCocinero() {
+    let token:string;
+    
     this.spinner.show();
     this.afAuth.Login("sosat79897@hostovz.com", "123456").then((res) => {
+
+       
       setTimeout(() => {
         this.spinner.hide();
         this.utilidadesSrv.successToast("Ingreso exitoso.", 2000);
