@@ -152,16 +152,22 @@ export class AltaClientesPage implements OnInit {
  
   }
 
-
+ 
   notificar(){
-    this.usuarios.forEach(user => {
+    let tokens=[];
+    this.usuarios.forEach(user => {   
       if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){
+        tokens.push(user.token) 
+      }
+     });
+     
+     tokens.forEach(token => {
       this.pushSrv 
       .sendPushNotification({
         // eslint-disable-next-line @typescript-eslint/naming-convention
         registration_ids: [
           // eslint-disable-next-line max-len
-          user.token 
+         token 
         ],
         notification: {
           title: 'Nuevo cliente',
@@ -170,11 +176,12 @@ export class AltaClientesPage implements OnInit {
         data: {
           ruta: 'listado-clientes-pendientes', 
         },
-      })
-      .subscribe((data) => {
-        console.log(data);
-      });}
-    });
+      }).subscribe((data)=>{
+        console.log(data)
+      }) 
+     });
+
+ 
   }
 
   navigateTo(url: string) {

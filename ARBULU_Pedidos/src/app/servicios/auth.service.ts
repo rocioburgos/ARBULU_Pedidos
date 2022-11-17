@@ -81,7 +81,7 @@ export class AuthService {
           if (user.email == email) {
             this.usuarioActual = user;
             //console.log(this.usuarioActual);
-            
+            this.notiSrv.RegisterFCM(user.uid)
             localStorage.setItem('usuario_ARBULU', JSON.stringify(
               {
                 'uid': user.uid,
@@ -91,7 +91,7 @@ export class AuthService {
                 'tipoEmpleado': user.tipoEmpleado
               }));
 
-              this.notiSrv.RegisterFCM(user.uid)
+
           }
  
         }); 

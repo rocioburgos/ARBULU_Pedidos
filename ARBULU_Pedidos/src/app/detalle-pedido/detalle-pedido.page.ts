@@ -326,8 +326,7 @@ export class DetallePedidoPage implements OnInit {
                 body: 'Mesa: '+pedido.numero_mesa,
               },
               data: {
-                ruta: 'detalle-pedido',
-                pedido_id:pedido.doc_id
+                ruta: 'listado-pedidos' 
               },
             })
             .subscribe((data) => {

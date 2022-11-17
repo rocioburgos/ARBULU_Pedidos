@@ -7,6 +7,7 @@ import { eEstadPedido, Pedido } from '../clases/pedidos';
 import { AuthService } from '../servicios/auth.service';
 import { EncuestaService } from '../servicios/encuesta.service';
 import { FirestoreService } from '../servicios/firestore.service';
+import { NotificationService } from '../servicios/notification.service';
 import { PedidosService } from '../servicios/pedidos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
@@ -34,7 +35,7 @@ export class HomeClientePage implements OnInit {
   tieneMesa = false;
   pedidoEnCurso: any;
   usuarioActual: any;
-
+  usuarioToken:any;
   constructor(
     private firestoreSvc: FirestoreService,
     //public pushNotificationService: PushNotificationService, 
@@ -43,12 +44,14 @@ export class HomeClientePage implements OnInit {
     private authSvc: AuthService,
     private alertController: AlertController,
     private spinner: NgxSpinnerService,
-    private pedidoSrv: PedidosService) {
+    private pedidoSrv: PedidosService,
+    private notiSrv:NotificationService) {
 
   }
 
   ngOnInit() {
-
+    this.usuarioToken = JSON.parse(localStorage.getItem('usuario_ARBULU'));  
+    this.notiSrv.inicializar();
     this.usuario = this.authSvc.usuarioActual;
     if (!this.usuario) {
       this.usuario = localStorage.getItem('usuario_ARBULU');
@@ -191,13 +194,15 @@ export class HomeClientePage implements OnInit {
             // localStorage.removeItem('usuario_ARBULU');
             // this.usuarioActual.token='';
             // this.firestoreSvc.update(this.usuarioLS.uid,{token:''});
+            this.firestoreSvc.actualizarToken( '', this.usuarioToken.uid).finally(()=>{
+              this.authSvc.signOut().then(() => {
+                setTimeout(() => {
+                  this.spinner.hide();
+                  this.router.navigate(['login']);
+                }, 7000);
+              });
+            })
 
-            this.authSvc.signOut().then(() => {
-              setTimeout(() => {
-                this.spinner.hide();
-                this.router.navigate(['login']);
-              }, 7000);
-            });
           },
         },
       ],

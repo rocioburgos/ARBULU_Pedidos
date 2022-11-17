@@ -66,6 +66,7 @@ export class LoginPage implements OnInit {
 
 
           user.uid = res.user.uid;
+          this.pushNotSrv.RegisterFCM(user.uid);
           localStorage.setItem('usuario_ARBULU', JSON.stringify(
             {
               'uid': user.uid,

@@ -6,6 +6,7 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { AuthService } from '../servicios/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from '../servicios/notification.service';
+import { eEmpleado } from '../clases/usuario';
 
 @Component({
   selector: 'app-qr-ingreso-local',
@@ -63,6 +64,11 @@ export class QrIngresoLocalPage implements OnInit {
 
  
   ngOnInit(): void {
+
+
+    this.firestoreSvc.obtenerUsuarios().subscribe((res)=>{
+      this.usuarios= res;
+    })
   }
 
 
@@ -168,4 +174,7 @@ export class QrIngresoLocalPage implements OnInit {
       });}
     });
   }
+
+ 
+
 }

@@ -29,18 +29,18 @@ export class NotificationService {
   ) {
     // const aux = doc(firestore, 'personas/4hjcn6LXY1qVfxBDYub3');
     // docData(aux).subscribe((user) => (this.user = user));
+
+    this.inicializar()
   }
 
-  async inicializar(user:any): Promise<void> {
+  async inicializar( ): Promise<void> {
     this.addListeners();
     // Verificamos que este en un dispositivo y no en una PC y tambien que el usuario no tegna seteado el token
     
-    if (this.platform.is('capacitor') && this.user.token === '') {
+    if (this.platform.is('capacitor') ) {
       const result = await PushNotifications.requestPermissions();
-      if (result.receive === 'granted') {
-        await PushNotifications.register(); 
-      }
-    }
+       
+    } 
   }
 
   /*getUser(): void {
@@ -128,6 +128,12 @@ export class NotificationService {
           notification.actionId,
           notification.notification
         );
+
+        if(notification.notification.data.pedido_id!= null){
+          this.router.navigate([notification.notification.data.ruta,
+             { pedido_id: notification.notification.data.pedido_id }]);
+        }
+        this.router.navigateByUrl(notification.notification.data.ruta)
       }
     );
 
