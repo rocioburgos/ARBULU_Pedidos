@@ -88,7 +88,9 @@ export class JuegoCartasPage implements OnInit {
       this.cartaSecundaria= this.calcularCartaRandom();
       if(this.vidas == 0){
         this.mostrarFin= true; 
-        if(this.cuenta ==5){
+
+        //le bajo la cuenta para que sea mas facil ganar, el original es cuenta= 5
+        if(this.cuenta ==2){
         this.utilSrv.successToast('¡Felicitaciones! Ganaste el descuento',5000);
         this.descuento = 15;
        }else{

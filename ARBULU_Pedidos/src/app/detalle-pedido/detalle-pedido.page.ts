@@ -156,8 +156,9 @@ export class DetallePedidoPage implements OnInit {
     this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
   }
   pagarPedido(pedidoID: string) {
+    let descuentoCalcu= (this.pedido.total * this.pedido.descuento)/100;
     this.pedido.estado = eEstadPedido.PAGADO;
-    this.pedido.total = this.pedido.total + this.pedido.propina - this.pedido.descuento;
+    this.pedido.total = this.pedido.total + this.pedido.propina - descuentoCalcu;
     this.pedidoSrv.actualizarProductoPedido(this.pedido, pedidoID);
   }
   confirmarPago(pedidoID: string) {
@@ -311,7 +312,7 @@ export class DetallePedidoPage implements OnInit {
     this.usuarios.forEach(user => {
 
       if (user.token != '' && user.tipo == 'empleado' && (user.tipoEmpleado == 'cocinero' || user.tipoEmpleado == 'bartender')) {
-        if (this.pedidosDeSuSector(user.tipoEmpleado, pedido)) {
+       
 
           this.pushSrv
             .sendPushNotification({
@@ -325,14 +326,13 @@ export class DetallePedidoPage implements OnInit {
                 body: 'Mesa: '+pedido.numero_mesa,
               },
               data: {
-                ruta: 'detalle-pedido',
-                pedido_id:pedido.doc_id
+                ruta: 'listado-pedidos' 
               },
             })
             .subscribe((data) => {
               console.log(data);
             });
-        }
+        
       }
     });
 

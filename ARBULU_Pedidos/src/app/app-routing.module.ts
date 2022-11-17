@@ -112,7 +112,15 @@ const routes: Routes = [
   },   {
     path: 'encuesta-empleado',
     loadChildren: () => import('./encuesta-empleado/encuesta-empleado.module').then( m => m.EncuestaEmpleadoPageModule)
+  },  {
+    path: 'clientesingreso',
+    loadChildren: () => import('./clientesingreso/clientesingreso.module').then( m => m.ClientesingresoPageModule)
+  },
+  {
+    path: 'home-juegos',
+    loadChildren: () => import('./home-juegos/home-juegos.module').then( m => m.HomeJuegosPageModule)
   }
+
  
  
 ]; 

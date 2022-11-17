@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
+import { NotificationService } from '../servicios/notification.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
 @Component({
@@ -15,19 +16,22 @@ export class HomeMetrePage implements OnInit {
  
   listadoClientesEnEspera: Array<any> = [];
   mesas: Array<any> = [];
-
+  usuarioActual:any;
   constructor(private authSrv:AuthService,
     private utilidadesSvc:UtilidadesService,
     private router:Router,
     private firesoteSvc: FirestoreService,
     private spinner:NgxSpinnerService,
-    private alertController:AlertController
+    private alertController:AlertController,
+    private notiSrv:NotificationService
     ) {
       this.getClientes();
       this.getMesas();
     }
   
   ngOnInit() {
+    this.notiSrv.inicializar();
+    this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));  
   }
   
   async cerrarSesion(){
@@ -48,15 +52,14 @@ export class HomeMetrePage implements OnInit {
           
             this.spinner.show(); 
             this.utilidadesSvc.warningToast("Cerrando sesion.",2000);
+            this.firesoteSvc.actualizarToken('',this.usuarioActual.uid).finally(()=>{
               this.authSrv.signOut().then(()=>{ 
-                setTimeout(() => {
-                 
+                setTimeout(() => { 
                   this.spinner.hide();
                   this.router.navigate(['login']); 
                 }, 3000);
               });
-           
-
+            }) 
           },
         },
       ],

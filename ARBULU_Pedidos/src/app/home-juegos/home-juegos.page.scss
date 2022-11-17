@@ -1,0 +1,17 @@
+p, h3{
+    color:black;
+  }
+  
+  .centrado{
+    text-align:center; 
+    padding:8px;
+    padding-bottom: 0px;
+    padding-top: 0px; 
+  }
+
+  ion-content{
+    --background: none;
+    background: url("../../assets/background/bg.png");
+    background-size: cover;
+    background-position: center center;                                                                                          
+  }

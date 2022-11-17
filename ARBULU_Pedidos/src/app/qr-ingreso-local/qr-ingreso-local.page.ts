@@ -6,6 +6,7 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { AuthService } from '../servicios/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationService } from '../servicios/notification.service';
+import { eEmpleado } from '../clases/usuario';
 
 @Component({
   selector: 'app-qr-ingreso-local',
@@ -36,12 +37,26 @@ export class QrIngresoLocalPage implements OnInit {
     //this.usuarioActual = this.authSvc.usuarioActual;
     // var auxUsuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
     // this.usuarioActual = this.firestoreSvc.getUsuarioActualByID(auxUsuario.uid);
-    this.usuarioActual = this.authSvc.usuarioActual;
-    console.log(this.usuarioActual);
 
-    if (!this.usuarioActual) {
-        this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU')); 
-      console.log(this.usuarioActual);  
+    if(this.usuarioActual){
+      //alert("usuario" +this.usuarioActual);
+      console.log("usuario actual:"+this.usuarioActual);
+      setTimeout(() => {
+                    this.spinner.hide();
+                    if((this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa== '')
+                    || (!this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa!= '')){
+                      //tiene que esperar que se le asigne la mesa
+                      //ya tiene una mesa
+                      this.router.navigate(['home-cliente']);
+                    }
+                  }, 1000);
+    }
+    else{
+      setTimeout(() => {
+        this.spinner.hide();
+        //alert("anoniomo"  + this.usuarioActual);
+        this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+      }, 1000);
       
     }
 
@@ -103,6 +118,11 @@ export class QrIngresoLocalPage implements OnInit {
 
 
   ngOnInit(): void {
+
+
+    this.firestoreSvc.obtenerUsuarios().subscribe((res)=>{
+      this.usuarios= res;
+    })
   }
 
 
@@ -209,4 +229,7 @@ export class QrIngresoLocalPage implements OnInit {
       }
     });
   }
+
+ 
+
 }

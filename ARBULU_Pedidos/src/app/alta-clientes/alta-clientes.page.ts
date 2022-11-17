@@ -90,6 +90,7 @@ export class AltaClientesPage implements OnInit {
 
 
   aceptar() {     
+    this.spinner.show();
     if(!this.anonimo){
       this.usuario.email = this.altaForm.value.email;
       this.usuario.nombre = this.altaForm.value.nombre;
@@ -137,23 +138,36 @@ export class AltaClientesPage implements OnInit {
       this.usuario.nombre = this.altaFormAnonimo.value.nombre;
       this.usuario.tipo = eUsuario.cliente;
       this.usuario.clienteValidado = true;
-      this.firestoreSvc.crearUsuario(this.usuario);
-      this.utilidadesSrv.successToast("Ingreso exitoso.");
-      this.navigateTo('qr-ingreso-local');
+      this.firestoreSvc.crearUsuario(this.usuario).then((res:any)=>{
+        this.pushSrv.RegisterFCM(res)
+        console.log("id del anonimo "+res)
+      });
+
+      setTimeout(() => {
+        this.utilidadesSrv.successToast("Ingreso exitoso.");
+        this.navigateTo('qr-ingreso-local');
+      }, 5000);
+
     }
  
   }
 
-
+ 
   notificar(){
-    this.usuarios.forEach(user => {
+    let tokens=[];
+    this.usuarios.forEach(user => {   
       if(user.token!='' && user.tipo=='dueño' || user.tipo=='supervisor' ){
+        tokens.push(user.token) 
+      }
+     });
+     
+     tokens.forEach(token => {
       this.pushSrv 
       .sendPushNotification({
         // eslint-disable-next-line @typescript-eslint/naming-convention
         registration_ids: [
           // eslint-disable-next-line max-len
-          user.token 
+         token 
         ],
         notification: {
           title: 'Nuevo cliente',
@@ -162,11 +176,12 @@ export class AltaClientesPage implements OnInit {
         data: {
           ruta: 'listado-clientes-pendientes', 
         },
-      })
-      .subscribe((data) => {
-        console.log(data);
-      });}
-    });
+      }).subscribe((data)=>{
+        console.log(data)
+      }) 
+     });
+
+ 
   }
 
   navigateTo(url: string) {

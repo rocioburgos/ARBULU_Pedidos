@@ -1,9 +1,4 @@
 <ion-header>
-  <!-- <ion-toolbar color="warning"> 
-    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
-    <ion-title style="text-align: center;">Inicio Metre</ion-title>
-
-  </ion-toolbar> -->
 
   <ion-toolbar color="warning">
     <ion-title>Inicio Cliente</ion-title>
@@ -45,48 +40,87 @@
   </div>
 
   <div class="container-datos" *ngIf="escaneoMesa">
-    <img src="../../assets/plato.png" style="margin-top: 10%;margin-left: 25%;" width="120px">
+    <ion-row>
+      <ion-col size="12">
+        <!--ion-button *ngIf="!tienePedidosEnCurso  && usuario.mesa != '' " type="button" fill="solid" expand="block" color="primary"
+        style="height: 170px; margin-top: 20%;" (click)="RealizarPedido()">
+        <ion-icon class="iconBoton" name="cart-outline"></ion-icon>
+        <h3>Realizar pedido</h3>
+      </ion-button-->
 
-    <ion-button *ngIf="!tienePedidosEnCurso  && usuario.mesa != '' " type="button" fill="solid" expand="block" color="primary"
-      style="height: 170px; margin-top: 20%;" (click)="RealizarPedido()">
-      <ion-icon class="iconBoton" name="cart-outline"></ion-icon>
-      <h3>Realizar pedido</h3>
-    </ion-button>
-    <ion-button *ngIf="usuario.mesa != ''" routerLink="../chat" type="button" fill="solid" expand="block"
-      color="primary" style="height: 170px; margin-top: 10%;">
-      <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
-      <h3>Consultar al mozo</h3>
-    </ion-button>
-    <ion-button *ngIf="tienePedidosEnCurso" routerLink="../detalle-pedido/" type="button" fill="solid" expand="block"
-      color="primary" style="height: 170px; margin-top: 10%;">
-      <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
-      <h3>Detalle pedido</h3>
-    </ion-button>
-    <ion-button *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='FINALIZADO' 
-      || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE')" routerLink="../encuesta-cliente"
-      type="button" fill="solid" expand="block" color="primary" style="height: 170px; margin-top: 10%;">
-      <ion-icon name="help-outline"></ion-icon>
-      <h3>Encuesta</h3>
-    </ion-button>
+        <div class="centrado" (click)="RealizarPedido()" *ngIf="!tienePedidosEnCurso  && usuario.mesa != '' ">
+          <img width="100px" src="./../../assets/imagenesHomes/comida-rapida.png">
+          <p>Realizar pedido</p>
+        </div>
+      </ion-col>
 
-    <div *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='CUENTA' || pedidoEnCurso.estado!='PAGADO' || pedidoEnCurso.estado!='FINALIZADO' 
-      || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE') && pedidoEnCurso.jugado == false">
-      <ion-button routerLink="../juegos/flechas" type="button" fill="solid" expand="block" color="primary"
-        style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
-        <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
-        <h3>Juego Flechas</h3>
-      </ion-button>
-      <ion-button routerLink="../poke-preguntados" type="button" fill="solid" expand="block" color="primary"
-        style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
-        <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
-        <h3>Juegos Pokemon</h3>
-      </ion-button>
-      <ion-button routerLink="../juego-cartas" type="button" fill="solid" expand="block" color="primary"
-        style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
-        <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
-        <h3>Juego de cartas</h3>
-      </ion-button>
-    </div>
+      <ion-col size="12">
+        <!--ion-button *ngIf="usuario.mesa != ''" routerLink="../chat" type="button" fill="solid" expand="block"
+          color="primary" style="height: 170px; margin-top: 10%;">
+          <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
+          <h3>Consultar al mozo</h3>
+        </ion-button-->
+        <div class="centrado"  *ngIf="usuario.mesa != ''" [routerLink]="['/chat']">
+          <img width="100px" src="./../../assets/imagenesHomes/burbuja-de-chat.png">
+          <p>Consultar al mozo</p>
+        </div> 
+
+      </ion-col>
+
+      <ion-col size="12">
+        <!--ion-button *ngIf="tienePedidosEnCurso" routerLink="../detalle-pedido/" type="button" fill="solid"
+          expand="block" color="primary" style="height: 170px; margin-top: 10%;">
+          <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
+          <h3>Detalle pedido</h3>
+        </ion-button-->
+        <div class="centrado"  *ngIf="tienePedidosEnCurso" [routerLink]="['/detalle-pedido/']">
+          <img width="100px" src="./../../assets/imagenesHomes/pedido-en-linea.png">
+          <p>Detalle pedido</p>
+        </div> 
+
+      </ion-col>
+
+      <ion-col size="12">
+        <!--ion-button *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='FINALIZADO' 
+        || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE')" routerLink="../encuesta-cliente"
+          type="button" fill="solid" expand="block" color="primary" style="height: 170px; margin-top: 10%;">
+          <ion-icon name="help-outline"></ion-icon>
+          <h3>Encuesta</h3>
+        </ion-button-->
+
+        <div class="centrado"  [routerLink]="['/encuesta-cliente']"
+        *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='FINALIZADO' 
+        || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE')">
+          <img width="100px" src="./../../assets/imagenesHomes/encuesta.png">
+          <p>Ayudenos a seguir mejorando</p>
+        </div> 
+
+      </ion-col>
+
+      <ion-col size="12">
+        <div>
+          <!--ion-button routerLink="../home-juegos" type="button" fill="solid" expand="block" color="primary"
+            style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
+            <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
+            <h3>Juego Flechas</h3>
+          </ion-button-->
+          <div class="centrado"  [routerLink]="['/home-juegos']"
+          *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='CUENTA' || pedidoEnCurso.estado!='PAGADO' || pedidoEnCurso.estado!='FINALIZADO' 
+        || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE') && pedidoEnCurso.jugado == false">
+            <img width="100px" src="./../../assets/imagenesHomes/consola-de-video.png">
+            <p>Juegue y obtenga un descuento</p>
+          </div> 
+  
+ 
+        </div>
+      </ion-col>
+    </ion-row>
+
+
+
+
+
+
   </div>
 </ion-content>
 <ion-row class="scanner-buttons" [hidden]="!scanActive">

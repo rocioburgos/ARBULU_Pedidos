@@ -31,7 +31,7 @@ export class HomeDuenioPage implements OnInit {
     this.fireSrv.usuarioPorId(this.usuarioActual.uid).subscribe((res)=>{
       
       this.userData=res[0]; 
-      this.notiSrv.inicializar(this.userData)
+      this.notiSrv.inicializar();
     })
   }
   async cerrarSesion(){

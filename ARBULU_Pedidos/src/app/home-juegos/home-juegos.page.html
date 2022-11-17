@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="home-cliente" slot="start"></ion-back-button>
+    <ion-title>Juegos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <h3 >¡Juegue y obtenga un descuento en su pedido!</h3>
+  </div>
+  <ion-row>
+    <ion-col size="12"> 
+      <div class="centrado"  routerLink="../juegos/flechas">
+        <img width="100px" src="./../../assets/imagenesHomes/juegos/flecha-correcta.png">
+        <p>Juego Flechas 20%</p>
+      </div>
+    </ion-col>
+
+
+
+    <ion-col size="12"> 
+      <div class="centrado" routerLink="../juego-cartas" >
+        <img width="100px" src="./../../assets/imagenesHomes/juegos/cartas-espanolas.png">
+        <p> Juego de cartas 15%</p>
+      </div>
+    </ion-col>
+    
+    <ion-col size="12"> 
+      <div class="centrado" routerLink="../poke-preguntados">
+        <img width="100px" src="./../../assets/imagenesHomes/juegos/pokebola.png">
+        <p>Juegos Pokemon 10%</p>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+
+<!--
+
+          <div *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='CUENTA' || pedidoEnCurso.estado!='PAGADO' || pedidoEnCurso.estado!='FINALIZADO' 
+        || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE') && pedidoEnCurso.jugado == false">
+          <ion-button routerLink="../juegos/flechas" type="button" fill="solid" expand="block" color="primary"
+            style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
+            <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
+            <h3>Juego Flechas</h3>
+          </ion-button>
+          <ion-button routerLink="../poke-preguntados" type="button" fill="solid" expand="block" color="primary"
+            style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
+            <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
+            <h3>Juegos Pokemon</h3>
+          </ion-button>
+          <ion-button routerLink="../juego-cartas" type="button" fill="solid" expand="block" color="primary"
+            style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
+            <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
+            <h3>Juego de cartas</h3>
+          </ion-button>
+        </div>
+-->

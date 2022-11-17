@@ -9,9 +9,53 @@
 </ion-header>
 <ion-content>
 <div id="container">  
+  <ion-row>
+    <ion-col size="12">
+      <div class="centrado"  [routerLink]="['/listado-clientes-pendientes']">
+        <img width="100px" src="./../../assets/imagenesHomes/telefono-inteligente.png">
+        <p>Habilitar clientes</p>
+      </div> <br>
+    </ion-col>
+    <ion-col size="12">
+      <div class="centrado" [routerLink]="['/alta-supervisor']"> 
+        <img width="100px" src="./../../assets/imagenesHomes/pedido-en-linea.png">
+        <p> Alta dueño/supervisor</p>
+      </div> <br>
+    </ion-col>
+    <ion-col size="12">
+      <div  class="centrado" [routerLink]="['/alta-empleado']">
+
+        <img width="100px" src="./../../assets/imagenesHomes/comprobacion.png">
+        <p>Alta empleados</p>
+      </div>
+    </ion-col>
+
+    <ion-col size="12">
+      <div  class="centrado" [routerLink]="['/alta-mesa']">
+
+        <img width="100px" src="./../../assets/imagenesHomes/comprobacion.png">
+        <p>Alta mesa</p>
+      </div>
+    </ion-col>
+
+    <ion-col size="12">
+      <div *ngIf="usuarioActual.tipo === 'supervisor'" class="centrado" [routerLink]="['/encuesta-supervisor']">
+
+        <img width="100px" src="./../../assets/imagenesHomes/comprobacion.png">
+        <p>Encuesta Supervisor</p>
+      </div>
+    </ion-col>
+  </ion-row>
   
   
-  <a [routerLink]="['/listado-clientes-pendientes']"><ion-button>Habilitar clientes</ion-button></a>
+</div>
+</ion-content>
+<ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>"> 
+</ngx-spinner>
+
+<!--
+
+    <a [routerLink]="['/listado-clientes-pendientes']"><ion-button>Habilitar clientes</ion-button></a>
   <br><br> 
   <br>
   <a [routerLink]="['/alta-supervisor']"><ion-button> Alta dueño/supervisor</ion-button></a>
@@ -25,8 +69,6 @@
   <br> 
   <a [routerLink]="['/encuesta-supervisor']" *ngIf="usuarioActual.tipo === 'supervisor'"><ion-button>Encuesta Supervisor</ion-button></a>
   <br><br>
-  <br>   
-</div>
-</ion-content>
-<ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>"> 
-</ngx-spinner>
+  <br> 
+
+-->
