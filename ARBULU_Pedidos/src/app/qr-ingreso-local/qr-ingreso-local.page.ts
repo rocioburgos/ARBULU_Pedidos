@@ -29,53 +29,79 @@ export class QrIngresoLocalPage implements OnInit {
     private utilidadesSvc: UtilidadesService,
     private authSvc: AuthService,
     private spinner: NgxSpinnerService,
-    private pushSrv:NotificationService) 
-  { 
+    private pushSrv: NotificationService) {
 
     this.spinner.show();
-    
+
     //this.usuarioActual = this.authSvc.usuarioActual;
     // var auxUsuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
     // this.usuarioActual = this.firestoreSvc.getUsuarioActualByID(auxUsuario.uid);
     this.usuarioActual = this.authSvc.usuarioActual;
     console.log(this.usuarioActual);
-    
-    if(!this.usuarioActual)
-    {
-      this.usuarioActual = localStorage.getItem('usuario_ARBULU');
-    } 
 
-   this.usuarioLS= this.authSvc.getCurrentUserLS();
-   this.firestoreSvc.obtenerUsuarioPorId(this.usuarioLS.uid).then((resp:any)=>{
-      this.usuarioActual= resp 
-   });
-
-
-    alert(this.usuarioActual);
-    if(this.usuarioActual){
-      //alert("usuario" +this.usuarioActual);
-      console.log(this.usuarioActual);
-      setTimeout(() => {
-                    this.spinner.hide();
-                    console.log(!this.usuarioActual.enListaDeEspera);
-                    
-                    if(!this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa != ''){
-                      this.router.navigate(['home-cliente']);
-                    }
-                  }, 1000);
-    }
-    else{
-      setTimeout(() => {
-        this.spinner.hide();
-        //alert("anoniomo"  + this.usuarioActual);
-        this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
-      }, 1000);
+    if (!this.usuarioActual) {
+        this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU')); 
+      console.log(this.usuarioActual);  
       
     }
 
+
+    this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
+      var usuarios = data;
+      console.log(usuarios);
+
+      usuarios.forEach(element => {
+          console.log(element.uid + " - " + this.usuarioActual.uid);
+
+        if (element.uid == this.usuarioActual.uid) {
+          console.log(this.usuarioActual.nombre);
+          this.usuarioActual = element;
+          setTimeout(() => {
+
+            console.log(!this.usuarioActual.enListaDeEspera);
+
+            if (!this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa != "") {
+              this.router.navigate(['home-cliente']);
+            }
+            this.spinner.hide();
+          }, 1000);
+        }
+      });
+    });
+
+
+    // this.firestoreSvc.obtenerUsuarioPorId(this.usuarioLS.uid).then((resp: any) => {
+    //   this.usuarioActual = resp;
+    //   console.log("buscando usuario" + this.usuarioActual);
+
+
+
+    //   if (this.usuarioActual) {
+    //     //alert("usuario" +this.usuarioActual);
+    //     console.log(this.usuarioActual);
+    //     setTimeout(() => {
+
+    //       console.log(!this.usuarioActual.enListaDeEspera);
+
+    //       if (!this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa != "") {
+    //         this.router.navigate(['home-cliente']);
+    //       }
+    //       this.spinner.hide();
+    //     }, 1000);
+    //   }
+    //   else {
+    //     setTimeout(() => {
+    //       this.spinner.hide();
+    //       //alert("anoniomo"  + this.usuarioActual);
+    //       this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+    //     }, 1000);
+
+    //   }
+    // });
+    this.spinner.hide();
   }
 
- 
+
   ngOnInit(): void {
   }
 
@@ -93,7 +119,7 @@ export class QrIngresoLocalPage implements OnInit {
   }
 
   async startScan() {
-     
+
     try {
       const permission = await this.checkPermission();
       if (!permission) {
@@ -112,8 +138,8 @@ export class QrIngresoLocalPage implements OnInit {
       document.querySelector('body').classList.remove('scanner-active');
       //alert(result.content + result?.hasContent);
       if (result?.hasContent) {
-        if(result.content === 'qrIngresoAListaDeEspera'){
-          this.firestoreSvc.update(this.usuarioActual.uid, {enListaDeEspera: true});
+        if (result.content === 'qrIngresoAListaDeEspera') {
+          this.firestoreSvc.update(this.usuarioActual.uid, { enListaDeEspera: true });
 
           //mandar push notification
           this.notificar();
@@ -121,7 +147,7 @@ export class QrIngresoLocalPage implements OnInit {
           this.router.navigate(['/home-cliente']);
           this.utilidadesSvc.successToast("En lista de espera...", 2000);
         }
-        else{
+        else {
           this.stopScan();
           this.router.navigate(['/qr-ingreso-local']);
           this.utilidadesSvc.errorToast("Escaneo de QR Incorrecto", 2000);
@@ -133,10 +159,10 @@ export class QrIngresoLocalPage implements OnInit {
       console.log(error);
       this.stopScan();
       this.utilidadesSvc.errorToast("Error al escanear", 2000);
-    } 
+    }
   }
 
- 
+
 
   stopScan() {
     setTimeout(() => {
@@ -152,34 +178,35 @@ export class QrIngresoLocalPage implements OnInit {
 
 
 
-  
+
 
   // probarNotification(){
   //   let idUser = JSON.parse(this.userService.getuserIdLocal());
   //   this.pushNotificationService.EnviarNotificationAUnUsuario(idUser,"PRUEBA PRUEBA","PROBANDO PROBANDO");
   // }
 
-  notificar(){
+  notificar() {
     this.usuarios.forEach(user => {
-      if(user.token!='' && user.tipo=='empleado' && user.tipoEmpleado=='metre' || user.tipoEmpleado=='mozo'){
-      this.pushSrv 
-      .sendPushNotification({
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        registration_ids: [
-          // eslint-disable-next-line max-len
-          user.token 
-        ],
-        notification: {
-          title: 'Nuevo cliente en lista de espera',
-          body: 'Hay un cliente que ingreso al local',
-        },
-        data: {
-          ruta: 'home-metre', 
-        },
-      })
-      .subscribe((data) => {
-        console.log(data);
-      });}
+      if (user.token != '' && user.tipo == 'empleado' && user.tipoEmpleado == 'metre' || user.tipoEmpleado == 'mozo') {
+        this.pushSrv
+          .sendPushNotification({
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            registration_ids: [
+              // eslint-disable-next-line max-len
+              user.token
+            ],
+            notification: {
+              title: 'Nuevo cliente en lista de espera',
+              body: 'Hay un cliente que ingreso al local',
+            },
+            data: {
+              ruta: 'home-metre',
+            },
+          })
+          .subscribe((data) => {
+            console.log(data);
+          });
+      }
     });
   }
 }

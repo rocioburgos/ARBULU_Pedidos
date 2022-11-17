@@ -101,15 +101,16 @@ export class HomeClientePage implements OnInit {
             console.log(this.tienePedidosEnCurso);
             //alert(this.pedido);
             console.log(this.pedidoEnCurso);
-            
-            this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
-            console.log(this.pedidoEnCurso);
-            var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
-              this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuario.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);
-              this.spinner.hide();
-              observable.unsubscribe();
-            });
+            if(this.tienePedidosEnCurso){
+              this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
+              console.log(this.pedidoEnCurso);
+              var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
+                this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuario.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);             
+                observable.unsubscribe();
+              });
+            }
           });
+          this.spinner.hide();
 
           // this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
           //   console.log(res);
