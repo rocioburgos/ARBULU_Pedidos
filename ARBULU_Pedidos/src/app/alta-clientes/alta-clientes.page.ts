@@ -90,6 +90,7 @@ export class AltaClientesPage implements OnInit {
 
 
   aceptar() {     
+    this.spinner.show();
     if(!this.anonimo){
       this.usuario.email = this.altaForm.value.email;
       this.usuario.nombre = this.altaForm.value.nombre;
@@ -137,9 +138,16 @@ export class AltaClientesPage implements OnInit {
       this.usuario.nombre = this.altaFormAnonimo.value.nombre;
       this.usuario.tipo = eUsuario.cliente;
       this.usuario.clienteValidado = true;
-      this.firestoreSvc.crearUsuario(this.usuario);
-      this.utilidadesSrv.successToast("Ingreso exitoso.");
-      this.navigateTo('qr-ingreso-local');
+      this.firestoreSvc.crearUsuario(this.usuario).then((res:any)=>{
+        this.pushSrv.RegisterFCM(res)
+        console.log("id del anonimo "+res)
+      });
+
+      setTimeout(() => {
+        this.utilidadesSrv.successToast("Ingreso exitoso.");
+        this.navigateTo('qr-ingreso-local');
+      }, 5000);
+
     }
  
   }

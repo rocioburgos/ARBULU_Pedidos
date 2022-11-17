@@ -33,8 +33,7 @@ export class FirestoreService {
   public crearUsuario(usuario: Usuario) {
     return this.usuariosRef.add({ ...usuario }).then((data) => {
       this.update(data.id, { uid: data.id });
-      console.log(usuario.email);
-
+        
       //var anonimo = usuario.email == null ? true : false;
       localStorage.removeItem('usuario_ARBULU');
       localStorage.setItem('usuario_ARBULU', JSON.stringify(
@@ -45,6 +44,8 @@ export class FirestoreService {
           'tipo': usuario.tipo,
           'tipoEmpleado': usuario.tipoEmpleado
         }));
+
+        return data.id
     });
   }
 
@@ -144,6 +145,11 @@ export class FirestoreService {
   return this.usuariosRef.valueChanges({idField: "doc_id"}); */
   }
 
+  public async obtenerUsuarioPorId2(id: string) {
+    return this.usuariosRef.ref.where('uid', '==', id).get(); 
+   /* this.usuariosRef = this.db.collection('usuarios', ref =>  ref.where('uid', '==', id)   ) ;
+  return this.usuariosRef.valueChanges({idField: "doc_id"}); */
+  }
 
   
   usuarioPorId(id: string){ 

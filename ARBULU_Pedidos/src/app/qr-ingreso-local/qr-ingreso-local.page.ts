@@ -39,10 +39,13 @@ export class QrIngresoLocalPage implements OnInit {
 
     if(this.usuarioActual){
       //alert("usuario" +this.usuarioActual);
-      console.log(this.usuarioActual);
+      console.log("usuario actual:"+this.usuarioActual);
       setTimeout(() => {
                     this.spinner.hide();
-                    if(this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa != ''){
+                    if((this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa== '')
+                    || (!this.usuarioActual.enListaDeEspera && this.usuarioActual.mesa!= '')){
+                      //tiene que esperar que se le asigne la mesa
+                      //ya tiene una mesa
                       this.router.navigate(['home-cliente']);
                     }
                   }, 1000);
