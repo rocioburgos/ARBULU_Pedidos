@@ -167,10 +167,10 @@ export class AltaClientesPage implements OnInit {
       this.pushSrv 
       .sendPushNotification({
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        registration_ids: [
-          // eslint-disable-next-line max-len
-         token 
-        ],
+             /* registration_ids: [ 
+              token 
+              ], */
+        to: token,      
         notification: {
           title: 'Nuevo cliente',
           body: 'Se registro un nuevo cliente',
@@ -179,7 +179,7 @@ export class AltaClientesPage implements OnInit {
           ruta: 'listado-clientes-pendientes', 
         },
       }).pipe(first()).subscribe((data)=>{
-        console.log(data)
+        console.log(data) 
       }) 
      });
 

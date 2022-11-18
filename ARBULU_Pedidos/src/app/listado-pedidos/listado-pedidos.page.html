@@ -1,11 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button defaultHref="home" slot="start"></ion-back-button>
+    <ion-back-button slot="start"></ion-back-button>
     <ion-title>Lista  pedidos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <div *ngIf="pedidos!= null">
+    <strong style="color:red">No hay pedidos pendientes</strong>
+  </div>
   <div   *ngIf="esMetre">
     <div *ngFor="let pedido of pedidos">
       <ion-card  style="   text-align:center;   padding:8px;  " >

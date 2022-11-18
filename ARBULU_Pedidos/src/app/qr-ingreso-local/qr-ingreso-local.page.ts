@@ -14,7 +14,6 @@ import { eEmpleado } from '../clases/usuario';
   styleUrls: ['./qr-ingreso-local.page.scss'],
 })
 export class QrIngresoLocalPage implements OnInit {
-
   usuarios: any;
   usuarioActual: any;
   scannnedResult: any;
@@ -169,5 +168,4 @@ export class QrIngresoLocalPage implements OnInit {
       });}
     });
   }
-
 }
