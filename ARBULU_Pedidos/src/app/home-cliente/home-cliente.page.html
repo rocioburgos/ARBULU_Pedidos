@@ -1,5 +1,4 @@
-<ion-header>
-
+<ion-header> 
   <ion-toolbar color="warning">
     <ion-title>Inicio Cliente</ion-title>
     <ion-buttons slot="end">
@@ -7,15 +6,14 @@
         <ion-icon slot="end" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-  </ion-toolbar>
-
+  </ion-toolbar> 
 </ion-header>
 
 <ion-content slot="fixed" *ngIf="usuario" [hidden]="scanActive">
   <br>
   <br>
   <br>
-  <div class="container-datos" *ngIf="!escaneoMesa">
+  <div class="container-datos" *ngIf="!yaEscaneo">
     <!-- ICONO DE COCINA CUANDO ESTA EL CLIENTE ASIGNADO -->
     <!-- <img *ngIf="usuarioActual.mesa != ''" src="assets/iconTransp.png" style="margin-top: 10%;" width="120px"> -->
 
@@ -23,15 +21,16 @@
       <ion-icon *ngIf="usuarioActual.mesa != ''" name="qr-code-outline" style="margin-top: 20%; font-size: 150px;" color="claro" (click)="EscanearMesa()"></ion-icon> 
     </div> -->
 
+    <!--Tiene  mesa asignada-->
     <ion-button [hidden]="scanActive" expand="block" size="large" shape="round" color="success" (click)="startScan()"
-      *ngIf="usuario.mesa != ''">
+      *ngIf="usuario.mesa != ''  ">
       <ion-icon name="qr-code-outline" color="dark"></ion-icon>
       QR Mesa
     </ion-button>
 
     <div class="texto">
       <h4 *ngIf="usuario.mesa == ''">Espera a que se te asigne una mesa.</h4> <!-- No asignado y si ingreso -->
-      <div *ngIf="usuario.mesa != ''">
+      <div *ngIf="usuario.mesa != '' && !escaneoMesa">
         <!-- Si asignado y si ingreso -->
         <h1>Se le asigno la Mesa <b>{{usuario.mesa}}</b></h1>
         <h2>Escanee el QR de la mesa.</h2>
@@ -39,7 +38,7 @@
     </div>
   </div>
 
-  <div class="container-datos" *ngIf="escaneoMesa">
+  <div class="container-datos" *ngIf="yaEscaneo">
     <ion-row>
       <ion-col size="12">
         <!--ion-button *ngIf="!tienePedidosEnCurso  && usuario.mesa != '' " type="button" fill="solid" expand="block" color="primary"

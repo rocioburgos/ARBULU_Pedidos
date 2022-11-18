@@ -23,6 +23,7 @@ export class HomeClientePage implements OnInit {
   scanActive = false;
 
   escaneoMesa: boolean = false;//PONER EL FALSE
+  yaEscaneo=false;
   pedido: any = "";
   encuesta: any = "";
   verEstado: boolean = false;
@@ -243,6 +244,7 @@ export class HomeClientePage implements OnInit {
           //alert(this.usuario.id);
           this.firestoreSvc.update(this.usuario.id, { enListaDeEspera: false });
           this.escaneoMesa = true;
+          this.yaEscaneo=true;
           this.utilidadesSvc.successToast("Escaneo de mesa correcto", 2000);
           //alert(result.content);
         }
