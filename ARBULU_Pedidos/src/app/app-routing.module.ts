@@ -6,8 +6,7 @@ import { LogueadoGuard } from './guards/logueado.guard';
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-    canActivate: [ClienteAprobadoGuard]
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
     path: '',
@@ -48,7 +47,8 @@ const routes: Routes = [
   },
   {
     path: 'home-cliente',
-    loadChildren: () => import('./home-cliente/home-cliente.module').then( m => m.HomeClientePageModule)
+    loadChildren: () => import('./home-cliente/home-cliente.module').then( m => m.HomeClientePageModule),
+    canActivate: [ClienteAprobadoGuard]
   },
   {
     path: 'listado-productos',
@@ -112,7 +112,8 @@ const routes: Routes = [
   },   {
     path: 'encuesta-empleado',
     loadChildren: () => import('./encuesta-empleado/encuesta-empleado.module').then( m => m.EncuestaEmpleadoPageModule)
-  },  {
+  },
+  {
     path: 'clientesingreso',
     loadChildren: () => import('./clientesingreso/clientesingreso.module').then( m => m.ClientesingresoPageModule)
   },

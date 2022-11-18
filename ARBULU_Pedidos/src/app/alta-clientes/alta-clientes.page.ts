@@ -11,6 +11,7 @@ import { MailService } from '../servicios/mail.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { NotificationService } from '../servicios/notification.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-alta-clientes',
@@ -177,7 +178,7 @@ export class AltaClientesPage implements OnInit {
         data: {
           ruta: 'listado-clientes-pendientes', 
         },
-      }).subscribe((data)=>{
+      }).pipe(first()).subscribe((data)=>{
         console.log(data)
       }) 
      });

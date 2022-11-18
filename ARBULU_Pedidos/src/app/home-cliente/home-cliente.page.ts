@@ -108,7 +108,8 @@ export class HomeClientePage implements OnInit {
               this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
               console.log(this.pedidoEnCurso);
               var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
-                this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuario.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);             
+                this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuario.uid && item.uid_pedido == this.pedidoEnCurso.doc_id)[0];     
+                console.log("Encuesta:" + this.encuesta);        
                 observable.unsubscribe();
               });
             }
