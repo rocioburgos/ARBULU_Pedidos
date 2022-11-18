@@ -72,7 +72,7 @@
           <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
           <h3>Detalle pedido</h3>
         </ion-button-->
-        <div class="centrado"  *ngIf="tienePedidosEnCurso" [routerLink]="['/detalle-pedido/']">
+        <div class="centrado"  *ngIf="tienePedidosEnCurso && pedidoEnCurso!='FINALIZADO' " [routerLink]="['/detalle-pedido/']">
           <img width="100px" src="./../../assets/imagenesHomes/pedido-en-linea.png">
           <p>Detalle pedido</p>
         </div> 

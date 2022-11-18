@@ -109,7 +109,6 @@ export class QrIngresoLocalPage implements OnInit {
   }
 
   async startScan() {
-
     try {
       const permission = await this.checkPermission();
       if (!permission) {
@@ -133,9 +132,11 @@ export class QrIngresoLocalPage implements OnInit {
 
           //mandar push notification
           this.notificar();
+          setTimeout(() => {
+            this.router.navigate(['/home-cliente']);
+            this.utilidadesSvc.successToast("En lista de espera...", 2000);
+          }, 5000);
 
-          this.router.navigate(['/home-cliente']);
-          this.utilidadesSvc.successToast("En lista de espera...", 2000);
         }
         else {
           this.stopScan();
@@ -149,7 +150,7 @@ export class QrIngresoLocalPage implements OnInit {
       console.log(error);
       this.stopScan();
       this.utilidadesSvc.errorToast("Error al escanear", 2000);
-    }
+    } 
   }
 
 
@@ -176,28 +177,33 @@ export class QrIngresoLocalPage implements OnInit {
   // }
 
   notificar() {
-    this.usuarios.forEach(user => {
-      if (user.token != '' && user.tipo == 'empleado' && user.tipoEmpleado == 'metre' || user.tipoEmpleado == 'mozo') {
-        this.pushSrv
-          .sendPushNotification({
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            registration_ids: [
-              // eslint-disable-next-line max-len
-              user.token
-            ],
-            notification: {
-              title: 'Nuevo cliente en lista de espera',
-              body: 'Hay un cliente que ingreso al local',
-            },
-            data: {
-              ruta: 'home-metre',
-            },
-          })
-          .subscribe((data) => {
-            console.log(data);
-          });
-      }
-    });
+    
+    this.firestoreSvc.obtenerUsuarios().subscribe((usuarios)=>{
+      usuarios.forEach(user => {
+        if (user.token != '' && user.tipo == 'empleado' && user.tipoEmpleado == 'metre' || user.tipoEmpleado == 'mozo') {
+          this.pushSrv
+            .sendPushNotification({
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              registration_ids: [
+                // eslint-disable-next-line max-len
+                user.token
+              ],
+              notification: {
+                title: 'Nuevo cliente en lista de espera',
+                body: 'Hay un cliente que ingreso al local',
+              },
+              data: {
+                ruta: 'home-metre',
+              },
+            })
+            .subscribe((data) => {
+              console.log(data);
+            });
+        }
+      });
+    })
+
+
   }
 
  
