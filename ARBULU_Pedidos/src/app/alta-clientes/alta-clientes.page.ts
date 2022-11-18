@@ -27,7 +27,7 @@ export class AltaClientesPage implements OnInit {
   descripcion_error: string = '';
   public altaForm: FormGroup; 
   public altaFormAnonimo: FormGroup; 
-  habilitar:boolean;
+  fotoHabilitar:boolean=false;
   path:string='';
   anonimo:boolean = false;
   scannnedResult: any;
@@ -203,7 +203,7 @@ export class AltaClientesPage implements OnInit {
     this.uploadPhoto(photo).then(() => {
        
       setTimeout(() => {
-        this.habilitar = true; 
+        this.fotoHabilitar = true; 
         this.spinner.hide();
       }, 5000);
 
