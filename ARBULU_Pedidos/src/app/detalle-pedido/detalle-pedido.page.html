@@ -200,7 +200,7 @@
 </ion-footer>
 <ion-footer collapse="fade" *ngIf=" esMetre && (pedido.estado == 'PAGADO' || pedido.estado == 'COBRADO') ">
 
-  <ion-label style="text-align: right;">Descuentos aplicados: ${{pedido.descuento}}</ion-label> <br>
+  <ion-label style="text-align: right;">Descuentos aplicados:  {{pedido.descuento}}%</ion-label> <br>
   <ion-label style="text-align: right;">Propina: ${{pedido.propina}}</ion-label> <br>
   <ion-label style="text-align: right;">Total💵: ${{pedido.total}}</ion-label>
 

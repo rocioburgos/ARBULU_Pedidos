@@ -101,6 +101,8 @@ export class ChatPage implements OnInit {
       if (this.mensajeEnviar != '' && this.mensajeEnviar != null && this.mensajeEnviar) {
         let mensaje: Mensaje = new Mensaje(this.user.email, this.mensajeEnviar, this.horario(), this.nroMesa, date);
         console.log(mensaje)
+        //solo notificar a los mozos
+        
         this.notificar(this.nroMesa, mensaje)
         this.msjSrv.nuevoMensaje(mensaje).then((res) => {
           this.mensajeEnviar = '';
