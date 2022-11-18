@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { first } from 'rxjs/operators';
 import { AuthService } from '../servicios/auth.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { NotificationService } from '../servicios/notification.service';
@@ -28,12 +29,14 @@ export class HomeDuenioPage implements OnInit {
 
   ngOnInit() { 
     this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));  
-    this.fireSrv.usuarioPorId(this.usuarioActual.uid).subscribe((res)=>{
+    var subscipcion = this.fireSrv.usuarioPorId(this.usuarioActual.uid).subscribe((res)=>{
       
       this.userData=res[0]; 
       this.notiSrv.inicializar();
+      subscipcion.unsubscribe();
     })
   }
+
   async cerrarSesion(){
 
     const alert = await this.alertController.create({

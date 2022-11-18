@@ -11,6 +11,7 @@ import { MailService } from '../servicios/mail.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { NotificationService } from '../servicios/notification.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-alta-clientes',
@@ -117,6 +118,7 @@ export class AltaClientesPage implements OnInit {
         this.usuario.uid = credential.user.uid;
         this.firestoreSvc.setItemWithId(this.usuario, credential.user.uid).then((usuario)=>{
           console.log(usuario);
+          this.mail.enviarEmail(this.usuario.nombre, this.usuario.email, "Su cuenta ha sido registrada exitosamente, aguarde a que sea validada por nuestro personal.")
           this.notificar();
           setTimeout(() => {
             this.spinner.hide();
@@ -137,7 +139,7 @@ export class AltaClientesPage implements OnInit {
     else{
       this.usuario.nombre = this.altaFormAnonimo.value.nombre;
       this.usuario.tipo = eUsuario.cliente;
-      this.usuario.clienteValidado = true;
+      this.usuario.clienteValidado = 'aceptado';
       this.firestoreSvc.crearUsuario(this.usuario).then((res:any)=>{
         this.pushSrv.RegisterFCM(res)
         console.log("id del anonimo "+res)
@@ -176,7 +178,7 @@ export class AltaClientesPage implements OnInit {
         data: {
           ruta: 'listado-clientes-pendientes', 
         },
-      }).subscribe((data)=>{
+      }).pipe(first()).subscribe((data)=>{
         console.log(data)
       }) 
      });

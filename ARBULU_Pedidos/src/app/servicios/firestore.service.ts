@@ -136,7 +136,7 @@ export class FirestoreService {
   }
 
   public async obtenerClientesInvalidados() {
-    return this.usuariosRef.ref.where('tipo', '==', 'cliente').where('clienteValidado', '==', false).get();
+    return this.usuariosRef.ref.where('tipo', '==', 'cliente').where('clienteValidado', '==', '').get();
   }
 
   public async obtenerUsuarioPorId(id: string) {

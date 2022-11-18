@@ -26,8 +26,7 @@ export class LogueadoGuard implements CanActivate {
       
       switch (usuario.tipo) {
         case 'cliente':
-          console.log("cliente salto");
-          this.route.navigate(['home-cliente']);
+          this.route.navigate(['qr-ingreso-local']);
           break;
         case 'dueño':
           this.route.navigate(['home-duenio']);
