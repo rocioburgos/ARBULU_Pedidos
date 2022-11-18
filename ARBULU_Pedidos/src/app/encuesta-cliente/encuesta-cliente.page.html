@@ -30,15 +30,15 @@
 
         <div>
           <div class="inputdiv">
-            <ion-label class="label">Limpieza del establecimiento</ion-label>
+            <ion-label class="label">Puntaje del establecimiento</ion-label>
             <ion-item color="transp2">
-              <ion-range color="dark" pin="true" min="1" max="10" step="1" snaps="true" formControlName="limpieza">
+              <ion-range color="dark" pin="true" min="1" max="10" step="1" snaps="true" formControlName="puntaje">
                 <ion-icon slot="start" name="trash"></ion-icon>
                 <ion-icon slot="end" name="sparkles"></ion-icon>
               </ion-range>
             </ion-item>
             <ion-label class="invalid"
-              *ngIf="form.controls['limpieza'].errors?.['required'] && form.controls['limpieza'].touched">
+              *ngIf="form.controls['puntaje'].errors?.['required'] && form.controls['puntaje'].touched">
               Coloque en un valor.
             </ion-label>
           </div>

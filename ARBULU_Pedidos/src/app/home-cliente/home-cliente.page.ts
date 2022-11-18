@@ -45,7 +45,8 @@ export class HomeClientePage implements OnInit {
     private alertController: AlertController,
     private spinner: NgxSpinnerService,
     private pedidoSrv: PedidosService,
-    private notiSrv:NotificationService) {
+    private notiSrv:NotificationService,
+    public encuestasSrv:EncuestaService) {
 
   }
 

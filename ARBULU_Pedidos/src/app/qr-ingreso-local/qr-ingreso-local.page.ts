@@ -57,7 +57,7 @@ export class QrIngresoLocalPage implements OnInit {
         //alert("anoniomo"  + this.usuarioActual);
         this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
       }, 1000);
-      
+      this.router.navigate(['/home-cliente']); //SACAR
     }
 
 

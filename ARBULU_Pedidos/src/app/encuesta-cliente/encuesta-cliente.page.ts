@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../servicios/auth.service';
+import { EncuestaService } from '../servicios/encuesta.service';
 import { FirestoreService } from '../servicios/firestore.service';
 import { PedidosService } from '../servicios/pedidos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
@@ -24,9 +25,10 @@ export class EncuestaClientePage implements OnInit {
     private utilidades:UtilidadesService,
     private auth:AuthService,
     private spinner: NgxSpinnerService,
-    private pedido:PedidosService) {
+    private pedido:PedidosService,
+    private encuestasSvc:EncuestaService) {
     this.form = this.fb.group({
-      'limpieza': ['', Validators.required],
+      'puntaje': ['', Validators.required],
       'inconvenientes': ['', Validators.required],
       'orden': [true],
       'comentario': [''],
@@ -59,6 +61,7 @@ export class EncuestaClientePage implements OnInit {
 
         setTimeout(() => {
           this.utilidades.successToast("Se registró la encuesta correctamente.");
+          this.encuestasSvc.encuesta = true;
           this.spinner.hide();
           this.router.navigate(['/home-cliente']);
         }, 2000);
