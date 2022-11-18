@@ -29,7 +29,7 @@
     </ion-button>
 
     <div class="texto">
-      <h4 *ngIf="usuario.mesa == ''">Espera a que se te asigne una mesa.</h4> <!-- No asignado y si ingreso -->
+      <strong style="color:red" *ngIf="usuario.mesa == ''">Espera a que se te asigne una mesa.</strong> <!-- No asignado y si ingreso -->
       <div *ngIf="usuario.mesa != '' && !escaneoMesa">
         <!-- Si asignado y si ingreso -->
         <h1>Se le asigno la Mesa <b>{{usuario.mesa}}</b></h1>
@@ -72,7 +72,7 @@
           <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
           <h3>Detalle pedido</h3>
         </ion-button-->
-        <div class="centrado"  *ngIf="tienePedidosEnCurso && pedidoEnCurso!='FINALIZADO' " [routerLink]="['/detalle-pedido/']">
+        <div class="centrado"  *ngIf="tienePedidosEnCurso && pedidoEnCurso.estado!='FINALIZADO' " [routerLink]="['/detalle-pedido/']">
           <img width="100px" src="./../../assets/imagenesHomes/pedido-en-linea.png">
           <p>Detalle pedido</p>
         </div> 
@@ -111,6 +111,21 @@
           </div> 
   
  
+        </div>
+      </ion-col>
+
+      <ion-col size="12">
+        <div>
+          <!--ion-button routerLink="../home-juegos" type="button" fill="solid" expand="block" color="primary"
+            style="height: 170px; margin-top: 10%;" *ngIf="!pedidoEnCurso.jugado">
+            <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
+            <h3>Juego Flechas</h3>
+          </ion-button-->
+          <div class="centrado"  
+          *ngIf="pedidoEnCurso.estado=='FINALIZADO' ">
+            <img width="100px" src="./../../assets/imagenesHomes/investigacion.png">
+            <p>Ver estadisticas</p>
+          </div>  
         </div>
       </ion-col>
     </ion-row>
