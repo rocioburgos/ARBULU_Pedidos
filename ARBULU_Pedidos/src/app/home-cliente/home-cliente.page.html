@@ -59,7 +59,7 @@
           <ion-icon class="iconBoton" name="chatbubbles-outline"></ion-icon>
           <h3>Consultar al mozo</h3>
         </ion-button-->
-        <div class="centrado"  *ngIf="usuario.mesa != ''" [routerLink]="['/chat']">
+        <div class="centrado"  *ngIf="usuario.mesa != ''" [routerLink]="['/chat']" >
           <img width="100px" src="./../../assets/imagenesHomes/burbuja-de-chat.png">
           <p>Consultar al mozo</p>
         </div> 
@@ -87,9 +87,9 @@
           <h3>Encuesta</h3>
         </ion-button-->
 
-        <div class="centrado"  [routerLink]="['/encuesta-cliente']"
+        <div class="centrado" (click)="navegar('/encuesta-cliente')"
         *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='FINALIZADO' 
-        || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE') && encuesta == undefined && encuesta == ''">
+        || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE') "><!--&& encuesta == undefined-->
           <img width="100px" src="./../../assets/imagenesHomes/encuesta.png">
           <p>Ayudenos a seguir mejorando</p>
         </div> 
@@ -103,14 +103,12 @@
             <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
             <h3>Juego Flechas</h3>
           </ion-button-->
-          <div class="centrado"  [routerLink]="['/home-juegos']"
+          <div class="centrado"  (click)="navegar('/home-juegos')"
           *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='CUENTA' || pedidoEnCurso.estado!='PAGADO' || pedidoEnCurso.estado!='FINALIZADO' 
         || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE') && pedidoEnCurso.jugado == false">
             <img width="100px" src="./../../assets/imagenesHomes/consola-de-video.png">
             <p>Juegue y obtenga un descuento</p>
           </div> 
-  
- 
         </div>
       </ion-col>
 
@@ -121,7 +119,7 @@
             <ion-icon class="iconBoton" name="game-controller-outline"></ion-icon>
             <h3>Juego Flechas</h3>
           </ion-button-->
-          <div class="centrado"  
+          <div class="centrado"  (click)="navegar('/estadisticas')"
           *ngIf="pedidoEnCurso.estado=='FINALIZADO' ">
             <img width="100px" src="./../../assets/imagenesHomes/investigacion.png">
             <p>Ver estadisticas</p>

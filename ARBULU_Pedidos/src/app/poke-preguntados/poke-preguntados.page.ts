@@ -4,6 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { eEstadPedido, Pedido } from '../clases/pedidos';
 import { ApiService } from '../servicios/api.service';
 import { AuthService } from '../servicios/auth.service';
+import { FirestoreService } from '../servicios/firestore.service';
 import { PedidosService } from '../servicios/pedidos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
@@ -22,14 +23,15 @@ export class PokePreguntadosPage implements OnInit {
   puntajeFinal: number = 0;
   finalizado: boolean = false;
   pedido: any;
-
+  usuarioActual:any;
   constructor(
     private pokeApi: ApiService,
     private utilidades:UtilidadesService,
     private spinner: NgxSpinnerService,
     private router:Router,
     private pedidos:PedidosService,
-    private auth:AuthService
+    private auth:AuthService,
+    private firestoreSvc:FirestoreService
   ) {}
 
   ngOnInit(): void {
@@ -41,15 +43,23 @@ export class PokePreguntadosPage implements OnInit {
   }
   
   ionViewDidEnter(){
-    var observable = this.pedidos.TraerPedidos().subscribe((data)=>{
-      this.pedido = data.filter((item:Pedido)=>item.uid_usuario == this.auth.usuarioActual.uid);
-      observable.unsubscribe();
+    this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+    this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
+      var usuarios = data; 
+
+      usuarios.forEach(element => {  
+        if (element.uid == this.usuarioActual.uid) { 
+          this.usuarioActual = element;
+          var observable2 = this.pedidos.TraerPedidos().subscribe((data)=>{
+            this.pedido = data.filter((item:Pedido)=>item.estado != eEstadPedido.FINALIZADO && item.uid_usuario == this.usuarioActual.uid)[0];
+           // this.pedidos.actualizarPedido({jugado:true}, this.pedido.doc_id)
+            observable2.unsubscribe();
+          });
+        }
+      });
     });
-    var observable2 = this.pedidos.TraerPedidos().subscribe((data)=>{
-      this.pedido = data.filter((item:Pedido)=>item.estado != eEstadPedido.FINALIZADO && item.uid_usuario == this.auth.usuarioActual.uid)[0];
-      this.pedidos.actualizarPedido({jugado:true}, this.pedido.doc_id)
-      observable2.unsubscribe();
-    });
+
+ 
   }
 
   nuevoPokemon() {

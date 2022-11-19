@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
+import { eEstadPedido, Pedido } from 'src/app/clases/pedidos';
 import { Puntos } from 'src/app/clases/puntos';
 import { Usuario } from 'src/app/clases/usuario';
 import { AuthService } from 'src/app/servicios/auth.service';
+import { FirestoreService } from 'src/app/servicios/firestore.service';
 import { PedidosService } from 'src/app/servicios/pedidos.service';
 import { UtilidadesService } from 'src/app/servicios/utilidades.service';
 
@@ -54,35 +56,41 @@ export class FlechasPage implements OnInit {
   public usuario$: Observable<any> = this.authService.afAuth.user;
   pedidos: any = [];
   pedido: any;
-
+  usuarioActual:any;
   constructor(public router: Router, 
     public authService: AuthService, 
     private pedidoSvc: PedidosService, 
     private spinner:NgxSpinnerService,
-    private utilidades:UtilidadesService) {
-    //this.puntajeSvc.cargarPuntajesFchs();
-    this.usuario$.subscribe((result: any) => {
-      this.usuario.email = result['email'];
-      this.usuario.uid = result['uid']
-
-    });
-    this.pedidoSvc.TraerPedidos().subscribe(data => {
-      this.pedidos = data;
-      this.pedidos.forEach(element => {
-        if (element.uid_usuario == this.usuario.uid) {
-          this.pedido = element;
-          console.log(this.pedido);
-          this.pedidos.actualizarPedido({jugado:true}, this.pedido.doc_id)
-          console.log("Pedido actualizado, jugado en true");
-        }
-      });
-    });
+    private utilidades:UtilidadesService,
+    private firestoreSvc:FirestoreService) {
+   
   }
 
   ngOnInit(): void {
 
   }
 
+
+    
+  ionViewDidEnter(){
+    this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+    this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
+      var usuarios = data; 
+
+      usuarios.forEach(element => {  
+        if (element.uid == this.usuarioActual.uid) { 
+          this.usuarioActual = element;
+          var observable2 = this.pedidoSvc.TraerPedidos().subscribe((data)=>{
+            this.pedido = data.filter((item:Pedido)=>item.estado != eEstadPedido.FINALIZADO && item.uid_usuario == this.usuarioActual.uid)[0];
+           // this.pedidos.actualizarPedido({jugado:true}, this.pedido.doc_id)
+            observable2.unsubscribe();
+          });
+        }
+      });
+    });
+
+ 
+  }
   empezar() {
     this.currentImage = this.updateRandomImage();
     this.empezado = true;

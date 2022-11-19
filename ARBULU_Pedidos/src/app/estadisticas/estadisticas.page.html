@@ -1,0 +1,114 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-title size="large">Estadisticas</ion-title>
+     
+      <ion-button color="danger" (click)="cerrarSesion()"  slot="end"> 
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button> 
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button color="success" (click)="mostrarCliente = true;mostrarEmpleado = false">
+    <img src="../../assets/accesosrapidos/cliente.png">
+  </ion-fab-button>
+  <ion-fab-button color="danger" (click)="mostrarEmpleado = true;mostrarCliente = false">
+    <img src="../../assets/accesosrapidos/camarero.png">
+  </ion-fab-button>
+</ion-fab> -->
+
+<ion-content>
+<div id="container">  
+  <!-- <ion-label>Seleccione un tipo de usuario</ion-label> -->
+  <div *ngIf="mostrarCliente == false && mostrarEmpleado == false">Seleccione un tipo de usuario</div>
+  <div class="container-datos" *ngIf="tipoUsuario=='Cliente'" [hidden]="!mostrarCliente">
+    <ion-card>
+      <ion-card-header>
+        Puntajes
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #puntajeCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+       Inconvenientes
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #inconvenientesCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+       Quejas
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #quejasCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        Orden
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #ordenCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+
+
+
+  <div class="container-datos" *ngIf="tipoUsuario=='Empleado'" [hidden]="!mostrarEmpleado">
+
+    <ion-card>
+      <ion-card-header>
+        Comportamiento
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #comportamientoEmpleadosCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+       Ausencia
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #faltaCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+      Llega tarde
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #llegaTardeCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </ion-card-content>
+    </ion-card>
+
+    
+    <!-- <ion-card>
+      <ion-card-header>
+       Inconvenientes
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #inconvenientesCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </ion-card-content>
+    </ion-card> -->
+
+
+  </div>
+  <ion-button type="button" fill="solid" expand="block" color="enviar" [routerLink]="['/home-duenio']">Volver</ion-button>
+  
+</div>
+</ion-content>
+
+
+<ngx-spinner type=null template="<img src='./../../assets/cargando.gif' height='125'/>"> 
+</ngx-spinner>

@@ -46,7 +46,8 @@ export class HomeClientePage implements OnInit {
     private alertController: AlertController,
     private spinner: NgxSpinnerService,
     private pedidoSrv: PedidosService,
-    private notiSrv:NotificationService) {
+    private notiSrv:NotificationService,
+    public encuestasSrv:EncuestaService) {
 
   }
 
@@ -290,5 +291,11 @@ export class HomeClientePage implements OnInit {
     });
   }
  
+
+  navegar(link:string){
+    setTimeout(() => {
+       this.router.navigate([link]) 
+    }, 3000);
+  }
 
 }

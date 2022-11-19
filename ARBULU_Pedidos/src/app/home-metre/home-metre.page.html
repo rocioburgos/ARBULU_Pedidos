@@ -14,19 +14,19 @@
 
   <ion-row>
     <ion-col size="12">
-      <div class="centrado"  [routerLink]="['/alta-clientes']">
+      <div class="centrado" (click)="navegar('/alta-clientes')" >
         <img width="100px" src="./../../assets/imagenesHomes/comida-rapida.png">
         <p> Alta cliente</p>
       </div> 
     </ion-col>
     <ion-col size="12">
-      <div class="centrado" [routerLink]="['/chat']"> 
+      <div class="centrado" (click)="navegar('/chat')" > 
         <img width="100px" src="./../../assets/imagenesHomes/burbuja-de-chat.png">
         <p>Sala de mensajes</p>
       </div> 
     </ion-col>
     <ion-col size="12">
-      <div  class="centrado" [routerLink]="['/listado-pedidos']">
+      <div  class="centrado" (click)="navegar('/listado-pedidos')" >
 
         <img width="100px" src="./../../assets/imagenesHomes/comprobacion.png">
         <p>Listado pedidos</p>
@@ -34,7 +34,7 @@
     </ion-col>
 
     <ion-col size="12">
-      <div  class="centrado" [routerLink]="['/clientesingreso']">
+      <div  class="centrado" (click)="navegar('/clientesingreso')" >
 
         <img width="100px" src="./../../assets/imagenesHomes/telefono-inteligente.png">
         <p>Clientes en espera de ingreso</p>

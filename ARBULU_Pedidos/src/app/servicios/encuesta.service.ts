@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EncuestaService {
-
+  public encuesta: boolean = false;
   public dbRef: AngularFirestoreCollection<any>;
   public dbRefEmp: AngularFirestoreCollection<any>;
   constructor(

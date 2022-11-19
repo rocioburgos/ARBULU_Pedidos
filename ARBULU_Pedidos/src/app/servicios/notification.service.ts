@@ -79,59 +79,10 @@ export class NotificationService {
 
 
   private async addListeners(): Promise<void> {
-
-     // Request permission to use push notifications
-    // iOS will prompt user and return if they granted permission or not
-    // Android will just grant without prompting
-    PushNotifications.requestPermissions().then(result => {
-      if (result.receive === 'granted') {
-        // Register with Apple / Google to receive push via APNS/FCM
-        PushNotifications.register();
-      } else {
-        // Show some error
-      }
-    });
-
-    // On success, we should be able to receive notifications
-    PushNotifications.addListener('registration',
-      (token: Token) => {
-        console.log('My token: ' + JSON.stringify(token));
-        localStorage.setItem("deviceToken", JSON.stringify(token));
-      }
-    );
-
-    // Some issue with our setup and push will not work
-    PushNotifications.addListener('registrationError',
-      (error: any) => {
-        alert('Error on registration: ' + JSON.stringify(error));
-      }
-    );
-
-    // Show us the notification payload if the app is open on our device
-    PushNotifications.addListener('pushNotificationReceived',
-      (notification: PushNotificationSchema) => {
-        const data = notification;
-        console.log('Push received: ' + JSON.stringify(notification));
-    
-      }
-    );
-
-    // Method called when tapping on a notification
-    PushNotifications.addListener('pushNotificationActionPerformed',
-      (notification: ActionPerformed) => {
-        const data = notification.notification.data;
-        console.log('Action performed: ' + JSON.stringify(notification.notification));
-
-        if(notification.notification.data.pedido_id!= null){
-          this.router.navigate([notification.notification.data.ruta,
-             { pedido_id: notification.notification.data.pedido_id }]);
-        }
-        this.router.navigateByUrl(notification.notification.data.ruta)
-      }
-    );
+ 
 
     //Ocurre cuando el registro de las push notifications finaliza sin errores
- /* await PushNotifications.addListener(
+  await PushNotifications.addListener(
       'registration',
       async (token: Token) => {
         //Acá deberiamos asociar el token a nuestro usario en nuestra bd
@@ -201,6 +152,6 @@ export class NotificationService {
 
         
       }
-    );*/
+    ); 
   }
 }

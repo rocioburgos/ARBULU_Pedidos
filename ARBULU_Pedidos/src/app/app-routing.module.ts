@@ -120,7 +120,11 @@ const routes: Routes = [
   {
     path: 'home-juegos',
     loadChildren: () => import('./home-juegos/home-juegos.module').then( m => m.HomeJuegosPageModule)
+  },  {
+    path: 'estadisticas',
+    loadChildren: () => import('./estadisticas/estadisticas.module').then( m => m.EstadisticasPageModule)
   }
+
 
  
  

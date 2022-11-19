@@ -114,4 +114,11 @@ export class HomeMetrePage implements OnInit {
     this.getMesas();
   }
 
+
+  navegar(link:string){
+    setTimeout(() => {
+       this.router.navigate([link]) 
+    }, 3000);
+  }
+
 }
