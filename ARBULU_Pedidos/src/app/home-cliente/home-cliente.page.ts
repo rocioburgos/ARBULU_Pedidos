@@ -94,16 +94,7 @@ export class HomeClientePage implements OnInit {
                 console.log("NO tiene pedido");
                 
               }
-            });
-            // alert(resp);
-            // if (resp == 0) {
-            //   alert(this.tienePedidosEnCurso);
-            //   this.tienePedidosEnCurso = false;
-            // } else {
-            //   this.tienePedidosEnCurso = true;
-            //   this.pedidoEnCurso = resp[0];
-            //   alert(this.pedidoEnCurso);
-            // }
+            }); 
             console.log(this.tienePedidosEnCurso);
             //alert(this.pedido);
             console.log(this.pedidoEnCurso);
@@ -118,56 +109,13 @@ export class HomeClientePage implements OnInit {
             }
           });
           this.spinner.hide();
-
-          // this.pedidoSrv.TraerPedidoByUserId(this.usuario.uid).subscribe((res) => {
-          //   console.log(res);
-          //   alert(res);
-          //   if (res == 0) {
-          //     alert(this.tienePedidosEnCurso);
-          //     this.tienePedidosEnCurso = false;
-          //   } else {
-          //     this.tienePedidosEnCurso = true;
-          //     this.pedidoEnCurso = res[0];
-          //     alert(this.pedidoEnCurso);
-          //   }
-          //   console.log(this.usuario);
-          //   alert(this.pedido);
-          //   this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
-          //   console.log(this.pedidoEnCurso);
-          //   var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
-          //     this.encuesta = data.filter((item: any) => item.uid_cliente == this.authSvc.usuarioActual.uid && item.uid_pedido == this.pedido.doc_id)[0];
-          //     this.spinner.hide();
-          //     observable.unsubscribe();
-          //   })
-          // });
+ 
         }
       });
     });
    
     
-
-    //this.usuarioLS = this.authSvc.getCurrentUserLS();
-    // this.firestoreSvc.obtenerUsuarioPorId(this.usuarioActual.uid).then((resp: any) => {
-    //   this.usuarioActual = resp;
-    //   console.log(this.usuarioActual);
-    // });
-    
-    // this.pedidoSrv.TraerPedidoByUserId(this.usuarioActual.uid).subscribe((res) => {
-    //   if (res == 0) {
-    //     this.tienePedidosEnCurso = false;
-    //   } else {
-    //     this.tienePedidosEnCurso = true;
-    //     this.pedidoEnCurso = res[0];
-    //     this.pedidoSrv.pedido_uid = this.pedidoEnCurso.doc_id;
-    //   }
-    // });
-
-    // var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
-    //   this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuarioActual.uid && item.uid_pedido == this.pedidoEnCurso.doc_id);
-
-    //   observable.unsubscribe();
-    // });
-
+ 
 
   }
 
@@ -197,7 +145,7 @@ export class HomeClientePage implements OnInit {
                 setTimeout(() => {
                   this.spinner.hide();
                   this.router.navigate(['login']);
-                }, 7000);
+                }, 3000);
               });
             })
 

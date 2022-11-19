@@ -19,6 +19,7 @@
 
 <ion-content>
 <div id="container">  
+  <h1>Resultados de encuestas a clientes</h1>
   <!-- <ion-label>Seleccione un tipo de usuario</ion-label> -->
   <div *ngIf="mostrarCliente == false && mostrarEmpleado == false">Seleccione un tipo de usuario</div>
   <div class="container-datos" *ngIf="tipoUsuario=='Cliente'" [hidden]="!mostrarCliente">
