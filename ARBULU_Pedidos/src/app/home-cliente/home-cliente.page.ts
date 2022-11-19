@@ -23,6 +23,7 @@ export class HomeClientePage implements OnInit {
   scanActive = false;
 
   escaneoMesa: boolean = false;//PONER EL FALSE
+  yaEscaneo=false;
   pedido: any = "";
   encuesta: any = "";
   verEstado: boolean = false;
@@ -84,8 +85,9 @@ export class HomeClientePage implements OnInit {
             this.pedido = resp;
             this.pedido.forEach(element => {
               if(element.uid_usuario == this.usuario.uid){
-                this.pedidoEnCurso = element;
-                if(this.pedidoEnCurso.estado != 'FINALIZADO'){
+                
+                if(element.estado != 'FINALIZADO'){
+                  this.pedidoEnCurso = element;
                   this.tienePedidosEnCurso = true;
                   console.log("tiene pedido");
                   this.escaneoMesa = true;
@@ -115,7 +117,7 @@ export class HomeClientePage implements OnInit {
               var observable = this.firestoreSvc.getEncuestasClientes().subscribe((data) => {
                 this.encuesta = data.filter((item: any) => item.uid_cliente == this.usuario.uid && item.uid_pedido == this.pedidoEnCurso.doc_id)[0];     
                 console.log("Encuesta:" + this.encuesta);        
-                observable.unsubscribe();
+                 
               });
             }
           });
@@ -248,6 +250,7 @@ export class HomeClientePage implements OnInit {
           //alert(this.usuario.id);
           this.firestoreSvc.update(this.usuario.id, { enListaDeEspera: false });
           this.escaneoMesa = true;
+          this.yaEscaneo=true;
           this.utilidadesSvc.successToast("Escaneo de mesa correcto", 2000);
           //alert(result.content);
         }
@@ -293,5 +296,11 @@ export class HomeClientePage implements OnInit {
     });
   }
  
+
+  navegar(link:string){
+    setTimeout(() => {
+       this.router.navigate([link]) 
+    }, 1000);
+  }
 
 }

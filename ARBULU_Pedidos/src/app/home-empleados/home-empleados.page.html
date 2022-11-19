@@ -10,19 +10,19 @@
 <ion-content>
   <ion-row>
     <ion-col size="12">
-      <div class="centrado" [routerLink]="['/alta-producto']">
+      <div class="centrado"   (click)="navegar('/alta-producto')" >
         <img width="100px" src="./../../assets/imagenesHomes/comida-rapida.png">
         <p> Alta productos</p>
       </div> <br>
     </ion-col>
     <ion-col size="12">
-      <div class="centrado"  [routerLink]="['/listado-productos']"> 
+      <div class="centrado" (click)="navegar('/listado-productos')" > 
         <img width="100px" src="./../../assets/imagenesHomes/pedido-en-linea.png">
         <p>Listado productos</p>
       </div> <br>
     </ion-col>
     <ion-col size="12">
-      <div  class="centrado"  [routerLink]="['/listado-pedidos']">
+      <div  class="centrado"  (click)="navegar('/listado-pedidos')" >
 
         <img width="100px" src="./../../assets/imagenesHomes/comprobacion.png">
         <p>Ordenes</p>

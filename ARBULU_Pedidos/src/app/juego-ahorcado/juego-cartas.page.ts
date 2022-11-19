@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/servicios/auth.service';
 import { eEstadPedido, Pedido } from '../clases/pedidos';
+import { FirestoreService } from '../servicios/firestore.service';
 import { PedidosService } from '../servicios/pedidos.service';
 import { UtilidadesService } from '../servicios/utilidades.service';
 
@@ -21,7 +22,7 @@ export class JuegoCartasPage implements OnInit {
   vidas: number = 3;
   mostrarFin: boolean= false;
   pedido: any;
-
+  usuarioActual:any;
   cartas = [{ numero: 1, pathImg: './../../../../assets/juegos/mayorMenor/cartas/1.jpg' },
   { numero: 2, pathImg: './../../../../assets/juegos/mayorMenor/cartas/2.jpg' },
   { numero: 3, pathImg: './../../../../assets/juegos/mayorMenor/cartas/3.jpg' },
@@ -40,18 +41,32 @@ export class JuegoCartasPage implements OnInit {
 
   constructor( private authSrv:AuthService,
     private utilSrv:UtilidadesService,
-    private pedidos:PedidosService,
-    private spinner:NgxSpinnerService) {
+    private pedidoSrv:PedidosService,
+    private spinner:NgxSpinnerService,
+    private firestoreSvc:FirestoreService) {
     this.cartaPrincipal = this.calcularCartaRandom();
     this.cartaSecundaria = this.calcularCartaRandom();
   }
 
+  
   ionViewDidEnter(){
-    var observable = this.pedidos.TraerPedidos().subscribe((data)=>{
-      this.pedido = data.filter((item:Pedido)=>item.estado != eEstadPedido.FINALIZADO && item.uid_usuario == this.authSrv.usuarioActual.uid)[0];
-      this.pedidos.actualizarPedido({jugado:true}, this.pedido.doc_id)
-      observable.unsubscribe();
+    this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
+    this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
+      var usuarios = data; 
+
+      usuarios.forEach(element => {  
+        if (element.uid == this.usuarioActual.uid) { 
+          this.usuarioActual = element;
+          var observable2 = this.pedidoSrv.TraerPedidos().subscribe((data)=>{
+            this.pedido = data.filter((item:Pedido)=>item.estado != eEstadPedido.FINALIZADO && item.uid_usuario == this.usuarioActual.uid)[0];
+           // this.pedidos.actualizarPedido({jugado:true}, this.pedido.doc_id)
+            observable2.unsubscribe();
+          });
+        }
+      });
     });
+
+ 
   }
 
   counter(i: number) {
@@ -144,7 +159,7 @@ export class JuegoCartasPage implements OnInit {
      let email = this.authSrv.getCurrentUserLS().email;
      //let resultados = { 'email': email, 'fecha':fecha, 'juego': 'mayorMenor', 'puntaje': this.cuenta }
      this.spinner.show();
-     this.pedidos.actualizarPedido({jugado:true, descuento:this.descuento, nombreJuego:'cartas'}, this.pedido.doc_id).then((ok)=>{
+     this.pedidoSrv.actualizarPedido({jugado:true, descuento:this.descuento, nombreJuego:'cartas'}, this.pedido.doc_id).then((ok)=>{
      this.spinner.hide();
     }).catch((err)=>{
       this.spinner.hide();

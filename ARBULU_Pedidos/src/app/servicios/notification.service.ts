@@ -79,6 +79,8 @@ export class NotificationService {
 
 
   private async addListeners(): Promise<void> {
+ 
+
     //Ocurre cuando el registro de las push notifications finaliza sin errores
   await PushNotifications.addListener(
       'registration',
@@ -150,6 +152,6 @@ export class NotificationService {
 
         
       }
-    );
+    ); 
   }
 }

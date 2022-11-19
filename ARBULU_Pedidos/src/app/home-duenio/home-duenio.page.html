@@ -11,35 +11,35 @@
 <div id="container">  
   <ion-row>
     <ion-col size="12">
-      <div class="centrado"  [routerLink]="['/listado-clientes-pendientes']">
+      <div class="centrado" (click)="navegar('/listado-clientes-pendientes')" >
         <img width="100px" src="./../../assets/imagenesHomes/telefono-inteligente.png">
         <p>Habilitar clientes</p>
       </div> <br>
     </ion-col>
     <ion-col size="12">
-      <div class="centrado" [routerLink]="['/alta-supervisor']"> 
-        <img width="100px" src="./../../assets/imagenesHomes/pedido-en-linea.png">
+      <div class="centrado" (click)="navegar('/alta-supervisor')" > 
+        <img width="100px" src="./../../assets/imagenesHomes/recursos-humanos.png">
         <p> Alta dueño/supervisor</p>
       </div> <br>
     </ion-col>
     <ion-col size="12">
-      <div  class="centrado" [routerLink]="['/alta-empleado']">
+      <div  class="centrado"  (click)="navegar('/alta-empleado')" >
 
-        <img width="100px" src="./../../assets/imagenesHomes/comprobacion.png">
+        <img width="100px" src="./../../assets/imagenesHomes/reclutamiento-en-linea.png">
         <p>Alta empleados</p>
       </div>
     </ion-col>
 
     <ion-col size="12">
-      <div  class="centrado" [routerLink]="['/alta-mesa']">
+      <div  class="centrado"  (click)="navegar('/alta-mesa')" >
 
-        <img width="100px" src="./../../assets/imagenesHomes/comprobacion.png">
+        <img width="100px" src="./../../assets/imagenesHomes/cena.png">
         <p>Alta mesa</p>
       </div>
     </ion-col>
 
     <ion-col size="12">
-      <div *ngIf="usuarioActual.tipo === 'supervisor'" class="centrado" [routerLink]="['/encuesta-supervisor']">
+      <div *ngIf="usuarioActual.tipo === 'supervisor'" class="centrado" (click)="navegar('/encuesta-supervisor')"  >
 
         <img width="100px" src="./../../assets/imagenesHomes/comprobacion.png">
         <p>Encuesta Supervisor</p>
@@ -47,7 +47,7 @@
     </ion-col>
 
     <ion-col size="12">
-      <div  class="centrado" [routerLink]="['/estadisticas']">
+      <div  class="centrado"  (click)="navegar('/estadisticas')" >
 
         <img width="100px" src="./../../assets/imagenesHomes/estadisticas.png">
         <p>Estadisticas</p>

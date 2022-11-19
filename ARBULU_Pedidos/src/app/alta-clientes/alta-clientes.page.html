@@ -19,13 +19,12 @@
     </ion-fab-button>
   </ion-fab>
 
-  <div [hidden]="scanActive" *ngIf="!anonimo">
+  <div [hidden]="scanActive" *ngIf="!anonimo" >
     <div style="  display: flex;
     justify-content: center;">
       <a (click)="tomarFoto()"><img src="{{fotoUrl}}"></a>
     </div>
-
-    <ion-button (click)="notificar()">ACA CLICK</ion-button>
+ 
 
     <br>
     <form [formGroup]="altaForm">
@@ -37,7 +36,9 @@
       <small
         *ngIf="altaForm.get('email').hasError('required') && altaForm.get('email').hasError('email') && (altaForm.get('email').dirty || altaForm.get('email').touched)"
         style="color: var(--ion-color-danger)">Por favor, ingrese el correo electronico.</small>
-
+        <small  style="color: var(--ion-color-danger)"
+        *ngIf="altaForm.get('email')?.hasError('pattern') && altaForm.get('email')?.touched">El Correo no tiene el
+        formato correcto</small>
       <br>
       <br>
       <ion-item>
@@ -105,7 +106,7 @@
         style="color: var(--ion-color-danger)">El dni debe contener al menos 8 caracteres.</small>
       <br><br><br>
 
-      <ion-button expand="full" color="success" [disabled]="!altaForm.valid && path=='' " type="submit"
+      <ion-button expand="full" color="success" [disabled]="!altaForm.valid || !fotoHabilitar " type="submit"
         (click)='aceptar()'>
         <ion-icon name="arrow-forward-circle-outline"></ion-icon>
         Aceptar
@@ -133,12 +134,13 @@
         </ion-button>
         <ion-img class="foto" [src]='this.dataUrl' id="foto"></ion-img> -->
       <div style="  display: flex; justify-content: center;">
-        <a (click)="tomarFoto()"><img src="./../../assets/sacarfoto.png"></a>
+        <a (click)="tomarFoto()"><img src="{{fotoUrl}}"></a>
       </div>
 
+ 
     </ion-item>
 
-    <ion-button expand="full" color="success" [disabled]="!altaFormAnonimo.valid && path=='' " type="submit"
+    <ion-button expand="full" color="success" [disabled]="!altaFormAnonimo.valid || !fotoHabilitar " type="submit"
       (click)='aceptar()'>
       <ion-icon name="arrow-forward-circle-outline"></ion-icon>
       Aceptar
