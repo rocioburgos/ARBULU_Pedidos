@@ -30,7 +30,7 @@
   <div *ngFor="let mensaje of mensajes">
               <!--MENSAJE RECIBIDO-->
     <div class="row msg_container base_receive"
-      *ngIf="mensaje.remitente != user.email">  
+      *ngIf="mensaje.remitente != user.nombre">  
       <div class="col-xs-10 col-md-10">
         <div class="messages msg_receive">
           <p style="font-size: 15px;">{{mensaje.mensaje}} </p>
@@ -42,7 +42,7 @@
 
     <!--MENSAJE ENVIADO POR USUARIO ACTUAL-->
     <div class="row msg_container base_sent"
-      *ngIf="mensaje.remitente == user.email">
+      *ngIf="mensaje.remitente == user.nombre">
       <div class="col-md-10 col-xs-10 ">
         <div class="messages msg_sent">
           <p  style="font-size: 15px;">{{mensaje.mensaje}} </p><br>
@@ -54,13 +54,13 @@
 </ion-content>
 <div *ngIf="usuario_actual.tipoEmpleado=='mozo' && flagMesaElegida"> 
   <ion-footer keyboard-attach class="bar-stable item-input-inset">
-    <ion-input type="text" placeholder="Escriba su mensaje..." maxlength="21"  [(ngModel)]="mensajeEnviar"></ion-input>
+    <ion-input type="text" placeholder="Escriba su mensaje..."  [(ngModel)]="mensajeEnviar"></ion-input>
     <ion-button expand="full" shape="round" color="success" (click)="mandarMensaje()"> Enviar </ion-button>
   </ion-footer>
 </div>
 <div *ngIf="usuario_actual.tipo=='cliente'">
   <ion-footer  keyboard-attach class="bar-stable item-input-inset">
-    <ion-input type="text" placeholder="Escriba su mensaje..." maxlength="21"  [(ngModel)]="mensajeEnviar"></ion-input>
+    <ion-input type="text" placeholder="Escriba su mensaje..."   [(ngModel)]="mensajeEnviar"></ion-input>
     <ion-button expand="full" shape="round" color="success" (click)="mandarMensaje()"> Enviar </ion-button>
   </ion-footer>
 </div>

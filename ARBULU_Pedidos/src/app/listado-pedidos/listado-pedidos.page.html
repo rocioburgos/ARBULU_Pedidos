@@ -12,7 +12,7 @@
   </div>
   <div   *ngIf="esMetre">
     <div *ngFor="let pedido of pedidos">
-      <ion-card  style="   text-align:center;   padding:8px;  " >
+      <ion-card   *ngIf="pedido.estado!='FINALIZADO'"style="   text-align:center;   padding:8px;  " >
         <ion-card-header>
           <ion-card-title>Mesa {{pedido.numero_mesa}} </ion-card-title> 
         </ion-card-header> 
@@ -28,7 +28,7 @@
   </div>
   <div   *ngIf="esEmpleado">
     <div *ngFor="let pedido of pedidos">
-      <ion-card  style="   text-align:center;   padding:8px;  " >
+      <ion-card  *ngIf="pedido.estado!='FINALIZADO'" style="   text-align:center;   padding:8px;  " >
         <ion-card-header>
           <ion-card-title>Mesa {{pedido.numero_mesa}} </ion-card-title> 
         </ion-card-header> 

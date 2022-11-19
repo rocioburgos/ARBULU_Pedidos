@@ -66,6 +66,6 @@ export class HomeEmpleadosPage implements OnInit {
   navegar(link:string){
     setTimeout(() => {
        this.router.navigate([link]) 
-    }, 3000);
+    }, 1000);
   }
 } 
