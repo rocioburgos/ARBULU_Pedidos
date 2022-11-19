@@ -19,7 +19,7 @@
     </ion-fab-button>
   </ion-fab>
 
-  <div [hidden]="scanActive" *ngIf="!anonimo">
+  <div [hidden]="scanActive" *ngIf="!anonimo" >
     <div style="  display: flex;
     justify-content: center;">
       <a (click)="tomarFoto()"><img src="{{fotoUrl}}"></a>
@@ -134,9 +134,10 @@
         </ion-button>
         <ion-img class="foto" [src]='this.dataUrl' id="foto"></ion-img> -->
       <div style="  display: flex; justify-content: center;">
-        <a (click)="tomarFoto()"><img src="./../../assets/sacarfoto.png"></a>
+        <a (click)="tomarFoto()"><img src="{{fotoUrl}}"></a>
       </div>
 
+ 
     </ion-item>
 
     <ion-button expand="full" color="success" [disabled]="!altaFormAnonimo.valid || !fotoHabilitar " type="submit"
