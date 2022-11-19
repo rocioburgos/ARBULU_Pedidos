@@ -47,13 +47,17 @@ export class HomeClientePage implements OnInit {
     private pedidoSrv: PedidosService,
     private notiSrv:NotificationService,
     public encuestasSrv:EncuestaService) {
-
   }
 
   ngOnInit() {
+    
+  }
+
+  ionViewDidEnter(){
     this.usuarioToken = JSON.parse(localStorage.getItem('usuario_ARBULU'));  
     this.notiSrv.inicializar();
     this.usuario = this.authSvc.usuarioActual;
+    this.encuesta = '';
     
     if (!this.usuario) {
       this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));

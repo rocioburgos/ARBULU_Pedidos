@@ -90,7 +90,7 @@
 
         <div class="centrado"  [routerLink]="['/encuesta-cliente']"
         *ngIf="tienePedidosEnCurso && (pedidoEnCurso.estado!='FINALIZADO' 
-        || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE') "><!--&& encuesta == undefined-->
+        || pedidoEnCurso.estado!='COBRADO' || pedidoEnCurso.estado!='PENDIENTE') && pedido == undefined "><!--&& encuesta == undefined-->
           <img width="100px" src="./../../assets/imagenesHomes/encuesta.png">
           <p>Ayudenos a seguir mejorando</p>
         </div> 

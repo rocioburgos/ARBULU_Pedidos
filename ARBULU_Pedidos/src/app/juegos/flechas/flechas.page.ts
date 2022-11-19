@@ -179,7 +179,7 @@ export class FlechasPage implements OnInit {
   updatePedidoPuntaje() {
     this.spinner.show();
     this.pedidos.actualizarPedido({jugado:true, descuento:this.pedido.descuento, nombreJuego:'flechas'}, this.pedido.doc_id).then((ok)=>{
-      if(this.pedido.descuento == 0)
+      if(this.pedido.descuento == 20)
       {
         this.utilidades.successToast("Felicitaciones, ha logrado un 20% de descuento!", 4000);
       }
