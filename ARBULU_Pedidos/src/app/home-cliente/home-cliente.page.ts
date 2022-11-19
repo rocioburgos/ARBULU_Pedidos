@@ -62,7 +62,7 @@ export class HomeClientePage implements OnInit {
     
     if (!this.usuario) {
       this.usuario = JSON.parse(localStorage.getItem('usuario_ARBULU'));
-      console.log(this.usuario);
+      //console.log(this.usuario);
     }
     this.spinner.show();
     this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
@@ -77,10 +77,9 @@ export class HomeClientePage implements OnInit {
           if(this.usuario.mesa != '' && !this.usuario.enListaDeEspera){
             this.escaneoMesa = true;
           }
-            console.log(this.usuario.mesa);
-          
+          //console.log(this.usuario.mesa);
           //alert(this.usuario);
-          console.log(this.usuario);
+          //console.log(this.usuario);
           this.pedido = this.pedidoSrv.TraerPedidos().subscribe( resp => {
             this.pedido = resp;
             this.pedido.forEach(element => {
@@ -94,9 +93,7 @@ export class HomeClientePage implements OnInit {
                 }
               }
               else{
-                
                 console.log("NO tiene pedido");
-                
               }
             });
             // alert(resp);

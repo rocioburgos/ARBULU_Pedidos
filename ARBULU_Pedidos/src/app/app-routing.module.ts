@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'splash',
+    redirectTo: 'home-cliente',
     pathMatch: 'full'
   },
   {
@@ -48,7 +48,7 @@ const routes: Routes = [
   {
     path: 'home-cliente',
     loadChildren: () => import('./home-cliente/home-cliente.module').then( m => m.HomeClientePageModule),
-    canActivate: [ClienteAprobadoGuard]
+    //canActivate: [ClienteAprobadoGuard]
   },
   {
     path: 'listado-productos',
@@ -120,7 +120,8 @@ const routes: Routes = [
   {
     path: 'home-juegos',
     loadChildren: () => import('./home-juegos/home-juegos.module').then( m => m.HomeJuegosPageModule)
-  },  {
+  },
+  {
     path: 'estadisticas',
     loadChildren: () => import('./estadisticas/estadisticas.module').then( m => m.EstadisticasPageModule)
   }
