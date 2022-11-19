@@ -30,6 +30,19 @@ export class EncuestaClientePage implements OnInit {
     private pedidoSrv:PedidosService,
     private encuestasSvc:EncuestaService,
     private firestoreSvc:FirestoreService) {
+      this.form = this.fb.group({
+        'puntaje': ['', Validators.required],
+        'inconvenientes': ['', Validators.required],
+        'orden': [true],
+        'comentario': [''],
+        'quejas': ['', Validators.required],
+        'foto1': [''],
+        'foto2': [''],
+        'foto3': [''],
+        'uid_cliente': [''],
+      'uid_pedido': ['']
+      });
+
 
       this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
       this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {
@@ -41,22 +54,7 @@ export class EncuestaClientePage implements OnInit {
             var observable2 = this.pedidoSrv.TraerPedidos().subscribe((data)=>{
               this.pedido = data.filter((item:Pedido)=>item.estado != eEstadPedido.FINALIZADO && item.uid_usuario == this.usuarioActual.uid)[0];
              // this.pedidos.actualizarPedido({jugado:true}, this.pedido.doc_id)
-
-
-
-              this.form = this.fb.group({
-                'puntaje': ['', Validators.required],
-                'inconvenientes': ['', Validators.required],
-                'orden': [true],
-                'comentario': [''],
-                'quejas': ['', Validators.required],
-                'foto1': [''],
-                'foto2': [''],
-                'foto3': [''],
-                'uid_cliente': [this.usuarioActual.uid],
-                'uid_pedido': [this.pedido.doc_id]
-              });
-
+ 
               observable2.unsubscribe();
             });
           }
@@ -81,6 +79,15 @@ export class EncuestaClientePage implements OnInit {
 
   EnviarEncuesta() {
     this.spinner.show();
+    //this.usuarioActual.uid
+    //this.pedido.doc_id
+    this.form.controls['uid_cliente'].setValue(
+      this.usuarioActual.uid
+      );  
+
+      this.form.controls['uid_pedido'].setValue(
+        this.pedido.doc_id
+        ); 
     this.firestore.SubirEncuestaCliente(this.form.value, this.fotos)
       .then(() => {
         document.getElementById('enviar').setAttribute('disabled', 'disabled');
