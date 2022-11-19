@@ -21,7 +21,7 @@ Somos estudiantes de Tecnicatura Universitaria en programación  en UTN-FRA
 ## Tareas
 | # | Primer sprint  Fecha: 22/10/2022 a 29/10/2022 | Responsable | Estado🔴🟡🟢|
 | ------ | ------ | ------ | ------ |
-|   |  Sonidos de inicio de aplicacion, vibraciones para los errores, spiners de carga, toast|Rocio |🟡Iniciado|
+|   |  Sonidos de inicio de aplicacion, vibraciones para los errores, spiners de carga, toast|Rocio |🟢Finalizado|
 |   |Alta de empleados |👩‍💻Rocio |🟢Finalizado|
 |   |Alta de productos  |👩‍💻Rocio  |🟢Finalizado|
 |   |   Icono + Splash  |👨‍💻Ezequiel|🟢Finalizado|
