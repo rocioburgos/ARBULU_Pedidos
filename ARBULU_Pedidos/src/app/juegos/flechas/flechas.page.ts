@@ -66,12 +66,8 @@ export class FlechasPage implements OnInit {
    
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
-  }
-
-
-    
   ionViewDidEnter(){
     this.usuarioActual = JSON.parse(localStorage.getItem('usuario_ARBULU'));
     this.firestoreSvc.obtenerColeccionUsuario().subscribe(data => {

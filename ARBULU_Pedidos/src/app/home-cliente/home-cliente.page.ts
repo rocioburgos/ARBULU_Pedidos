@@ -91,6 +91,10 @@ export class HomeClientePage implements OnInit {
                   console.log("tiene pedido");
                   this.escaneoMesa = true;
                 }
+                else
+                {
+                  this.tienePedidosEnCurso = false;
+                }
               }
               else{
                 console.log("NO tiene pedido");

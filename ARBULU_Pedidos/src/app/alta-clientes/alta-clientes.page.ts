@@ -58,7 +58,6 @@ export class AltaClientesPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.altaForm = this.fromBuilder.group({
       nombre: ['', Validators.compose([Validators.required])],
       apellido: ['', Validators.compose([Validators.required])],
@@ -67,7 +66,6 @@ export class AltaClientesPage implements OnInit {
       clave: ["", Validators.required],
       //clave2: ["", [Validators.required, this.comparePassValidator(this.altaForm.value.clave1, this.altaForm.value.clave2)]]
       clave2: ["", Validators.compose([Validators.required])],
-
     });
 
     this.altaFormAnonimo = this.fromBuilder.group({

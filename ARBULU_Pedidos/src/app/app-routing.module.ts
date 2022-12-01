@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home-cliente',
+    redirectTo: 'alta-clientes',
     pathMatch: 'full'
   },
   {
